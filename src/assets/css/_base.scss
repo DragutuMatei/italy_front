@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap");
+
+$galben: #f68a0a;
+$blue: #0e121d;
+$blue_2: #131721;
+$gray: #363636;
+$black: #000;
+$white: #f8f8f8;
+
+$links:
+"../images/bg.png",
+"https://images.pexels.com/photos/26797335/pexels-photo-26797335/free-photo-of-scenic-view-of-mountains.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "https://images.pexels.com/photos/17631065/pexels-photo-17631065/free-photo-of-ruins-of-abandoned-house-in-vast-grassland-flow-country-scotland.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "https://images.pexels.com/photos/29173986/pexels-photo-29173986/free-photo-of-serene-pond-with-boats-in-giverny-garden.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+  "https://images.pexels.com/photos/32440654/pexels-photo-32440654/free-photo-of-charming-plant-filled-parisian-cafe-entrance.jpeg",
+  "https://images.pexels.com/photos/32412580/pexels-photo-32412580/free-photo-of-woman-in-black-with-white-umbrella-by-tree.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Instrument Sans", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  text-transform: none;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}

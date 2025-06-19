@@ -1,0 +1,65 @@
+.button {
+  min-width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  padding: 10px 15px;
+  border-radius: 17px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+
+  * {
+    color: $white;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &.main {
+    background: $galben;
+    border: 2px solid rgba($galben, 0.3);
+    &:hover {
+      background: rgba($galben, 0.7);
+      border: 2px solid rgba($galben, 1);
+    }
+  }
+  &.second {
+    border: 2px solid $galben;
+    &:hover {
+      background: rgba($galben, 0.3);
+    }
+  }
+}
+
+
+/**
+
+admitere
+  - licenta
+  - masterat
+  - doctorat
+
+programe de studii
+  - studii de licenta
+  - mastarat
+
+cercetare
+  - centrul CCMA
+          => Conducere
+          => Servicii
+          => Doctori
+          => Proiecte derulate
+  - laboratoare
+  - parteneri
+
+evenimente
+  - Anunturi
+  - SCSS
+  - CCT
+  - ICSAM
+
+*/
