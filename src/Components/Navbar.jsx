@@ -23,7 +23,9 @@ function Navbar() {
       </nav>
       <div className="down">
         <div className="logo">
-          <h1>Italy Transfers</h1>
+          <h1>
+            <Link to="/">Dvchauffeurs</Link>
+          </h1>
         </div>
 
         <div
@@ -38,20 +40,25 @@ function Navbar() {
         <div className={`drop ${isOpen ? "active" : ""}`}>
           <div className="links">
             <div className="link">
-              <Link to="/">Home</Link>
+              <a href="#about">About</a>
             </div>
             <div className="link">
-              <Link to="/">Services</Link>
+              <a href="#services">Services</a>
             </div>
             <div className="link">
-              <Link to="/">About</Link>
+              <a href="#testimoniale">Testimonials</a>
             </div>
             <div className="link">
-              <Link to="/">Contact</Link>
+              <a href="#faq">FAQ's</a>
             </div>
           </div>
-          <div className="button main">
-            <Link to="/login">Login</Link>
+          <div className="buts">
+            <div className="button second">
+              <Link to="/form">Contact</Link>
+            </div>
+            <div className="button main">
+              <Link to="/form">See cars</Link>
+            </div>
           </div>
         </div>
       </div>

@@ -1,0 +1,115 @@
+
+.faq {
+  width: 100lvw;
+  background: $white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+  position: relative;
+  padding: 30px;
+
+  h2 {
+    font-size: 25px;
+    font-weight: 600;
+    color: $galben;
+    position: relative;
+    top: 50px;
+  }
+  .row {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 70px;
+    flex-wrap: wrap;
+
+    .left {
+      width: calc(50% - 15px);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      position: relative;
+      padding: 10px 30px;
+
+      h1 {
+        font-size: 60px;
+        font-weight: bold;
+        color: $blue;
+        line-height: 1;
+        margin-bottom: 40px;
+      }
+      p {
+        font-size: 18px;
+        color: $blue;
+        margin-bottom: 20px;
+      }
+    }
+    .right {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      position: relative;
+      padding: 30px;
+      gap: 30px;
+
+      .q-wrapper {
+        width: 100%;
+        max-width: 600px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 10px 10px 20px rgba($black, 0.1);
+
+        .q {
+          width: 100%;
+          padding: 20px 20px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          cursor: pointer;
+          position: relative;
+
+          h3 {
+            font-size: 20px;
+            user-select: none;
+            font-weight: 700;
+            color: $blue;
+          }
+          svg {
+            color: $blue;
+            font-size: 25px;
+          }
+
+          &.active {
+            background: $galben;
+
+            h3,
+            svg {
+              color: $white;
+            }
+          }
+        }
+
+        .ans {
+          height: 0;
+          overflow-y: hidden;
+          color: $blue;
+          padding: 0 20px;
+          font-size: 15px;
+          font-weight: 400;
+          transition: height 0.3s ease;
+          user-select: none;
+
+          &.active {
+            padding: 20px 20px;
+            height: auto;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+.header {
+  .slider-container {
+    // height: 100lvh;
+
+    .slick-arrow {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      background: $galben;
+      z-index: 2;
+
+      &::before {
+        content: "";
+        display: none;
+      }
+
+      &.slick-prev {
+        left: 0px;
+        top: 90%;
+        border-radius: 0 20px 20px 0;
+      }
+      svg {
+        font-size: 40px;
+        color: $blue;
+      }
+
+      &.slick-next {
+        right: 0px;
+        top: 90%;
+        border-radius: 20px 0 0 20px;
+      }
+    }
+  }
+  .custom {
+    width: 100lvw;
+    height: calc(100lvh - 155px);
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow-y: hidden;
+    padding: 30px;
+    overflow-x: hidden;
+    padding-bottom: 100px;
+
+    h1 {
+      font-size: 50px;
+      font-weight: bold;
+      margin-bottom: 15px;
+      color: $white;
+    }
+    p {
+      width: 100%;
+      max-width: 650px;
+      font-size: 20px;
+      color: $white;
+      margin-bottom: 20px;
+    }
+
+    .buttons {
+      width: 800px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 40px;
+    }
+  }
+
+  @each $link in $links {
+    .custom-#{index($links, $link)} {
+      background-image: url($link);
+    }
+  }
+}
