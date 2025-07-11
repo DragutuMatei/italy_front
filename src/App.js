@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import Home from "./Pages/Home";
 import "./assets/css/style.scss";
 import Navbar from "./Components/Navbar";
-import Form from "./Pages/Form";
+import Book from "./Pages/Book";
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/form" element={<Form />} />
+        <Route path="/book" element={<Book />} />
       </Routes>
     </BrowserRouter>
   );

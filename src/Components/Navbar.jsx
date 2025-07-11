@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { IoIosMail } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { FaPhone } from "react-icons/fa";
+import { useAuth } from "../utils/AuthContext";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const { user, signUserOut, signInWithGoogle } = useAuth();
 
   return (
     <>
@@ -24,7 +26,7 @@ function Navbar() {
       <div className="down">
         <div className="logo">
           <h1>
-            <Link to="/">Dvchauffeurs</Link>
+            <Link to="/">Dv-Chauffeurs</Link>
           </h1>
         </div>
 
@@ -51,14 +53,20 @@ function Navbar() {
             <div className="link">
               <a href="#faq">FAQ's</a>
             </div>
+            <div className="link">
+              <a href="/contact">Contact</a>
+            </div>
           </div>
           <div className="buts">
-            <div className="button second">
-              <Link to="/form">Contact</Link>
-            </div>
-            <div className="button main">
-              <Link to="/form">See cars</Link>
-            </div>
+            {user ? (
+              <div className="button second" onClick={signUserOut}>
+                <h4>Log out</h4>
+              </div>
+            ) : (
+              <div className="button main" onClick={signInWithGoogle}>
+                <h4 >Login</h4>
+              </div>
+            )}
           </div>
         </div>
       </div>

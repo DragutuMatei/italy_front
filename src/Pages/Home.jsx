@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CiMoneyBill } from "react-icons/ci";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -9,8 +9,97 @@ import { IoIosArrowDown } from "react-icons/io";
 import { SampleNextArrow, SamplePrevArrow } from "../utils/Arrows";
 import Testimonials from "../Components/Testimonials";
 import Contact from "../Components/Contact";
+import Form from "../Components/Form";
+import AXIOS from "../utils/Axios_config";
+import PayPalCardFields from "../Components/Paypal";
 
 function Home() {
+  //   async function testNccgestReadData(
+  //     token,
+  //     startDate,
+  //     endDate,
+  //     subclass = "",
+  //     paxname = ""
+  //   ) {
+  //     // API endpoint URL
+  //     const baseUrl = "https://api.nccgest.com/api/rest_api.php";
+  //     const dominio = "nrcvlad";
+  //     const cmd = "cmd_read";
+
+  //     // Construct query parameters
+  //     const queryParams = new URLSearchParams({
+  //       dominio,
+  //       token,
+  //       start_date: startDate, // Format: dd/mm/yyyy (e.g., '27/06/2025')
+  //       end_date: endDate, // Format: dd/mm/yyyy (e.g., '27/06/2025')
+  //       cmd,
+  //       subclass: subclass || "", // Optional
+  //       paxname: paxname || "", // Optional
+  //     });
+
+  //     // Full URL with encoded parameters
+  //     const url = `${baseUrl}?${queryParams.toString()}`;
+
+  //     try {
+  //       // Make the GET request
+  //       const response = await fetch(url, {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       });
+
+  //       // Check if response is OK
+  //       // if (!response.ok) {
+  //       //     throw new Error(`HTTP error! Status: ${response.status}`);
+  //       // }
+
+  //       // Parse JSON response
+  //       const result = await response.json();
+
+  //       // Handle the response
+  //       if (result.success) {
+  //         console.log("Success! Retrieved services:", result.data);
+  //         return result.data; // Array of service objects
+  //       } else {
+  //         console.log("API Error:", result.error);
+  //         // throw new Error(result.error);
+  //       }
+  //     } catch (error) {
+  //       console.log("Error fetching data from NCCGEST API:", error.message);
+  //       throw error;
+  //     }
+  //   }
+  // // ok4kcc0os0w0g0gw8ss4gskk84cocksss8wc4w88c8cksowkkk8g4g4cw4s4sssk
+  //   const test = async () => {
+  //     const token =
+  //       "ok4kcc0os0w0g0gw8ss4gskk84cocksss8wc4w88c8cksowkkk8g4g4cw4s4sssk"; // Replace with your actual token
+  //     const startDate = "27/06/2025";
+  //     const endDate = "27/06/2025";
+  //     const subclass = ""; // Optional: specify cost center or service code
+  //     const paxname = ""; // Optional: passenger name
+
+  //     try {
+  //       const services = await testNccgestReadData(
+  //         token,
+  //         startDate,
+  //         endDate,
+  //         subclass,
+  //         paxname
+  //       );
+  //       // Process the services data
+  //       console.log(services);
+  //       // services.forEach(service => {
+  //       //     console.log(`Service ID: ${service.id}, Date: ${service.date}, Pickup: ${service.pickup_address}, Status: ${service.status}`);
+  //       // });
+  //     } catch (error) {
+  //       console.log("Failed to retrieve services:", error.message);
+  //     }
+  //   };
+
+  //   useEffect(() => {
+  //     test();
+  //   }, []);
   const toggle = (index) => {
     const ans = document.querySelectorAll(".ans");
     ans[index].classList.toggle("active");
@@ -112,6 +201,7 @@ function Home() {
           </Slider>
         </div>
       </section>
+      <Form />
       <section className="about" id="about">
         <div className="left">
           <h2>About Us</h2>
