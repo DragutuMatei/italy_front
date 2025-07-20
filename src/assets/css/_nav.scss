@@ -4,36 +4,141 @@ nav {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  background: $blue;
+  background: $blue_2;
 
   .top {
     width: 100%;
-    max-width: 800px;
-    height: 55px;
+    max-width: 640px;
+    height: 44px;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 10px;
+    padding: 8px;
     margin: 0 auto;
     position: relative;
     .line {
       width: 2px;
       height: 100%;
       background: $galben;
-      margin: 0 10px;
+      margin: 0 8px;
     }
 
     a {
       display: flex;
       align-items: center;
-      padding: 10px;
+      padding: 8px;
       color: $white;
       font-weight: 500;
-      gap: 10px;
+      gap: 8px;
 
       svg {
         color: $galben;
-        font-size: 25px;
+        font-size: 20px;
+      }
+    }
+
+    // Language Switch Styles
+    .language-switch {
+      .switch-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .switch-input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .switch-label {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 64px;
+        height: 29px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        overflow: hidden;
+
+        &:hover {
+          border-color: $galben;
+          background: rgba(255, 255, 255, 0.15);
+        }
+      }
+
+      .switch-slider {
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 26px;
+        height: 22px;
+        background: $galben;
+        border-radius: 13px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 2;
+      }
+
+      .switch-text {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 10px;
+        font-weight: 600;
+        color: $white;
+        transition: all 0.3s ease;
+        z-index: 1;
+      }
+
+      .switch-text-en {
+        left: 10px;
+        opacity: 1;
+      }
+
+      .switch-text-it {
+        right: 10px;
+        opacity: 0.7;
+      }
+
+      // When Italian is selected
+      .switch-input:checked + .switch-label {
+        .switch-slider {
+          transform: translateX(35px);
+        }
+
+        .switch-text-en {
+          opacity: 0.7;
+        }
+
+        .switch-text-it {
+          opacity: 1;
+        }
+      }
+
+      // Mobile version
+      &.mobile {
+        .switch-label {
+          width: 56px;
+          height: 26px;
+        }
+
+        .switch-slider {
+          width: 22px;
+          height: 19px;
+        }
+
+        .switch-text {
+          font-size: 9px;
+        }
+
+        .switch-input:checked + .switch-label .switch-slider {
+          transform: translateX(30px);
+        }
       }
     }
   }
@@ -41,7 +146,7 @@ nav {
 .down {
   user-select: none;
   width: 100%;
-  height: 100px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -49,55 +154,55 @@ nav {
   z-index: 999;
   top: 0;
   left: 0;
-  background: $blue;
+  background: $blue_2;
 
   .hamburger {
     display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 30px;
-    height: 25px;
+    width: 24px;
+    height: 20px;
     cursor: pointer;
-    gap: 5px;
+    gap: 4px;
     z-index: 100;
 
     span {
       width: 100%;
-      height: 3px;
+      height: 2px;
       background: $white;
-      border-radius: 5px;
+      border-radius: 4px;
       transition: all 0.3s ease;
     }
 
     &.open {
       span:nth-child(1) {
-        transform: rotate(45deg) translate(5px, 5px);
+        transform: rotate(45deg) translate(4px, 4px);
       }
       span:nth-child(2) {
         opacity: 0;
       }
       span:nth-child(3) {
-        transform: rotate(-45deg) translate(6px, -6px);
+        transform: rotate(-45deg) translate(5px, -5px);
       }
     }
   }
 
   .logo {
-    width: 200px;
-    height: 100px;
+    width: 160px;
+    height: 80px;
     display: flex;
     align-items: center;
     position: relative;
-    padding: 10px;
-    left: 20px;
+    padding: 8px;
+    left: 16px;
 
     h1 {
       width: max-content;
-      left: -10px;
+      left: -8px;
       position: relative;
       z-index: 1;
-      font-size: 25px;
+      font-size: 20px;
       a {
         color: $white;
       }
@@ -106,30 +211,30 @@ nav {
     &::before {
       content: "";
       z-index: 0;
-      width: 200px;
-      height: 100px;
+      width: 160px;
+      height: 80px;
       transform: skew(30deg, 0deg);
-      background: $blue;
+      background: $blue_2;
       position: absolute;
       top: 0;
-      left: 10px;
+      left: 8px;
     }
   }
 
   .menu-toggle {
     display: none;
     color: $white;
-    font-size: 30px;
-    padding: 20px;
+    font-size: 24px;
+    padding: 16px;
     cursor: pointer;
     z-index: 10;
   }
 
   .drop {
-    width: calc(100lvw - 130px);
+    width: calc(100lvw - 104px);
     background: $white;
     height: 100%;
-    padding: 10px 20px 10px 120px;
+    padding: 8px 16px 8px 96px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -137,10 +242,10 @@ nav {
 
     .buts {
       display: flex;
-      gap: 15px;
+      gap: 12px;
     }
     .button {
-      min-width: 120px;
+      min-width: 96px;
     }
     .button.second {
       * {
@@ -148,17 +253,17 @@ nav {
       }
     }
     .button:last-of-type {
-      margin-right: 30px;
+      margin-right: 24px;
     }
     .links {
       display: flex;
       //   gap: 50px;
       .link {
-        margin-right: 25px;
+        margin-right: 20px;
         a {
-          color: $black;
+          color: $blue_2;
           font-weight: 500;
-          font-size: 20px;
+          font-size: 16px;
         }
       }
     }

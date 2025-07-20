@@ -1,18 +1,20 @@
 .testimoniale {
-  width: 100lvw;
-  background: $blue;
+  width: 100%;
+  background-image: url("../images/bg_testimonials.png");
+  background-color: $blue_2;
+  background-blend-mode: multiply;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
-  padding: 30px;
+  padding: 24px;
 
   h2 {
-    font-size: 25px;
+    font-size: 20px;
     font-weight: 600;
     color: $galben;
     position: relative;
-    top: 50px;
+    top: 40px;
   }
   .row {
     width: 100%;
@@ -31,16 +33,16 @@
       padding: 10px 30px;
 
       h1 {
-        font-size: 60px;
+        font-size: 48px;
         font-weight: bold;
         color: $white;
         line-height: 1;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
       }
       p {
-        font-size: 18px;
+        font-size: 14px;
         color: $white;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
       }
       .form {
         width: 100%;
@@ -163,7 +165,7 @@
               z-index: 1;
               svg {
                 width: 30px;
-                color: $blue;
+                color: $black;
               }
             }
 
@@ -208,9 +210,10 @@
                 }
               }
               &.sec {
-                background: $blue;
+                background: $blue_2;
                 padding: 20px;
                 border: 2px solid $galben;
+
                 p {
                   line-height: 1.4;
                   color: rgba($white, 0.8);

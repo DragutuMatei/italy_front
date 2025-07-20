@@ -26,17 +26,34 @@
       min-width: 0px;
     }
     .right {
-      width: 80%;
+      width: 90%;
+      .img2 {
+        padding: 10px;
+        align-items: center;
+        position: relative;
+        h1 {
+          font-size: 65px;
+        }
+        h2{
+          font-size: 18px;
+        }
+      }
     }
     .left {
-      width: 100%;
+      width: 85%;
+      h1 {
+        font-size: 55px;
+      }
+      p {
+        font-size: 15px;
+      }
       .icons {
         .icon {
           width: 100%;
           max-width: 300px;
           svg {
             width: 100%;
-            max-width: 150px;
+            max-width: 70px;
           }
         }
       }
@@ -54,7 +71,7 @@
     height: 50px;
     top: 110%;
     right: 25px;
-    // left: 50lvw;
+    // left: 50%;
     // transform: translateX(-1lvw);
   }
   .services .slider-container .slick-arrow.slick-prev {
@@ -81,13 +98,46 @@
 }
 
 @media (max-width: 1020px) {
+  nav {
+    .top {
+      max-width: 100%;
+      padding: 10px 20px;
+
+      a {
+        font-size: 12px;
+        padding: 5px;
+
+        svg {
+          font-size: 16px;
+        }
+      }
+
+      .language-switch {
+        .switch-label {
+          width: 70px;
+          height: 32px;
+        }
+
+        .switch-slider {
+          width: 28px;
+          height: 24px;
+        }
+
+        .switch-text {
+          font-size: 11px;
+        }
+
+        .switch-input:checked + .switch-label .switch-slider {
+          transform: translateX(38px);
+        }
+      }
+    }
+  }
+
   .down {
     flex-direction: column;
     align-items: flex-start;
     height: auto;
-    // position: relative;
-    // position: absolute;
-    // top: 55px;
     left: 0;
 
     .hamburger {
@@ -174,6 +224,9 @@
       }
     }
   }
+  .about{
+    flex-direction: column;
+  }
 }
 @media (max-width: 780px) {
   .about {
@@ -190,10 +243,13 @@
     .right {
       .img2 {
         gap: 10px;
+        align-items: center;
+        gap: 0;
         h1 {
           font-size: 50px;
         }
         h2 {
+          margin: 0;
           font-size: 17px;
         }
       }
@@ -219,7 +275,7 @@
 }
 @media (max-width: 670px) {
   .testimoniale {
-    padding: 15px 15px 100px 15px;
+    padding: 15px 15px 130px 15px;
     .row {
       .left {
         h1 {
@@ -310,7 +366,7 @@
         padding: 0;
         h1 {
           margin-bottom: 20px;
-          font-size: 40px;
+          font-size: 33px;
         }
         p {
           font-size: 15px;
@@ -348,7 +404,130 @@
     }
   }
 }
+@media (max-width: 780px) {
+  nav {
+    .top {
+      padding: 10px 15px;
+
+      a {
+        font-size: 11px;
+        padding: 3px;
+        gap: 5px;
+
+        svg {
+          font-size: 14px;
+        }
+      }
+
+      .line {
+        margin: 0 5px;
+      }
+
+      .language-switch {
+        .switch-label {
+          width: 65px;
+          height: 30px;
+        }
+
+        .switch-slider {
+          width: 26px;
+          height: 22px;
+        }
+
+        .switch-text {
+          font-size: 10px;
+        }
+
+        .switch-input:checked + .switch-label .switch-slider {
+          transform: translateX(35px);
+        }
+      }
+    }
+  }
+
+  .down {
+    .logo {
+      width: 180px;
+      height: 90px;
+      left: 15px;
+
+      h1 {
+        font-size: 22px;
+      }
+
+      &::before {
+        width: 180px;
+        height: 90px;
+      }
+    }
+  }
+}
+
 @media (max-width: 430px) {
+  nav {
+    .top {
+      padding: 10px 10px;
+      height: 50px;
+
+      a {
+        font-size: 10px;
+        padding: 2px;
+        gap: 3px;
+
+        svg {
+          font-size: 12px;
+        }
+      }
+
+      .line {
+        margin: 0 3px;
+        width: 1px;
+      }
+
+      .language-switch {
+        .switch-label {
+          width: 60px;
+          height: 28px;
+        }
+
+        .switch-slider {
+          width: 24px;
+          height: 20px;
+        }
+
+        .switch-text {
+          font-size: 9px;
+        }
+
+        .switch-input:checked + .switch-label .switch-slider {
+          transform: translateX(32px);
+        }
+      }
+    }
+  }
+
+  .down {
+    .logo {
+      width: 120px;
+      height: 70px;
+      left: 5px;
+
+      h1 {
+        font-size: 18px;
+      }
+
+      &::before {
+        width: 120px;
+        height: 70px;
+      }
+    }
+
+    .hamburger {
+      top: 25px;
+      right: 15px;
+    }
+  }
+
   .header {
     .custom {
       h1 {
@@ -367,6 +546,7 @@
     }
   }
   .about {
+    padding: 60px 15px;
     .left {
       h1 {
         font-size: 40px;
@@ -425,12 +605,111 @@
       margin-top: 50px;
     }
   }
-  h2:not(.masina .right h2) {
+  h2:not(.masina .right h2, .profile-info h2) {
     width: 100%;
     text-align: center;
     margin: 20px 0;
   }
   .mainform {
     padding: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  nav {
+    .top {
+      padding: 8px 5px;
+      height: 45px;
+
+      a {
+        font-size: 9px;
+        padding: 1px;
+        gap: 2px;
+
+        svg {
+          font-size: 10px;
+        }
+      }
+
+      .line {
+        margin: 0 2px;
+        width: 1px;
+      }
+
+      .language-switch {
+        .switch-label {
+          width: 55px;
+          height: 26px;
+        }
+
+        .switch-slider {
+          width: 22px;
+          height: 18px;
+        }
+
+        .switch-text {
+          font-size: 8px;
+        }
+
+        .switch-input:checked + .switch-label .switch-slider {
+          transform: translateX(29px);
+        }
+      }
+    }
+  }
+
+  .down {
+    .logo {
+      width: 100px;
+      height: 60px;
+      left: 2px;
+
+      h1 {
+        font-size: 16px;
+      }
+
+      &::before {
+        width: 100px;
+        height: 60px;
+      }
+    }
+
+    .hamburger {
+      top: 20px;
+      right: 10px;
+    }
+  }
+
+  .header {
+    .custom {
+      padding: 15px 10px;
+
+      h1 {
+        font-size: 35px;
+      }
+
+      p {
+        font-size: 14px;
+      }
+
+      .buttons {
+        gap: 15px;
+
+        .button {
+          min-width: 100px;
+        }
+      }
+    }
+
+    .slider-container {
+      .slick-arrow {
+        width: 50px;
+        height: 50px;
+
+        svg {
+          font-size: 25px;
+        }
+      }
+    }
   }
 }

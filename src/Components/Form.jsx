@@ -5,8 +5,9 @@ import { MdOutlineDateRange } from "react-icons/md";
 import { IoTime } from "react-icons/io5";
 import { IoTimer } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-
-const libraries = ["places"];
+import { toast } from "react-toastify";
+import { toast_error, toast_warn } from "./Toasts";
+import { useTranslation } from "react-i18next";
 
 function Form() {
   const today =
@@ -15,7 +16,7 @@ function Form() {
     String(new Date().getMonth() + 1).padStart(2, "0") +
     "-" +
     String(new Date().getDate()).padStart(2, "0");
-
+  const { t } = useTranslation();
   const [masini, setMasini] = useState("");
   const [option, setOption] = useState("way");
   const [date, setDate] = useState(today);
@@ -38,8 +39,8 @@ function Form() {
   const destinationRef = useRef(null);
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyAQJVCVQXehO5DsVOLEVFg80VClM1tS7mU", // Replace with your Google Maps API key
-    libraries,
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY, // Replace with your Google Maps API key
+    libraries: ["places"],
   });
 
   const handleOriginSelect = () => {
@@ -63,86 +64,6 @@ function Form() {
       });
     }
   };
- 
-  // const calculateDistance = async () => {
-  //   if (!origin || !destination) {
-  //     return "Please select both origin and destination.";
-  //   }
-
-  //   const service = new window.google.maps.DistanceMatrixService();
-  //   return new Promise((resolve) => {
-  //     service.getDistanceMatrix(
-  //       {
-  //         origins: [{ lat: origin.lat, lng: origin.lng }],
-  //         destinations: [{ lat: destination.lat, lng: destination.lng }],
-  //         travelMode: window.google.maps.TravelMode.DRIVING,
-  //         unitSystem: window.google.maps.UnitSystem.METRIC,
-  //       },
-  //       (response, status) => {
-  //         if (status === "OK") {
-  //           const result = response.rows[0].elements[0];
-  //           if (result.status === "OK") {
-  //             resolve({
-  //               km: result.distance.value / 1000,
-  //               ore: result.duration.text,
-  //             });
-  //           } else {
-  //             resolve("Unable to calculate distance.");
-  //           }
-  //         } else {
-  //           resolve("Error calculating distance.");
-  //         }
-  //       }
-  //     );
-  //   });
-  // };
-
-  // const calculateTripPrice = async (vehicleType) => {
-  //   // Validate inputs
-  //   const rez = await calculateDistance();
-  //   console.log(rez);
-  //   const distanceKm = rez.km;
-
-  //   if (typeof distanceKm !== "number" || distanceKm < 0) {
-  //     setPret({ error: "Invalid distance" });
-  //   }
-  //   if (!pricingData.find((v) => v.type === vehicleType)) {
-  //     setPret({ error: "Invalid vehicle type" });
-  //   }
-
-  //   // Cap distance at 500 km
-  //   const cappedDistance = Math.min(distanceKm, 500);
-  //   const vehicle = pricingData.find((v) => v.type === vehicleType);
-
-  //   // If distance is within base km, return base fare
-  //   if (cappedDistance <= vehicle.baseKm) {
-  //     setPret({
-  //       total: vehicle.baseFare,
-  //       currency: "EUR",
-  //       includes: "Meet & Greet",
-  //     });
-  //   }
-
-  //   // Calculate additional cost beyond base km
-  //   let total = vehicle.baseFare;
-  //   let remainingKm = cappedDistance - vehicle.baseKm;
-
-  //   for (const rate of vehicle.rates) {
-  //     if (remainingKm <= 0) break;
-  //     const kmInRange = Math.min(remainingKm, rate.to - rate.from);
-  //     total += kmInRange * rate.price;
-  //     remainingKm -= kmInRange;
-  //   }
-
-  //   setPret({
-  //     total: parseFloat(total.toFixed(2)),
-  //     km: distanceKm,
-  //     masini,
-  //     option,
-  //     date,
-  //     time,
-  //   });
-  // };
 
   const handleSection = (e) => {
     setOption(e);
@@ -273,6 +194,12 @@ function Form() {
       );
     });
   };
+  const isDateTimeInFuture = (dateStr, timeStr) => {
+    if (!dateStr || !timeStr) return false;
+    const now = new Date();
+    const input = new Date(dateStr + "T" + timeStr);
+    return input > now;
+  };
   const book = async () => {
     const dist = await calculateDistance();
 
@@ -293,11 +220,17 @@ function Form() {
       { date }
     );
 
+    // Validare suplimentară pentru data/ora în trecut
+    if (!isDateTimeInFuture(date, time)) {
+      toast_error("Nu poți selecta o dată și oră din trecut!");
+      return;
+    }
+
     if (allFilled(params_array) && isValidTime(time) && isValidDate(date)) {
       const isDrivable = await checkIfRouteIsDrivable();
 
-      if (!isDrivable) {
-        alert("Traseul nu poate fi realizat cu mașina.");
+      if (!isDrivable && option !== "hour") {
+        toast_error("Route not drivable");
         return;
       }
       const params = new URLSearchParams();
@@ -306,29 +239,39 @@ function Form() {
       });
       navigate(`/book?${params.toString()}`);
     } else {
-      alert("completeaza tot");
+      toast_warn("Please fill all fields");
     }
   };
 
-  
-
   if (!isLoaded) {
-    return <div className="text-center text-gray-500">Loading...</div>;
+    return <div className="text-center text-gray-500">{t("loading")}</div>;
   }
   return (
     <>
       <section className="mainform">
         <div className="sections">
-          <div className="section active" onClick={() => handleSection("way")}>
-            <h3>One way</h3>
+          <div
+            className={`section ${option === "way" ? "active" : ""}`}
+            data-aos="fade-down"
+            onClick={() => handleSection("way")}
+          >
+            <h3>{t("one_way")}</h3>
           </div>
-          <div className="section" onClick={() => handleSection("hour")}>
-            <h3>By the Hour</h3>
+          <div
+            className={`section ${option === "hour" ? "active" : ""}`}
+            data-aos="fade-down"
+            onClick={() => handleSection("hour")}
+          >
+            <h3>{t("by_the_hour")}</h3>
           </div>
         </div>
         <div className="content">
-          <h1>Book a ride!</h1>
-          <div className="input" onClick={() => autofocus("from")}>
+          <h1 data-aos="fade-right">{t("book_a_ride")}</h1>
+          <div
+            className="input"
+            data-aos="fade-right"
+            onClick={() => autofocus("from")}
+          >
             <Autocomplete
               className="input2"
               onLoad={(autocomplete) => (originRef.current = autocomplete)}
@@ -337,84 +280,95 @@ function Form() {
               <>
                 <FaLocationDot />
                 <div className="r">
-                  <h4>From</h4>
+                  <h4>{t("from")}</h4>
                   <input
                     required
-                    //ref={inputRefs.from}
                     type="text"
                     ref={setRef("from")}
-                    placeholder="Enter origin location"
+                    placeholder={t("enter_origin_location")}
                   />
                 </div>
               </>
             </Autocomplete>
           </div>
-          {option == "way" ? (
-            <>
-              <div className="input" onClick={() => autofocus("to")}>
-                <Autocomplete
-                  className="input2"
-                  onLoad={(autocomplete) =>
-                    (destinationRef.current = autocomplete)
-                  }
-                  onPlaceChanged={handleDestinationSelect}
-                >
-                  <>
-                    <FaLocationDot />
-                    <label htmlFor="to" className="r">
-                      <h4>To</h4>
-                      <input
-                        required
-                        id="to"
-                        type="text"
-                        ref={setRef("to")}
-                        //ref={inputRefs.to}
-                        placeholder="Enter origin location"
-                      />
-                    </label>
-                  </>
-                </Autocomplete>
-              </div>
-            </>
+          {option === "way" ? (
+            <div
+              className="input"
+              data-aos="fade-right"
+              onClick={() => autofocus("to")}
+            >
+              <Autocomplete
+                className="input2"
+                onLoad={(autocomplete) =>
+                  (destinationRef.current = autocomplete)
+                }
+                onPlaceChanged={handleDestinationSelect}
+              >
+                <>
+                  <FaLocationDot />
+                  <label htmlFor="to" className="r">
+                    <h4>{t("to")}</h4>
+                    <input
+                      required
+                      id="to"
+                      type="text"
+                      ref={setRef("to")}
+                      placeholder={t("enter_destination_location")}
+                    />
+                  </label>
+                </>
+              </Autocomplete>
+            </div>
           ) : (
-            <>
-              <div className="input" onClick={() => autofocus("hours")}>
-                <IoTimer />
-                <label htmlFor="hours" className="r">
-                  <h4>Hours</h4>
-                  <select
-                    id="hours"
-                    onChange={(e) => setHours(e.target.value)} //ref={inputRefs.hours}
-                    ref={setRef("hours")}
-                  >
-                    {Array.from({ length: 21 }, (_, i) => i + 3).map((hour) => {
-                      const new_hour = hour;
-                      return <option value={new_hour}>{new_hour}</option>;
-                    })}
-                  </select>
-                </label>
-              </div>
-            </>
+            <div
+              className="input"
+              data-aos="fade-right"
+              onClick={() => autofocus("hours")}
+            >
+              <IoTimer />
+              <label htmlFor="hours" className="r">
+                <h4>{t("hours")}</h4>
+                <select
+                  id="hours"
+                  onChange={(e) => setHours(e.target.value)}
+                  ref={setRef("hours")}
+                  value={hours}
+                >
+                  {Array.from({ length: 21 }, (_, i) => i + 3).map((hour) => (
+                    <option key={hour} value={hour}>
+                      {hour}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
           )}
-          <div className="input" onClick={() => autofocus("date")}>
+          <div
+            className="input"
+            data-aos="fade-right"
+            onClick={() => autofocus("date")}
+          >
             <MdOutlineDateRange />
             <div className="r">
-              <h4>Date</h4>
+              <h4>{t("date")}</h4>
               <input
                 required
                 value={date}
                 min={today}
                 type="date"
                 ref={setRef("date")}
-                //ref={inputRefs.date}
                 onChange={(e) => setDate(e.target.value)}
               />
             </div>
           </div>
-          <div className="input" onClick={() => autofocus("time")}>
+          <div
+            className="input"
+            data-aos="fade-right"
+            onClick={() => autofocus("time")}
+          >
             <IoTime />
             <div className="r">
-              <h4>Time</h4>
+              <h4>{t("time")}</h4>
               <input
                 required
                 type="time"
@@ -425,8 +379,8 @@ function Form() {
             </div>
           </div>
 
-          {option == "way" && (
-            <h3>Chauffeur will wait 15 minutes free of charge.</h3>
+          {option === "way" && (
+            <h3 data-aos="fade-right">{t("chauffeur_wait")}</h3>
           )}
           <div
             className="button main"
@@ -434,109 +388,12 @@ function Form() {
             aria-selected="true"
             onClick={book}
           >
-            <a href="#">Search</a>
+            <a href="#">{t("search")}</a>
           </div>
-        </div>  
+        </div>
       </section>
     </>
   );
-
-  // return (
-  //   <div style={{ minHeight: "100vh" }}>
-  //     <select name="masini" onChange={(e) => setMasini(e.target.value)}>
-  //       <option value="">Alege</option>
-  //       <option value="Sedan">Sedan</option>
-  //       <option value="Private Van (V CLASS)">V Class</option>
-  //       <option value="Private Van (VITO)">Vito</option>
-  //     </select>
-  //     <select onChange={(e) => setOption(e.target.value)}>
-  //       <option value="">Alege</option>
-  //       <option value="way">One way</option>
-  //       <option value="hour">By the hour</option>
-  //     </select>
-  //     {option == "way" ? (
-  //       <>
-  //         <div className="from">
-  //           <label
-  //             className="block text-gray-700 mb-2 font-medium"
-  //             htmlFor="origin"
-  //           >
-  //             Origin
-  //           </label>
-  //           <Autocomplete className="input" onClick={()=>autofocus()}
-  //             onLoad={(autocomplete) => (originRef.current = autocomplete)}
-  //             onPlaceChanged={handleOriginSelect}
-  //           >
-  //             <div className="autocomplete-wrapper">
-  //               <input required
-  //                 type="text"
-  //                 id="origin"
-  //                 placeholder="Enter origin location"
-  //                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-gray-900 placeholder-gray-400 autocomplete-input"
-  //               />
-  //             </div>
-  //           </Autocomplete>
-  //         </div>
-
-  //         <div className="to">
-  //           <label
-  //             className="block text-gray-700 mb-2 font-medium"
-  //             htmlFor="destination"
-  //           >
-  //             Destination
-  //           </label>
-  //           <Autocomplete className="input" onClick={()=>autofocus()}
-  //             onLoad={(autocomplete) => (destinationRef.current = autocomplete)}
-  //             onPlaceChanged={handleDestinationSelect}
-  //           >
-  //             <div className="autocomplete-wrapper">
-  //               <input required
-  //                 type="text"
-  //                 id="destination"
-  //                 placeholder="Enter destination location"
-  //                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 text-gray-900 placeholder-gray-400 autocomplete-input"
-  //               />
-  //             </div>
-  //           </Autocomplete>
-  //         </div>
-  //         <input required type="date" onChange={(e) => setDate(e.target.value)} />
-  //         <input required type="time" onChange={(e) => setTime(e.target.value)} />
-  //       </>
-  //     ) : (
-  //       <>
-  //         <input required type="number" min={3} placeholder="Ore" />
-  //       </>
-  //     )}
-  //     {masini && (
-  //       <button
-  //         onClick={async () => {
-  //           await calculateTripPrice(masini);
-  //         }}
-  //       >
-  //         calculate
-  //       </button>
-  //     )}
-  //     {pret !== null &&
-  //       (pret.error ? (
-  //         <h1>Eroare: {pret.error}</h1>
-  //       ) : (
-  //         <ul>
-  //           <li>
-  //             total:
-  //             {pret.total}$
-  //           </li>{" "}
-  //           <li>
-  //             km:
-  //             {pret.km} Km
-  //           </li>
-  //           <li>masina: {pret.masini}</li>
-  //           <li>option: {pret.option}</li>
-  //           <li>date: {pret.date}</li>
-  //           <li>time:{pret.time}</li>
-  //         </ul>
-  //       ))}
-  //   </div>
-  // );
 }
 
 export default Form;

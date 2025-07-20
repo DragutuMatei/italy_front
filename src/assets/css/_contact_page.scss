@@ -1,0 +1,142 @@
+.contact_page {
+  position: relative;
+  width: 100vw;
+  min-height: calc(100vh - 200px);
+  background: url(../../assets/images/svg.svg);
+  background-position: top left;
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+
+  .left_contact,
+  .right_contact {
+    width: 40%;
+    height: calc(100vh - 200px);
+    display: flex;
+    padding: 30px;
+    gap: 20px;
+
+    h1 {
+      color: black;
+    }
+  }
+
+  .left_contact {
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+    height: auto !important;
+
+    h1 {
+      margin-top: 20px;
+    }
+  }
+
+  .right_contact {
+    justify-content: flex-start;
+    align-items: flex-end;
+    flex-direction: column;
+    position: relative;
+
+    .row {
+      width: 100%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+
+      .input_group {
+        width: 100%;
+        position: relative;
+
+        input,
+        textarea {
+          width: 100%;
+          height: 40px;
+          position: relative;
+          outline: none;
+          border: none;
+          background: transparent;
+          border-bottom: 1px solid $blue_2; // Default border color
+          font-size: 16px;
+          color: $blue_2;
+
+          &:not(&:valid) {
+            border-bottom: 1px solid red;
+          }
+        }
+
+        textarea {
+          margin-top: 20px;
+          resize: vertical;
+          height: 215px;
+        }
+      }
+    }
+
+    // Button container to center the button
+    .button_container {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end; // Default position
+      margin-top: 20px;
+
+      @media only screen and (max-width: 850px) {
+        justify-content: center; // Center the button on smaller screens
+      }
+    }
+  }
+
+  @media only screen and (max-width: 850px) {
+    .left_contact,
+    .right_contact {
+      width: 100%;
+      height: auto;
+      padding: 20px;
+    }
+
+    .right_contact {
+      align-items: flex-start;
+
+      .row {
+        flex-direction: column;
+        gap: 10px;
+
+        .input_group {
+          width: 100%;
+
+          input,
+          textarea {
+            width: 100%;
+            margin-bottom: 10px;
+            border-bottom: 1px solid lighten($blue_2, 20%); // Lighter blue for smaller screens
+          }
+        }
+      }
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    .left_contact,
+    .right_contact {
+      width: 100%;
+      height: auto;
+      padding: 20px;
+    }
+
+    .right_contact {
+      align-items: flex-start;
+    }
+  }
+
+  @media only screen and (max-width: 480px) {
+    .left_contact,
+    .right_contact {
+      padding: 10px;
+    }
+  }
+}

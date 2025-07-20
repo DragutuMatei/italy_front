@@ -113,6 +113,7 @@
 // export default PayPalCardFields;
 import React, { useEffect, useState } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+import { toast_error, toast_success } from "./Toasts";
 
 const PayPalPayment = ({ setComplete, next, setPayRasp, pret }) => {
   const [orderId, setOrderId] = useState(null);
@@ -120,15 +121,18 @@ const PayPalPayment = ({ setComplete, next, setPayRasp, pret }) => {
 
   const createOrder = async (data, actions) => {
     if (pret == 0) {
-      alert("Alege ceva!");
+      toast_error("Alege o masina!");
       return;
     }
     try {
-      const res = await fetch("http://localhost:3001/create-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ total: pret }), // De exemplu, 100 USD
-      });
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_LINK}/create-order`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ total: pret }), // De exemplu, 100 USD
+        }
+      );
       const dataRes = await res.json();
       console.log("dataRes.id: ", dataRes.id);
       setOrderId(dataRes.id);
@@ -142,25 +146,29 @@ const PayPalPayment = ({ setComplete, next, setPayRasp, pret }) => {
 
   const captureOrder = async (data, actions) => {
     try {
-      const res = await fetch("http://localhost:3001/capture-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orderId }),
-      });
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_LINK}/capture-order`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderId }),
+        }
+      );
       const dataRes = await res.json();
       setPayRasp(dataRes);
       console.log("status: ", dataRes.status);
       setComplete((old) => ({ ...old, [3]: true }));
       next(1, true);
-      alert("Transaction complete: " + dataRes.status);
+      toast_success("Transaction complete: " + dataRes.status);
     } catch (err) {
+      toast_error("Eroare: ", err);
       console.log("err: ", err);
       setError("Error capturing order.");
     }
   };
   const [clientToken, setClientToken] = useState(null);
   useEffect(() => {
-    fetch("http://localhost:3001/generate-client-token")
+    fetch(`${process.env.REACT_APP_BACKEND_LINK}/generate-client-token`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

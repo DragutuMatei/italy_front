@@ -1,6 +1,6 @@
 // src/contexts/AuthContext.js
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "./fire_config.js"; // Adjust path to your config file
+import { google_auth } from "./fire_config.js"; // Adjust path to your config file
 import { ref, onValue } from "firebase/database";
 import { db } from "./fire_config.js";
 // Import the necessary auth functions you need
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
     try {
-      const result = await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(google_auth, provider);
       const {
         accessToken,
         isAnonymous,
@@ -39,18 +39,19 @@ export const AuthProvider = ({ children }) => {
         reloadUserInfo,
         stsTokenManager,
         tenantId,
+        auth,
         ...data
       } = result.user;
       console.log("data: ", data);
-      await AXIOS.post("/api/saveUser", {
+      const u = await AXIOS.post("/api/saveUser", {
         uid: result.user.uid,
         userData: data,
       });
-      // console.log(final);
       setUser({
-        ...data,
+        ...u.data.user,
       });
-      return data;
+
+      return u.data.user;
     } catch (error) {
       console.error("Google Sign-In Error:", error);
     }
@@ -59,7 +60,7 @@ export const AuthProvider = ({ children }) => {
   // Example: Sign out
   const signUserOut = async () => {
     try {
-      await signOut(auth);
+      await signOut(google_auth);
       // User state will be updated by the onAuthStateChanged listener
       // console.log("User signed out successfully.");
     } catch (error) {
@@ -69,81 +70,44 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // --- Set up the Auth State Listener ---
-  // useEffect(() => {
-  //   const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-  //     if (firebaseUser) {
-  //       try {
-  //         console.log("asdlnk");
-  //         const res = await AXIOS.get(`/getUserInfo/${firebaseUser.uid}`);
-  //         const customUser = res.data.user;
-  //         setUser({
-  //           ...firebaseUser,
-  //           ...customUser,
-  //         });
-
-  //         const userRef = ref(db, `users/${firebaseUser.uid}`);
-  //         const unsubscribeDb = onValue(userRef, (snapshot) => {
-  //           const customUser = snapshot.val();
-  //           console.log(customUser)
-  //           // setUser({
-  //           //   ...firebaseUser,
-  //           //   ...customUser,
-  //           // });
-  //         });
-
-  //         // cleanup on unmount or user change
-  //         return () => unsubscribeDb();
-  //       } catch (err) {
-  //         console.error("Failed to fetch custom user data:", err);
-  //       }
-  //     } else {
-  //       console.log("asdlnk3333333333");
-
-  //       setUser(null);
-  //     }
-
-  //     setLoading(false);
-  //   });
-
-  //   return () => unsubscribe();
-  // }, []);
-
   useEffect(() => {
     let unsubscribeDb = null;
 
-    const unsubscribeAuth = onAuthStateChanged(auth, async (firebaseUser) => {
-      if (firebaseUser) {
-        try {
-          // console.log("asdlnk");
-          const res = await AXIOS.get(`/api/getUserInfo/${firebaseUser.uid}`);
-          const customUser = res.data.user;
+    const unsubscribeAuth = onAuthStateChanged(
+      google_auth,
+      async (firebaseUser) => {
+        if (firebaseUser) {
+          try {
+            // console.log("asdlnk");
+            const res = await AXIOS.get(`/api/getUserInfo/${firebaseUser.uid}`);
+            const customUser = res.data.user;
 
-          setUser({
-            ...firebaseUser,
-            ...customUser,
-          });
+            setUser({
+              ...firebaseUser,
+              ...customUser,
+            });
 
-          const userRef = ref(db, `users/${firebaseUser.uid}`);
-          unsubscribeDb = onValue(userRef, (snapshot) => {
-            const liveUser = snapshot.val();
-            console.log("Live user data:", liveUser);
-            setUser((prevUser) => ({
-              ...prevUser,
-              ...liveUser,
-            }));
-          });
-        } catch (err) {
-          console.error("Failed to fetch custom user data:", err);
+            const userRef = ref(db, `users/${firebaseUser.uid}`);
+            unsubscribeDb = onValue(userRef, (snapshot) => {
+              const liveUser = snapshot.val();
+              console.log("Live user data:", liveUser);
+              setUser((prevUser) => ({
+                ...prevUser,
+                ...liveUser,
+              }));
+            });
+          } catch (err) {
+            console.error("Failed to fetch custom user data:", err);
+          }
+        } else {
+          console.log("No user detected");
+          setUser(null);
+          if (unsubscribeDb) unsubscribeDb(); // Clean up old DB listener
         }
-      } else {
-        console.log("No user detected");
-        setUser(null);
-        if (unsubscribeDb) unsubscribeDb(); // Clean up old DB listener
-      }
 
-      setLoading(false);
-    });
+        setLoading(false);
+      }
+    );
 
     // ✅ Correct place to return cleanup functions
     return () => {

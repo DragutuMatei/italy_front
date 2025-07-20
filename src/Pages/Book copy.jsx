@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { FaCircle } from "react-icons/fa";
 import { IoPeopleSharp } from "react-icons/io5";
@@ -397,9 +397,10 @@ function Book() {
     }
   };
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyAQJVCVQXehO5DsVOLEVFg80VClM1tS7mU", // Replace with your Google Maps API key
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY, // Replace with your Google Maps API key
     libraries: ["places"],
   });
+
   const getRouteImage = async () => {
     if (!origin || !destination) {
       return { error: "Please select both origin and destination." };
@@ -470,7 +471,6 @@ function Book() {
       payFull: payFull,
       book: checked,
       phone: some["phone"] !== "" ? some.phone : "",
-      title: some["title"] !== "" ? some["title"] : "",
       // for: checked === "some" && { ...some },
       masina: selectedCar,
       time: time,
@@ -496,7 +496,7 @@ function Book() {
           value !== null &&
           Object.keys(value).length === 0);
 
-      if (isEmptyValue && key !== "title") {
+      if (isEmptyValue) {
         emptyFields.push(key);
       }
     }
@@ -532,27 +532,10 @@ function Book() {
       if (restored.some) setSome(restored.some);
       if (restored.notes) setNotes(restored.notes);
       if (restored.code) setCod(restored.code);
+      if (restored.tab !== undefined) setTab(restored.tab); // tab poate fi 0, 1, 2, 3, 4
       if (restored.payrasp) setPayRasp(restored.payrasp);
       if (restored.complete) setComplete(restored.complete);
       if (restored.hasPaid !== undefined) setHasPaid(restored.hasPaid); // corectare pentru boolean
-      // Modificare: setează tab-ul pe primul incomplet, altfel pe cel salvat
-      if (restored.complete) {
-        const firstIncomplete = Object.keys(restored.complete)
-          .map(Number)
-          .sort((a, b) => a - b)
-          .find((idx) => !restored.complete[idx]);
-        if (firstIncomplete !== undefined) {
-          if (firstIncomplete === 3 && is24h) {
-            setTab(4); // Sari peste tabul de plată dacă e sub 24h
-          } else {
-            setTab(firstIncomplete);
-          }
-        } else if (restored.tab !== undefined) {
-          setTab(restored.tab);
-        }
-      } else if (restored.tab !== undefined) {
-        setTab(restored.tab);
-      }
     }
   }, []);
 
@@ -595,12 +578,31 @@ function Book() {
       setHasPaid(true);
     }
   }, [payrasp, complete]);
-  const navigate = useNavigate();
+
+  // === Ștergere date la închiderea ferestrei/tabului, dar NU la refresh ===
+  const clearBookingData = () => {
+    localStorage.removeItem("bookData");
+    setHasPaid(false);
+  };
+
+  // Șterge localStorage când utilizatorul părăsește pagina
+  useEffect(() => {
+    const handlePageHide = (e) => {
+      // Dacă pagina e ascunsă și nu e refresh (bfcache), șterge localStorage
+      if (!e.persisted) {
+        clearBookingData();
+      }
+    };
+    window.addEventListener("pagehide", handlePageHide);
+    return () => {
+      window.removeEventListener("pagehide", handlePageHide);
+    };
+  }, []);
+
   const book_fct = async (under_24 = false) => {
     // if (!test) {
     let fields = getEmptyFields(finalModif);
     if (fields.has) {
-      console.log(fields.emptyFields);
       toast_error("Completeaza toate campurile");
       return;
       // } else {
@@ -630,16 +632,19 @@ function Book() {
     console.log(send);
     let serviceid = Math.floor(Math.random() * 1000000);
     if (!under_24) {
-      const api_to_nccgest = await AXIOS.post("/platform/insertData", {
-        sendData: send,
-      });
-      if (!api_to_nccgest.data.success) {
-        toast_error(
-          "There was an error connecting to the booking platform. Please try again later."
-        );
-        return;
-      }
-      serviceid = api_to_nccgest.data.data.serviceid;
+      const api_to_nccgest = await axios.post(
+        `https://api.nccgest.com/api/rest_api.php?dominio=nrcvlad&token=g40oow84sck4s0kwgcco048s00kkwcgwo4swcgc0s04c8kwk0k8gck0gooogccsg&cmd=cmd_insert`,
+        send,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        }
+      );
+      console.log(api_to_nccgest.data);
+      send["service"] = api_to_nccgest.data.serviceid;
+      serviceid = api_to_nccgest.data.serviceid;
     }
 
     const salv_book = await AXIOS.post("/books/insert", {
@@ -650,7 +655,6 @@ function Book() {
         serviceid,
       },
     });
-
     if (salv_book.data.success) {
       success = true;
     } else {
@@ -660,7 +664,7 @@ function Book() {
       uid: user && user.uid,
       data: salv_book.data.uid,
     });
-
+    console.log(salv_book.data, salve_user);
     if (salve_user.data.success) {
       success = true;
     } else {
@@ -671,16 +675,15 @@ function Book() {
       emailjs.send("service_cnqi9ni", "template_221xvxm", {
         ...send,
       });
+      send["car_img"] = selectedCar.img;
       emailjs.send("service_cnqi9ni", "template_772oxbr", {
         ...send,
       });
-    } else {
     }
+    clearBookingData(); // Șterge datele salvate imediat după apel, indiferent de succes
 
     if (success) {
-      localStorage.removeItem("bookData");
       toast_success("Your booking has been saved successfully!");
-      navigate("/profile");
     } else {
       toast_error("There was an error saving your booking. Please try again.");
     }
@@ -1268,9 +1271,7 @@ function Book() {
                 <h3 style={{ color: "black" }}>Back</h3>
               </div>
             ) : (
-              <Link to="/terms" target="_blank">
-                View terms & conditions
-              </Link>
+              <Link to="/">View terms & conditions</Link>
             )}
 
             {tab == 1 ? (

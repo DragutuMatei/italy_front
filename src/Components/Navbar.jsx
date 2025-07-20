@@ -3,10 +3,26 @@ import { IoIosMail } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { FaPhone } from "react-icons/fa";
 import { useAuth } from "../utils/AuthContext";
+import { useTranslation } from "react-i18next";
+import "../utils/translations.js";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const { user, signUserOut, signInWithGoogle } = useAuth();
+  const { i18n } = useTranslation();
+
+  const changeLanguage = (lng) => {
+    console.log("Changing language to:", lng);
+    i18n.changeLanguage(lng);
+    localStorage.setItem("lang", lng);
+  };
+
+  const currentLanguage = i18n.language || "en";
+
+  const toggleLanguage = () => {
+    const newLang = currentLanguage === "en" ? "it" : "en";
+    changeLanguage(newLang);
+  };
 
   return (
     <>
@@ -21,6 +37,32 @@ function Navbar() {
             <FaPhone />
             +40 678 678 2763
           </a>
+          <div
+            style={{
+              marginLeft: "auto",
+              display: "flex",
+              gap: "8px",
+              alignItems: "center",
+            }}
+          >
+            {/* Language Toggle Switch */}
+            <div className="language-switch">
+              <div className="switch-container">
+                <input
+                  type="checkbox"
+                  id="language-toggle"
+                  className="switch-input"
+                  checked={currentLanguage === "it"}
+                  onChange={toggleLanguage}
+                />
+                <label htmlFor="language-toggle" className="switch-label">
+                  <span className="switch-slider"></span>
+                  <span className="switch-text switch-text-en">EN</span>
+                  <span className="switch-text switch-text-it">IT</span>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
       </nav>
       <div className="down">
@@ -42,20 +84,25 @@ function Navbar() {
         <div className={`drop ${isOpen ? "active" : ""}`}>
           <div className="links">
             <div className="link">
-              <a href="#about">About</a>
+              <Link to="/#about">About</Link>
             </div>
             <div className="link">
-              <a href="#services">Services</a>
+              <Link to="/#services">Services</Link>
             </div>
             <div className="link">
-              <a href="#testimoniale">Testimonials</a>
+              <Link to="/#testimoniale">Testimonials</Link>
             </div>
             <div className="link">
-              <a href="#faq">FAQ's</a>
+              <Link to="/#faq">FAQ's</Link>
             </div>
             <div className="link">
-              <a href="/contact">Contact</a>
+              <Link to="/contact">Contact</Link>
             </div>
+            {user && (
+              <div className="link">
+                <Link to="/profile">Profilul meu</Link>
+              </div>
+            )}
           </div>
           <div className="buts">
             {user ? (
@@ -64,7 +111,7 @@ function Navbar() {
               </div>
             ) : (
               <div className="button main" onClick={signInWithGoogle}>
-                <h4 >Login</h4>
+                <h4>Login</h4>
               </div>
             )}
           </div>

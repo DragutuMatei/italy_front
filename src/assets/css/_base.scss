@@ -1,14 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap");
 
-$galben: #f68a0a;
-$blue: #0e121d;
-$blue_2: #131721;
-$gray: #363636;
-$black: #000;
-$white: #f8f8f8;
+// $galben: #f68a0a;
+// $blue_2: #0e121d;
+// $blue: #131721;
+// $gray: #363636;
+// $black: #000;
+// $white: #f8f8f8;
+
+$galben: #ee6c4d;
+$blue_2: #293241;
+$blue: #3d5a80;
+$gray: #a4b5c4;
+$black: #293241;
+$white: #efefef;
 
 $links: "../images/Frame 54.webp", "../images/Frame 55.webp",
   "../images/Frame 56.webp";
+
 * {
   margin: 0;
   padding: 0;
@@ -22,8 +30,15 @@ a {
   text-transform: none;
 }
 
-// html,
+html,
 body {
   overflow-x: hidden;
-  // width: 100%;
+  width: 100%;
+  max-width: 100vw;
+}
+
+#root {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
