@@ -237,7 +237,7 @@ function Testimonials() {
           <FaQuoteRight />
         </div>
         <div className="row">
-          <img src={img} alt="" />
+          <img src={img ? img : require("../assets/images/user.png")} alt="" />
           <div className="info">
             <h1>{name}</h1>
             <h3>{profesie}</h3>
