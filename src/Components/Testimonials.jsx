@@ -221,7 +221,7 @@ import { FaStar } from "react-icons/fa6";
 import { FaQuoteRight } from "react-icons/fa";
 import { useAuth } from "../utils/AuthContext";
 import AXIOS from "../utils/Axios_config";
-import { toast_promise, toast_warn } from "./Toasts";
+import { toast_error, toast_promise, toast_success, toast_warn } from "./Toasts";
 
 import { useTranslation } from "react-i18next";
 
