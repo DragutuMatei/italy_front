@@ -16,6 +16,7 @@ function Contact() {
   const [mesaj, setMesaj] = useState("");
 
   useEffect(() => {}, []);
+  const { t } = require("react-i18next").useTranslation();
 
   const send = async () => {
     if (name === "" || numar === "" || email === "" || mesaj === "") {
@@ -28,17 +29,23 @@ function Contact() {
     formdata.append("tel", numar);
     formdata.append("mail", email);
     formdata.append("mesaj", mesaj);
-    await toast_promise(
-      AXIOS.post("/contact/insert", {
-        data: {
-          name,
-          numar,
-          email,
-          mesaj,
-          timestamp: Date.now(),
-        },
-      })
-    );
+    // await toast_promise(
+
+    // );
+    const rasp = await AXIOS.post("/contact/insert", {
+      data: {
+        name,
+        numar,
+        email,
+        mesaj,
+        timestamp: Date.now(),
+      },
+    });
+    if (rasp.data.success) {
+      toast_success(t("success"));
+    } else {
+      toast_error(t("error"));
+    }
   };
 
   return (

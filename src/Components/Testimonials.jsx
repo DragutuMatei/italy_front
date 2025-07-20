@@ -305,8 +305,13 @@ function Testimonials() {
       toast_warn(t("WarningIncomplete"));
       return;
     }
+    const rasp = await AXIOS.post("/testimonials/insert", { data });
 
-    await toast_promise(AXIOS.post("/testimonials/insert", { data }));
+    if (rasp.data.success) {
+      toast_success(t("success"));
+    } else {
+      toast_error(t("error"));
+    }
   };
 
   const [data, setData] = useState([]);
