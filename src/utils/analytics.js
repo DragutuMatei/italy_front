@@ -29,7 +29,7 @@ export const initGoogleAnalytics = () => {
 // Track page views
 export const trackPageView = (pageTitle, pagePath) => {
   if (window.gtag) {
-    window.gtag("config", GA_TRACKING_ID, {
+    window.gtag("config", process.env.REACT_APP_GA_TRACKING_ID, {
       page_title: pageTitle,
       page_location: pagePath,
       send_page_view: true,

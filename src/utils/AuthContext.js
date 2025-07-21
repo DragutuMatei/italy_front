@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
         auth,
         ...data
       } = result.user;
-      console.log("data: ", data);
+      // console.log("data: ", data);
       const u = await AXIOS.post("/api/saveUser", {
         uid: result.user.uid,
         userData: data,
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
 
       return u.data.user;
     } catch (error) {
-      console.error("Google Sign-In Error:", error);
+      // console.error("Google Sign-In Error:", error);
     }
   };
 
@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }) => {
       // User state will be updated by the onAuthStateChanged listener
       // console.log("User signed out successfully.");
     } catch (error) {
-      console.error("Sign Out Error:", error);
+      // console.error("Sign Out Error:", error);
       // Handle Errors here
       throw error; // Re-throw for component to handle if needed
     }
@@ -90,17 +90,17 @@ export const AuthProvider = ({ children }) => {
             const userRef = ref(db, `users/${firebaseUser.uid}`);
             unsubscribeDb = onValue(userRef, (snapshot) => {
               const liveUser = snapshot.val();
-              console.log("Live user data:", liveUser);
+              // console.log("Live user data:", liveUser);
               setUser((prevUser) => ({
                 ...prevUser,
                 ...liveUser,
               }));
             });
           } catch (err) {
-            console.error("Failed to fetch custom user data:", err);
+            // console.error("Failed to fetch custom user data:", err);
           }
         } else {
-          console.log("No user detected");
+          // console.log("No user detected");
           setUser(null);
           if (unsubscribeDb) unsubscribeDb(); // Clean up old DB listener
         }

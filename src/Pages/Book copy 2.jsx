@@ -172,9 +172,9 @@ function Book() {
     const cappedDistance = distanceKm; // Comment out capping for testing: Math.min(distanceKm, 500);
 
     if (cappedDistance <= vehicle.baseKm) {
-      console.log(
-        `Base case: Distance ${cappedDistance} km <= ${vehicle.baseKm} km, Base Fare: ${vehicle.baseFare}`
-      );
+      // console.log(
+      //   `Base case: Distance ${cappedDistance} km <= ${vehicle.baseKm} km, Base Fare: ${vehicle.baseFare}`
+      // );
       return {
         total: vehicle.baseFare,
         km: distanceKm,
@@ -187,9 +187,9 @@ function Book() {
     let total = vehicle.baseFare;
     let remainingKm = cappedDistance - vehicle.baseKm;
 
-    console.log(
-      `Calculating for ${remainingKm} km beyond base ${vehicle.baseKm} km`
-    );
+    // console.log(
+    //   `Calculating for ${remainingKm} km beyond base ${vehicle.baseKm} km`
+    // );
 
     for (const rate of vehicle.rates) {
       if (remainingKm <= 0) break;
@@ -198,9 +198,9 @@ function Book() {
       const cost = kmInRange * rate.price;
       total += cost;
 
-      console.log(
-        `Range ${rate.from}-${rate.to} km: ${kmInRange} km * ${rate.price}/km = ${cost}, Total so far: ${total}`
-      );
+      // console.log(
+      //   `Range ${rate.from}-${rate.to} km: ${kmInRange} km * ${rate.price}/km = ${cost}, Total so far: ${total}`
+      // );
 
       remainingKm -= kmInRange;
     }
@@ -209,11 +209,11 @@ function Book() {
     if (remainingKm > 0) {
       const lastRate = vehicle.rates[vehicle.rates.length - 1].price;
       total += remainingKm * lastRate;
-      console.log(
-        `Remaining ${remainingKm} km at ${lastRate}/km = ${
-          remainingKm * lastRate
-        }, Final Total: ${total}`
-      );
+      // console.log(
+      //   `Remaining ${remainingKm} km at ${lastRate}/km = ${
+      //     remainingKm * lastRate
+      //   }, Final Total: ${total}`
+      // );
     }
 
     return {
@@ -362,7 +362,7 @@ function Book() {
 
     return diffHours > 0 && diffHours < 24;
   }
-  console.log(payFull);
+  // console.log(payFull);
   const autofocus = (key, pas = 1, ch = false) => {
     if (pas == 2) {
       if (key == "me") {
@@ -457,7 +457,7 @@ function Book() {
     if (!r.error) {
       setImg(r.imageUrl);
     } else {
-      console.log(r.error);
+      // console.log(r.error);
     }
   };
   const { isLoaded } = useJsApiLoader({
@@ -598,7 +598,7 @@ function Book() {
       token: "g40oow84sck4s0kwgcco048s00kkwcgwo4swcgc0s04c8kwk0k8gck0gooogccsg",
     };
     let success = false;
-    console.log(send);
+    // console.log(send);
     const salv_book = await AXIOS.post("/books/insert", {
       data: {
         uid: user && user.uid,
@@ -615,7 +615,7 @@ function Book() {
       uid: user && user.uid,
       data: salv_book.data.uid,
     });
-    console.log(salv_book.data, salve_user);
+    // console.log(salv_book.data, salve_user);
     if (salve_user.data.success) {
       success = true;
     } else {
@@ -632,7 +632,7 @@ function Book() {
           },
         }
       );
-      console.log(api_to_nccgest.data);
+      // console.log(api_to_nccgest.data);
       send["service"] = api_to_nccgest.data.serviceid;
     } else {
       emailjs.send("service_cnqi9ni", "template_221xvxm", {
@@ -720,7 +720,7 @@ function Book() {
             <p>All prices include estimated VAT, fees, and tolls</p>
             <div className="masini">
               {pricingData.map((masina, index) => {
-                console.log(masina.type, option == "hour" ? option : "km");
+                // console.log(masina.type, option == "hour" ? option : "km");
                 const results = calculateTripPrice2(
                   masina.type,
                   option == "hour" ? option : "km"

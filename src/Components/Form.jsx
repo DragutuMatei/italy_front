@@ -187,7 +187,7 @@ function Form() {
           if (status === "OK") {
             resolve(true);
           } else {
-            console.warn("Drivable route check failed:", status);
+            // console.warn("Drivable route check failed:", status);
             resolve(false);
           }
         }
@@ -211,14 +211,14 @@ function Form() {
       { time },
       { date },
     ];
-    console.log(
-      { origin },
-      { dist },
-      { optional: option == "way" ? destination : hours },
-      { option },
-      { time },
-      { date }
-    );
+    // console.log(
+    //   { origin },
+    //   { dist },
+    //   { optional: option == "way" ? destination : hours },
+    //   { option },
+    //   { time },
+    //   { date }
+    // );
 
     // Validare suplimentară pentru data/ora în trecut
     if (!isDateTimeInFuture(date, time)) {

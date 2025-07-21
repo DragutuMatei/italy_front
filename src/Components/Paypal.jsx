@@ -134,11 +134,11 @@ const PayPalPayment = ({ setComplete, next, setPayRasp, pret }) => {
         }
       );
       const dataRes = await res.json();
-      console.log("dataRes.id: ", dataRes.id);
+      // console.log("dataRes.id: ", dataRes.id);
       setOrderId(dataRes.id);
       return dataRes.id;
     } catch (err) {
-      console.log("eroare:", err);
+      // console.log("eroare:", err);
       setError("Error creating order.");
       return null;
     }
@@ -156,13 +156,13 @@ const PayPalPayment = ({ setComplete, next, setPayRasp, pret }) => {
       );
       const dataRes = await res.json();
       setPayRasp(dataRes);
-      console.log("status: ", dataRes.status);
+      // console.log("status: ", dataRes.status);
       setComplete((old) => ({ ...old, [3]: true }));
       next(1, true);
       toast_success("Transaction complete: " + dataRes.status);
     } catch (err) {
       toast_error("Eroare: ", err);
-      console.log("err: ", err);
+      // console.log("err: ", err);
       setError("Error capturing order.");
     }
   };
@@ -171,7 +171,7 @@ const PayPalPayment = ({ setComplete, next, setPayRasp, pret }) => {
     fetch(`${process.env.REACT_APP_BACKEND_LINK}/generate-client-token`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         setClientToken(data.clientToken);
       });
   }, []);

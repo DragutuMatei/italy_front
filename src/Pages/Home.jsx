@@ -14,6 +14,7 @@ import Form from "../Components/Form";
 import AXIOS from "../utils/Axios_config";
 import PayPalCardFields from "../Components/Paypal";
 import { SEO, SEO_CONFIGS } from "../utils/SEO";
+import { announceToScreenReader } from "../utils/accessibility";
 
 function Home() {
   const { t } = useTranslation();
@@ -110,6 +111,13 @@ function Home() {
 
     const faq = document.querySelectorAll(".q-wrapper .q");
     faq[index].classList.toggle("active");
+    
+    // Announce to screen readers
+    const isExpanded = ans[index].classList.contains("active");
+    const questionText = faq[index].querySelector("h3")?.textContent || "";
+    announceToScreenReader(
+      `${questionText} ${isExpanded ? "expanded" : "collapsed"}`
+    );
   };
   function CustomSlide(props) {
     const { index, ...otherProps } = props;
@@ -121,7 +129,12 @@ function Home() {
         <p data-aos="fade-right">{t("italy_transfers_text")}</p>
         <div className="buttons" data-aos="fade-right" data-aos-delay="50">
           <div className="button main">
-            <a href="#about">{t("see_more")}</a>
+            <a
+              href="#about"
+              aria-label={`${t("see_more")} - ${t("About Us")} section`}
+            >
+              {t("see_more")}
+            </a>
           </div>
         </div>
       </div>
@@ -141,7 +154,13 @@ function Home() {
     const { index, img, ...otherProps } = props;
     return (
       <div className="services_slide" {...otherProps}>
-        <img src={img} alt="" />
+        <img
+          src={img}
+          alt={`${t("slide_title")} - ${t("slide_text")}`}
+          width={400}
+          height={300}
+          loading="lazy"
+        />
         <h1>{t("slide_title")}</h1>
         <p>{t("slide_text")}</p>
       </div>
@@ -609,17 +628,27 @@ function Home() {
         <div className="right">
           <img
             src={require("../assets/images/about1.webp")}
-            alt=""
+            alt="Professional transfer service vehicle"
             className="img img1"
+            width={400}
+            height={300}
+            loading="lazy"
           />
-          <div className="img img2">
+          <div
+            className="img img2"
+            role="img"
+            aria-label={`${t("10+")} ${t("Years of experience")}`}
+          >
             <h1>{t("10+")}</h1>
             <h2>{t("Years of experience")}</h2>
           </div>
           <img
             src={require("../assets/images/about2.webp")}
-            alt=""
+            alt="Luxury transportation service"
             className="img img3"
+            width={400}
+            height={300}
+            loading="lazy"
           />
         </div>
       </section>
@@ -660,11 +689,29 @@ function Home() {
           <div className="right">
             {[...Array(6)].map((_, i) => (
               <div className="q-wrapper" key={i}>
-                <div className="q" onClick={() => toggle(i)}>
+                <div 
+                  className="q" 
+                  onClick={() => toggle(i)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      toggle(i);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
+                  aria-expanded="false"
+                  aria-controls={`faq-answer-${i}`}
+                >
                   <h3>{t(`Q${i + 1}`)}</h3>
-                  <IoIosArrowDown />
+                  <IoIosArrowDown aria-hidden="true" />
                 </div>
-                <div className="ans">
+                <div 
+                  className="ans" 
+                  id={`faq-answer-${i}`}
+                  role="region"
+                  aria-labelledby={`faq-question-${i}`}
+                >
                   <p>{t(`A${i + 1}`)}</p>
                 </div>
               </div>

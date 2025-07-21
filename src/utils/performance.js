@@ -40,14 +40,6 @@ export const getOptimizedImageUrl = (
 ) => {
   if (!originalUrl) return originalUrl;
 
-  // Check if WebP is supported
-  const supportsWebP = () => {
-    const canvas = document.createElement("canvas");
-    canvas.width = 1;
-    canvas.height = 1;
-    return canvas.toDataURL("image/webp").indexOf("data:image/webp") === 0;
-  };
-
   // For now, return original URL - in production you'd use a CDN or image optimization service
   return originalUrl;
 };
@@ -86,7 +78,7 @@ export const measureCoreWebVitals = () => {
     const lcpObserver = new PerformanceObserver((list) => {
       const entries = list.getEntries();
       const lastEntry = entries[entries.length - 1];
-      console.log("LCP:", lastEntry.startTime);
+      // console.log("LCP:", lastEntry.startTime);
 
       // Send to analytics
       if (window.gtag) {
@@ -105,7 +97,7 @@ export const measureCoreWebVitals = () => {
     const fidObserver = new PerformanceObserver((list) => {
       const entries = list.getEntries();
       entries.forEach((entry) => {
-        console.log("FID:", entry.processingStart - entry.startTime);
+        // console.log("FID:", entry.processingStart - entry.startTime);
 
         // Send to analytics
         if (window.gtag) {
@@ -139,7 +131,7 @@ export const measureCoreWebVitals = () => {
     // Report CLS when page is hidden
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "hidden") {
-        console.log("CLS:", clsValue);
+        // console.log("CLS:", clsValue);
 
         // Send to analytics
         if (window.gtag) {
@@ -176,10 +168,10 @@ export const registerServiceWorker = () => {
       navigator.serviceWorker
         .register("/sw.js")
         .then((registration) => {
-          console.log("SW registered: ", registration);
+          // console.log("SW registered: ", registration);
         })
         .catch((registrationError) => {
-          console.log("SW registration failed: ", registrationError);
+          // console.log("SW registration failed: ", registrationError);
         });
     });
   }
@@ -202,14 +194,6 @@ export const optimizeBundleLoading = () => {
   document.head.appendChild(criticalJS);
 };
 
-// Initialize all performance optimizations
-export const initPerformanceOptimizations = () => {
-  measureCoreWebVitals();
-  optimizeFonts();
-  registerServiceWorker();
-  optimizeBundleLoading();
-};
-
 export default {
   lazyLoadImage,
   preloadCriticalImages,
@@ -220,5 +204,4 @@ export default {
   optimizeFonts,
   registerServiceWorker,
   optimizeBundleLoading,
-  initPerformanceOptimizations,
 };

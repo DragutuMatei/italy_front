@@ -331,7 +331,7 @@ export const optimizeCSSDelivery = () => {
   // Load non-critical CSS after page load
   window.addEventListener("load", () => {
     nonCriticalCSS.forEach((cssUrl) => {
-      loadNonCriticalCSS(cssUrl).catch(console.error);
+      loadNonCriticalCSS(cssUrl).catch(() => {});
     });
   });
 };

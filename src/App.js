@@ -10,13 +10,12 @@ import AOS from "aos";
 import { useEffect } from "react";
 import "aos/dist/aos.css";
 import useWindowSize from "./utils/useWindowSize";
-import BookingComponent from "./Pages/Book copy";
+
 // Re-enabling SEO imports gradually
 import { SEO, SEO_CONFIGS } from "./utils/SEO";
-// import { initPerformanceOptimizations } from "./utils/performance";
-// import { initTracking } from "./utils/analytics";
-import { initImageOptimizations } from "./utils/imageOptimization";
-// import { initCSSOptimizations } from "./utils/criticalCSS";
+import { initPerformanceOptimizations } from "./utils/performanceOptimizations";
+import { initTracking } from "./utils/analytics";
+import { initAccessibility } from "./utils/accessibility";
 import Profile from "./Pages/Profile";
 
 function App() {
@@ -24,19 +23,27 @@ function App() {
   useEffect(() => {
     AOS.init({
       offset: 80,
+      // Accessibility improvements for AOS
+      disable: "mobile", // Disable on mobile for better performance
+      once: true, // Only animate once
     });
 
-    // Initialize performance optimizations - gradually re-enabling
-    // initPerformanceOptimizations();
+    // Initialize all optimizations with error handling
+    const initializeOptimizations = async () => {
+      try {
+        await initPerformanceOptimizations();
+      } catch (error) {}
 
-    // Initialize tracking - gradually re-enabling
-    // initTracking();
+      try {
+        initTracking();
+      } catch (error) {}
 
-    // Initialize image optimizations - gradually re-enabling
-    initImageOptimizations();
+      try {
+        initAccessibility();
+      } catch (error) {}
+    };
 
-    // Initialize CSS optimizations - gradually re-enabling
-    // initCSSOptimizations();
+    initializeOptimizations();
   }, []);
   useEffect(() => {
     AOS.refresh();
@@ -45,15 +52,29 @@ function App() {
   return (
     <BrowserRouter>
       <SEO {...SEO_CONFIGS.home} />
-      <ToastContainer />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        aria-label="Notifications"
+      />
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/book" element={<Book />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/terms" element={<Profile />} />
-      </Routes>
+      <main role="main" id="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/book" element={<Book />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/terms" element={<Profile />} />
+        </Routes>
+      </main>
       <Footer />
     </BrowserRouter>
   );

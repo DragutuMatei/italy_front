@@ -158,9 +158,9 @@ function Book() {
     const cappedDistance = distanceKm; // Comment out capping for testing: Math.min(distanceKm, 500);
 
     if (cappedDistance <= vehicle.baseKm) {
-      console.log(
-        `Base case: Distance ${cappedDistance} km <= ${vehicle.baseKm} km, Base Fare: ${vehicle.baseFare}`
-      );
+      // console.log(
+      //   `Base case: Distance ${cappedDistance} km <= ${vehicle.baseKm} km, Base Fare: ${vehicle.baseFare}`
+      // );
       return {
         total: vehicle.baseFare,
         km: distanceKm,
@@ -173,9 +173,9 @@ function Book() {
     let total = vehicle.baseFare;
     let remainingKm = cappedDistance - vehicle.baseKm;
 
-    console.log(
-      `Calculating for ${remainingKm} km beyond base ${vehicle.baseKm} km`
-    );
+    // console.log(
+    //   `Calculating for ${remainingKm} km beyond base ${vehicle.baseKm} km`
+    // );
 
     for (const rate of vehicle.rates) {
       if (remainingKm <= 0) break;
@@ -184,9 +184,9 @@ function Book() {
       const cost = kmInRange * rate.price;
       total += cost;
 
-      console.log(
-        `Range ${rate.from}-${rate.to} km: ${kmInRange} km * ${rate.price}/km = ${cost}, Total so far: ${total}`
-      );
+      // console.log(
+      //   `Range ${rate.from}-${rate.to} km: ${kmInRange} km * ${rate.price}/km = ${cost}, Total so far: ${total}`
+      // );
 
       remainingKm -= kmInRange;
     }
@@ -195,11 +195,11 @@ function Book() {
     if (remainingKm > 0) {
       const lastRate = vehicle.rates[vehicle.rates.length - 1].price;
       total += remainingKm * lastRate;
-      console.log(
-        `Remaining ${remainingKm} km at ${lastRate}/km = ${
-          remainingKm * lastRate
-        }, Final Total: ${total}`
-      );
+      // console.log(
+      //   `Remaining ${remainingKm} km at ${lastRate}/km = ${
+      //     remainingKm * lastRate
+      //   }, Final Total: ${total}`
+      // );
     }
 
     return {
@@ -393,7 +393,7 @@ function Book() {
     if (!r.error) {
       setImg(r.imageUrl);
     } else {
-      console.log(r.error);
+      // console.log(r.error);
     }
   };
   const { isLoaded } = useJsApiLoader({
@@ -600,7 +600,7 @@ function Book() {
     // if (!test) {
     let fields = getEmptyFields(finalModif);
     if (fields.has) {
-      console.log(fields.emptyFields);
+      // console.log(fields.emptyFields);
       toast_error("Completeaza toate campurile");
       return;
       // } else {
@@ -627,7 +627,7 @@ function Book() {
       token: "g40oow84sck4s0kwgcco048s00kkwcgwo4swcgc0s04c8kwk0k8gck0gooogccsg",
     };
     let success = false;
-    console.log(send);
+    // console.log(send);
     let serviceid = Math.floor(Math.random() * 1000000);
     if (!under_24) {
       const api_to_nccgest = await AXIOS.post("/platform/insertData", {
@@ -757,7 +757,7 @@ function Book() {
               <p>All prices include estimated VAT, fees, and tolls</p>
               <div className="masini">
                 {pricingData.map((masina, index) => {
-                  console.log(masina.type, option == "hour" ? option : "km");
+                  // console.log(masina.type, option == "hour" ? option : "km");
                   const results = calculateTripPrice2(
                     masina.type,
                     option == "hour" ? option : "km"
