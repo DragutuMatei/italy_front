@@ -42,18 +42,22 @@ export const AuthProvider = ({ children }) => {
         auth,
         ...data
       } = result.user;
-      // console.log("data: ", data);
+
+      // Save user first, then set user state
       const u = await AXIOS.post("/api/saveUser", {
         uid: result.user.uid,
         userData: data,
       });
+
       setUser({
+        ...result.user,
         ...u.data.user,
       });
 
       return u.data.user;
     } catch (error) {
       // console.error("Google Sign-In Error:", error);
+      throw error;
     }
   };
 
@@ -78,7 +82,7 @@ export const AuthProvider = ({ children }) => {
       async (firebaseUser) => {
         if (firebaseUser) {
           try {
-            // console.log("asdlnk");
+            // Try to get user info from backend
             const res = await AXIOS.get(`/api/getUserInfo/${firebaseUser.uid}`);
             const customUser = res.data.user;
 
@@ -97,6 +101,12 @@ export const AuthProvider = ({ children }) => {
               }));
             });
           } catch (err) {
+            // If user not found in backend, it might be a new user
+            // Set basic user info from Firebase
+            setUser({
+              ...firebaseUser,
+            });
+            
             // console.error("Failed to fetch custom user data:", err);
           }
         } else {

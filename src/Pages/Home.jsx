@@ -44,7 +44,10 @@ function Home() {
 
   //     // Full URL with encoded parameters
   //     const url = `${baseUrl}?${queryParams.toString()}`;
-
+/**
+ * 
+ * @param {*} index 
+ */
   //     try {
   //       // Make the GET request
   //       const #response = await fetch(url, {
