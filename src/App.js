@@ -13,9 +13,6 @@ import useWindowSize from "./utils/useWindowSize";
 
 // Re-enabling SEO imports gradually
 import { SEO, SEO_CONFIGS } from "./utils/SEO";
-import { initPerformanceOptimizations } from "./utils/performanceOptimizations";
-import { initTracking } from "./utils/analytics";
-import { initAccessibility } from "./utils/accessibility";
 import Profile from "./Pages/Profile";
 
 function App() {
@@ -23,27 +20,8 @@ function App() {
   useEffect(() => {
     AOS.init({
       offset: 80,
-      // Accessibility improvements for AOS
-      disable: "mobile", // Disable on mobile for better performance
-      once: true, // Only animate once
+      disable: "mobile", 
     });
-
-    // Initialize all optimizations with error handling
-    const initializeOptimizations = async () => {
-      try {
-        await initPerformanceOptimizations();
-      } catch (error) {}
-
-      try {
-        initTracking();
-      } catch (error) {}
-
-      try {
-        initAccessibility();
-      } catch (error) {}
-    };
-
-    initializeOptimizations();
   }, []);
   useEffect(() => {
     if (width > 768) {
