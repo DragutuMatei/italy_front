@@ -21,7 +21,7 @@ function App() {
     AOS.init({
       offset: 80,
       once: true, // important pe mobil!
-      disable: "phone",
+      disable: false,
       mirror: true,
     });
     window.addEventListener("load", AOS.refresh);
