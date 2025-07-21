@@ -32,4 +32,12 @@ backend pentru testimoniale =============
 pagina admin =====================
 SEO
 Logo
-culori premim ceva albastru inchis
+culori premim ceva albastru inchis/////////////////
+
+
+imbunatatiri insights
+logo
+total responsiveness
+
+
+

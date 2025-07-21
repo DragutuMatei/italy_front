@@ -20,7 +20,9 @@ function App() {
   useEffect(() => {
     AOS.init({
       offset: 80,
-      disable: "mobile", 
+      once: true, // important pe mobil!
+      disable: "phone",
+      mirror: true,
     });
   }, []);
   useEffect(() => {
