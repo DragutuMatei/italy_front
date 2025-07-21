@@ -24,6 +24,11 @@ function App() {
       disable: "phone",
       mirror: true,
     });
+    window.addEventListener("load", AOS.refresh);
+
+    return () => {
+      window.removeEventListener("load", AOS.refresh);
+    };
   }, []);
   useEffect(() => {
     if (width < 768) {
