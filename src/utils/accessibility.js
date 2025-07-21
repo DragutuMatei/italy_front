@@ -318,7 +318,10 @@ export const AccessibleCollapsible = ({
         className="collapsible-content"
         aria-hidden={!isOpen}
         style={{
-          maxHeight: isOpen ? contentRef.current?.scrollHeight + "px" : "0",
+          maxHeight: isOpen
+            ? (contentRef.current?.scrollHeight || 0) + "px"
+            : "0",
+          transition: "max-height 0.3s ease-in-out",
         }}
       >
         {children}

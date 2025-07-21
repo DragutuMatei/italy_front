@@ -21,6 +21,88 @@
     <meta name="author" content="DVC Chauffeurs" />
     <meta name="robots" content="index, follow" />
 
+    <!-- Preload critical resources -->
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap"
+    /></noscript>
+
+    <!-- Preload critical images -->
+    <link rel="preload" as="image" href="%PUBLIC_URL%/images/about1.webp" />
+    <link rel="preload" as="image" href="%PUBLIC_URL%/images/v_class.png" />
+
+    <!-- Critical CSS -->
+    <style>
+      /* Critical CSS for above-the-fold content */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Instrument Sans", sans-serif;
+        overflow-x: hidden;
+      }
+      .header {
+        position: relative;
+      }
+      .slider-container {
+        position: relative;
+      }
+      .custom {
+        width: 100%;
+        height: calc(100vh - 124px);
+        display: flex !important;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        background-position: left;
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding: 24px;
+        padding-bottom: 80px;
+      }
+      .custom h1 {
+        font-size: 40px;
+        font-weight: bold;
+        margin-bottom: 12px;
+        color: #efefef;
+      }
+      .custom p {
+        width: 100%;
+        max-width: 520px;
+        font-size: 16px;
+        color: #efefef;
+        margin-bottom: 16px;
+      }
+      .buttons {
+        width: 640px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 32px;
+      }
+    </style>
+
+    <!-- Defer non-critical CSS -->
+    <link
+      rel="preload"
+      href="%PUBLIC_URL%/static/css/main.css"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript
+      ><link rel="stylesheet" href="%PUBLIC_URL%/static/css/main.css"
+    /></noscript>
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://italytransfers.com/" />

@@ -19,6 +19,7 @@ function Footer() {
           width={150}
           height={80}
           loading="lazy"
+          decoding="async"
         />
 
         <nav
@@ -69,7 +70,10 @@ function Footer() {
           <div>
             <i className="fa fa-phone" aria-hidden="true"></i>
             <p>
-              <a href="tel:+406786782763" aria-label={`${t("phone")} - Call us`}>
+              <a
+                href="tel:+406786782763"
+                aria-label={`${t("phone")} - Call us`}
+              >
                 {t("phone")}
               </a>
             </p>
@@ -78,7 +82,10 @@ function Footer() {
           <div>
             <i className="fa fa-envelope" aria-hidden="true"></i>
             <p>
-              <a href="mailto:osfiir@gmail.com" aria-label={`${t("email")} - Send us an email`}>
+              <a
+                href="mailto:osfiir@gmail.com"
+                aria-label={`${t("email")} - Send us an email`}
+              >
                 {t("email")}
               </a>
             </p>

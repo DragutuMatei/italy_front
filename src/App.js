@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./Pages/Home";
 import "./assets/css/style.scss";
 import Navbar from "./Components/Navbar";
@@ -46,7 +46,9 @@ function App() {
     initializeOptimizations();
   }, []);
   useEffect(() => {
-    AOS.refresh();
+    if (width > 768) {
+      AOS.refresh();
+    }
   }, [width]);
 
   return (

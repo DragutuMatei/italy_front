@@ -63,7 +63,7 @@ const Profile = () => {
       setLoadingBooks(false);
     };
     fetchBooks();
-  }, [,user]);
+  }, [, user]);
   const Detail = ({ icon, label, value, plusClass = "" }) => (
     <div className={`${plusClass} detail-item`}>
       {icon && <span className="icon">{icon}</span>}
@@ -78,7 +78,15 @@ const Profile = () => {
   return (
     <section className="profile">
       <div className="profile-header">
-        <img src={user.photoURL} alt="avatar" className="profile-avatar" />
+        <img
+          src={user.photoURL}
+          alt="User avatar"
+          className="profile-avatar"
+          width={100}
+          height={100}
+          loading="lazy"
+          decoding="async"
+        />
         <div className="profile-info">
           <h2>{user.displayName}</h2>
           <p>{user.email}</p>
@@ -184,7 +192,15 @@ const Profile = () => {
                     <div className="book-info-main">
                       <div className="route-section">
                         {masina.img && (
-                          <img src={masina.img} alt="car" className="car-img" />
+                          <img 
+              src={masina.img} 
+              alt={`${masina.type} vehicle`} 
+              className="car-img"
+              width={150}
+              height={100}
+              loading="lazy"
+              decoding="async"
+            />
                         )}
                         <div className="route-info">
                           <h3 className="route-title">
@@ -328,7 +344,10 @@ const Profile = () => {
                               <FaEnvelope style={{ marginRight: 4 }} />
                               {book.email || "-"}
                             </a>
-                            <a href={`tel: ${book.phone}`} className="book-some-details">
+                            <a
+                              href={`tel: ${book.phone}`}
+                              className="book-some-details"
+                            >
                               <FaPhoneAlt style={{ marginRight: 4 }} />
                               {book.phone || "-"}
                             </a>

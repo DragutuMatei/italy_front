@@ -94,8 +94,13 @@ export const trackScrollDepth = () => {
   let ticking = false;
 
   const updateScrollDepth = () => {
+    // Cache values to avoid forced reflow
+    const scrollY = window.scrollY;
+    const scrollHeight = document.body.scrollHeight;
+    const innerHeight = window.innerHeight;
+    
     const scrollPercent = Math.round(
-      (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100
+      (scrollY / (scrollHeight - innerHeight)) * 100
     );
 
     if (scrollPercent > maxScroll) {

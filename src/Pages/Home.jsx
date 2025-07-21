@@ -47,7 +47,7 @@ function Home() {
 
   //     try {
   //       // Make the GET request
-  //       const response = await fetch(url, {
+  //       const #response = await fetch(url, {
   //         method: "GET",
   //         headers: {
   //           "Content-Type": "application/json",
@@ -99,7 +99,7 @@ function Home() {
   //       // });
   //     } catch (error) {
   //       console.log("Failed to retrieve services:", error.message);
-  //     }
+  //     }#
   //   };
 
   //   useEffect(() => {
@@ -111,7 +111,7 @@ function Home() {
 
     const faq = document.querySelectorAll(".q-wrapper .q");
     faq[index].classList.toggle("active");
-    
+
     // Announce to screen readers
     const isExpanded = ans[index].classList.contains("active");
     const questionText = faq[index].querySelector("h3")?.textContent || "";
@@ -160,6 +160,8 @@ function Home() {
           width={400}
           height={300}
           loading="lazy"
+          decoding="async"
+          fetchPriority="high"
         />
         <h1>{t("slide_title")}</h1>
         <p>{t("slide_text")}</p>
@@ -632,7 +634,9 @@ function Home() {
             className="img img1"
             width={400}
             height={300}
-            loading="lazy"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
           />
           <div
             className="img img2"
@@ -649,6 +653,7 @@ function Home() {
             width={400}
             height={300}
             loading="lazy"
+            decoding="async"
           />
         </div>
       </section>
@@ -689,11 +694,11 @@ function Home() {
           <div className="right">
             {[...Array(6)].map((_, i) => (
               <div className="q-wrapper" key={i}>
-                <div 
-                  className="q" 
+                <div
+                  className="q"
                   onClick={() => toggle(i)}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
+                    if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
                       toggle(i);
                     }
@@ -706,8 +711,8 @@ function Home() {
                   <h3>{t(`Q${i + 1}`)}</h3>
                   <IoIosArrowDown aria-hidden="true" />
                 </div>
-                <div 
-                  className="ans" 
+                <div
+                  className="ans"
                   id={`faq-answer-${i}`}
                   role="region"
                   aria-labelledby={`faq-question-${i}`}

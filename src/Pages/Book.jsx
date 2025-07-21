@@ -769,7 +769,14 @@ function Book() {
                       }`}
                       onClick={() => select(masina, results, index)}
                     >
-                      <img src={masina.img} alt="" />
+                      <img
+                        src={masina.img}
+                        alt={`${masina.type} vehicle`}
+                        width={200}
+                        height={150}
+                        loading="lazy"
+                        decoding="async"
+                      />
                       <div className="right">
                         <div className="left">
                           <h2>{masina.type}</h2>
@@ -1093,7 +1100,13 @@ function Book() {
                   <h3>
                     {date} at {time}
                   </h3>
-                  <img className="maps" src={img} alt="" />
+                  <img
+                    className="maps"
+                    src={img}
+                    alt="Route map"
+                    loading="lazy"
+                    decoding="async"
+                  />
                   <ul className="tofrom">
                     <li>
                       <h4>{origin.name}</h4>
@@ -1113,7 +1126,14 @@ function Book() {
                   </ul>
                   <div className="line"></div>
                   <div className="masina">
-                    <img src={selectedCar.img} alt="" />
+                    <img 
+              src={selectedCar.img} 
+              alt={`Selected ${selectedCar.type} vehicle`}
+              width={200}
+              height={150}
+              loading="lazy"
+              decoding="async"
+            />
                     <div className="rr">
                       <div className="ll">
                         <h2>{selectedCar.type}</h2>
