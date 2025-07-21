@@ -688,7 +688,6 @@ function Book() {
 
   return (
     <>
-      <SEO {...SEO_CONFIGS.book} />
       <section className="book">
         <div className="steps">
           {Array.from({ length: 5 }, (_, i) => i + 1).map((_, index) => {

@@ -158,9 +158,9 @@ function Book() {
     const cappedDistance = distanceKm; // Comment out capping for testing: Math.min(distanceKm, 500);
 
     if (cappedDistance <= vehicle.baseKm) {
-      // console.log(
-      //   `Base case: Distance ${cappedDistance} km <= ${vehicle.baseKm} km, Base Fare: ${vehicle.baseFare}`
-      // );
+      console.log(
+        `Base case: Distance ${cappedDistance} km <= ${vehicle.baseKm} km, Base Fare: ${vehicle.baseFare}`
+      );
       return {
         total: vehicle.baseFare,
         km: distanceKm,
@@ -173,9 +173,9 @@ function Book() {
     let total = vehicle.baseFare;
     let remainingKm = cappedDistance - vehicle.baseKm;
 
-    // console.log(
-    //   `Calculating for ${remainingKm} km beyond base ${vehicle.baseKm} km`
-    // );
+    console.log(
+      `Calculating for ${remainingKm} km beyond base ${vehicle.baseKm} km`
+    );
 
     for (const rate of vehicle.rates) {
       if (remainingKm <= 0) break;
@@ -184,9 +184,9 @@ function Book() {
       const cost = kmInRange * rate.price;
       total += cost;
 
-      // console.log(
-      //   `Range ${rate.from}-${rate.to} km: ${kmInRange} km * ${rate.price}/km = ${cost}, Total so far: ${total}`
-      // );
+      console.log(
+        `Range ${rate.from}-${rate.to} km: ${kmInRange} km * ${rate.price}/km = ${cost}, Total so far: ${total}`
+      );
 
       remainingKm -= kmInRange;
     }
@@ -195,11 +195,11 @@ function Book() {
     if (remainingKm > 0) {
       const lastRate = vehicle.rates[vehicle.rates.length - 1].price;
       total += remainingKm * lastRate;
-      // console.log(
-      //   `Remaining ${remainingKm} km at ${lastRate}/km = ${
-      //     remainingKm * lastRate
-      //   }, Final Total: ${total}`
-      // );
+      console.log(
+        `Remaining ${remainingKm} km at ${lastRate}/km = ${
+          remainingKm * lastRate
+        }, Final Total: ${total}`
+      );
     }
 
     return {
@@ -393,7 +393,7 @@ function Book() {
     if (!r.error) {
       setImg(r.imageUrl);
     } else {
-      // console.log(r.error);
+      console.log(r.error);
     }
   };
   const { isLoaded } = useJsApiLoader({
@@ -629,7 +629,7 @@ function Book() {
       token: "g40oow84sck4s0kwgcco048s00kkwcgwo4swcgc0s04c8kwk0k8gck0gooogccsg",
     };
     let success = false;
-    // console.log(send);
+    console.log(send);
     let serviceid = Math.floor(Math.random() * 1000000);
     if (!under_24) {
       const api_to_nccgest = await axios.post(
@@ -642,7 +642,7 @@ function Book() {
           },
         }
       );
-      // console.log(api_to_nccgest.data);
+      console.log(api_to_nccgest.data);
       send["service"] = api_to_nccgest.data.serviceid;
       serviceid = api_to_nccgest.data.serviceid;
     }
@@ -664,7 +664,7 @@ function Book() {
       uid: user && user.uid,
       data: salv_book.data.uid,
     });
-    // console.log(salv_book.data, salve_user);
+    console.log(salv_book.data, salve_user);
     if (salve_user.data.success) {
       success = true;
     } else {
@@ -760,7 +760,7 @@ function Book() {
               <p>All prices include estimated VAT, fees, and tolls</p>
               <div className="masini">
                 {pricingData.map((masina, index) => {
-                  // console.log(masina.type, option == "hour" ? option : "km");
+                  console.log(masina.type, option == "hour" ? option : "km");
                   const results = calculateTripPrice2(
                     masina.type,
                     option == "hour" ? option : "km"
@@ -772,14 +772,7 @@ function Book() {
                       }`}
                       onClick={() => select(masina, results, index)}
                     >
-                      <img
-                        src={masina.img}
-                        alt={`${masina.type} vehicle`}
-                        width={200}
-                        height={150}
-                        loading="lazy"
-                        decoding="async"
-                      />
+                      <img src={masina.img} alt="" />
                       <div className="right">
                         <div className="left">
                           <h2>{masina.type}</h2>
@@ -1103,13 +1096,7 @@ function Book() {
                   <h3>
                     {date} at {time}
                   </h3>
-                  <img
-                    className="maps"
-                    src={img}
-                    alt="Route map"
-                    loading="lazy"
-                    decoding="async"
-                  />
+                  <img className="maps" src={img} alt="" />
                   <ul className="tofrom">
                     <li>
                       <h4>{origin.name}</h4>
@@ -1129,14 +1116,7 @@ function Book() {
                   </ul>
                   <div className="line"></div>
                   <div className="masina">
-                    <img
-                      src={selectedCar.img}
-                      alt={`Selected ${selectedCar.type} vehicle`}
-                      width={200}
-                      height={150}
-                      loading="lazy"
-                      decoding="async"
-                    />
+                    <img src={selectedCar.img} alt="" />
                     <div className="rr">
                       <div className="ll">
                         <h2>{selectedCar.type}</h2>

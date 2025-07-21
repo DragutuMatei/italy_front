@@ -31,7 +31,6 @@ function App() {
 
   return (
     <BrowserRouter>
-      <SEO {...SEO_CONFIGS.home} />
       <ToastContainer
         position="top-right"
         autoClose={5000}

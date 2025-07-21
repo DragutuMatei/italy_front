@@ -102,7 +102,6 @@ function Home() {
 
   return (
     <>
-      <SEO {...SEO_CONFIGS.home} />
       <section className="header">
         <div className="slider-container">
           <Slider {...settings}>
