@@ -24,10 +24,10 @@ function App() {
     });
   }, []);
   useEffect(() => {
-    if (width > 768) {
+    if (width < 768) {
       AOS.refresh();
     }
-  }, [width]);
+  }, [, width]);
 
   return (
     <BrowserRouter>
