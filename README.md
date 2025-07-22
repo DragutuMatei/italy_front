@@ -26,7 +26,7 @@ Logo
 culori premim ceva albastru inchis/////////////////
 
 
-imbunatatiri insights
+imbunatatiri insights => de vazut cloudinary
 logo
 total responsiveness ====
 limba in functie de zona ===========

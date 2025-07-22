@@ -11,9 +11,10 @@ import { SampleNextArrow, SamplePrevArrow } from "../utils/Arrows";
 import Testimonials from "../Components/Testimonials";
 import Contact from "../Components/Contact";
 import Form from "../Components/Form";
-import { SEO, SEO_CONFIGS } from "../utils/SEO";
-import { FaWhatsapp } from "react-icons/fa";
 import FloatingWhatsAppButton from "../Components/FloatingWhatsAppButton";
+import Image from "../Components/Image";
+import useWindowSize from "../utils/useWindowSize";
+import Svg from "../Components/Svg";
 
 function Home() {
   const { t } = useTranslation();
@@ -24,22 +25,38 @@ function Home() {
     const faq = document.querySelectorAll(".q-wrapper .q");
     faq[index].classList.toggle("active");
   };
-  function CustomSlide(props) {
-    const { index, ...otherProps } = props;
-    const { t } = useTranslation();
 
+  const { width, height } = useWindowSize();
+  function CustomSlide(props) {
+    const { index, src, ...otherProps } = props;
+    const { t } = useTranslation();
     return (
-      <div className={`custom custom-${index}`} {...otherProps}>
-        <h1 data-aos="fade-down">{t("italy_transfers_title")}</h1>
-        <p data-aos="fade-right">{t("italy_transfers_text")}</p>
-        <div className="buttons" data-aos="fade-right" data-aos-delay="50">
-          <div className="button main">
-            <a
-              href="#about"
-              aria-label={`${t("see_more")} - ${t("About Us")} section`}
-            >
-              {t("see_more")}
-            </a>
+      <div
+        className={`custom custom-${index}`}
+        style={{ position: "relative", overflow: "hidden" }}
+        {...otherProps}
+      >
+        <Image publicId={src} className="bbg" width={width} height={height} />
+        {width > 450 && (
+          <Svg
+            publicId={"Vector_gxwmcc"}
+            className="style"
+            width={400}
+            height={height - 300}
+          />
+        )}
+        <div style={{ position: "relative", zIndex: 1, width: "100%" }}>
+          <h1 data-aos="fade-down">{t("italy_transfers_title")}</h1>
+          <p data-aos="fade-right">{t("italy_transfers_text")}</p>
+          <div className="buttons" data-aos="fade-right" data-aos-delay="50">
+            <div className="button main">
+              <a
+                href="#about"
+                aria-label={`${t("see_more")} - ${t("About Us")} section`}
+              >
+                {t("see_more")}
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -59,14 +76,11 @@ function Home() {
     const { index, img, ...otherProps } = props;
     return (
       <div className="services_slide" {...otherProps}>
-        <img
-          src={img}
-          alt={`${t("slide_title")} - ${t("slide_text")}`}
+        <Image
+          publicId={img}
           width={400}
           height={300}
-          loading="lazy"
-          decoding="async"
-          fetchPriority="high"
+          className="asdasda"
         />
         <h1>{t("slide_title")}</h1>
         <p>{t("slide_text")}</p>
@@ -107,9 +121,9 @@ function Home() {
       <section className="header">
         <div className="slider-container">
           <Slider {...settings}>
-            <CustomSlide index={1} />
-            <CustomSlide index={2} />
-            <CustomSlide index={3} />
+            <CustomSlide index={1} src="Frame_54_tyttcw" />
+            <CustomSlide index={2} src="Frame_55_h5uclj" />
+            <CustomSlide index={3} src="Frame_56_h7dgyz" />
           </Slider>
         </div>
       </section>
@@ -136,15 +150,11 @@ function Home() {
           </div>
         </div>
         <div className="right">
-          <img
-            src={require("../assets/images/about1.webp")}
-            alt="Professional transfer service vehicle"
+          <Image
+            publicId={"WhatsApp_Image_2025-06-13_at_11.27.49_d1058790_t6yahx"}
             className="img img1"
             width={400}
             height={450}
-            loading="eager"
-            decoding="async"
-            fetchPriority="high"
           />
           <div
             className="img img2"
@@ -154,14 +164,11 @@ function Home() {
             <h1>{t("10+")}</h1>
             <h2>{t("Years of experience")}</h2>
           </div>
-          <img
-            src={require("../assets/images/about2.webp")}
-            alt="Luxury transportation service"
+          <Image
+            publicId={"WhatsApp_Image_2025-06-13_at_11.27.49_7e7e6393_elng4w"}
             className="img img3"
             width={400}
             height={300}
-            loading="lazy"
-            decoding="async"
           />
         </div>
       </section>
@@ -176,15 +183,15 @@ function Home() {
           <Slider {...settings2}>
             <CustomSlide2
               index={1}
-              img={require("../assets/images/vito.png")}
+              img={"sedan_mg2kqg"}
             />
             <CustomSlide2
               index={2}
-              img={require("../assets/images/v_class.png")}
+              img={"vito_yli6o7"}
             />
             <CustomSlide2
               index={3}
-              img={require("../assets/images/sedan.png")}
+              img={"v_class_ak4dyq"}
             />
           </Slider>
         </div>

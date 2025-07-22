@@ -671,11 +671,13 @@ function Book() {
   return (
     <>
       <section className="book">
-        <div className="steps">
+        <div className="steps" role="tablist">
           {Array.from({ length: 5 }, (_, i) => i + 1).map((_, index) => {
             return (
               <div className={`step ${index == tab ? "active" : ""}`}>
                 <p
+                  role="tab"
+                  aria-selected={index === tab}
                   style={{
                     cursor: index <= tab ? "pointer" : "not-allowed",
                     display: width < 500 && index != tab ? "none" : "flex",
@@ -686,7 +688,6 @@ function Book() {
                 >
                   {steps[index]}
                 </p>
-
                 {index <= tab ? <FaCircle /> : <FaRegCircle />}
                 <div className="line"></div>
               </div>

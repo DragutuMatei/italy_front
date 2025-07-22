@@ -7,6 +7,7 @@ export default function FloatingWhatsAppButton() {
       href="https://wa.me/40712345678" // Înlocuiește cu numărul tău
       target="_blank"
       rel="noopener noreferrer"
+      aria-label="WhatsApp Chat"
       style={{
         position: "fixed",
         top: 200,
@@ -24,9 +25,11 @@ export default function FloatingWhatsAppButton() {
         fontSize: 36,
         textDecoration: "none",
       }}
-      aria-label="WhatsApp"
     >
       <FaWhatsapp style={{ fontSize: 27 }} />
+      <span style={{ position: "absolute", left: "-9999px" }}>
+        WhatsApp Chat
+      </span>
     </a>
   );
 }

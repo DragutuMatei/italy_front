@@ -6,10 +6,17 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  background: url("../images/contact.svg") no-repeat left;
-  background-size: cover;
   padding: 40px 15%;
   color: $white;
+  position: relative;
+
+  .imgs {
+    object-fit: cover;
+    object-position: left;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
   h2 {
     margin-left: 40px;
     font-size: 30px;

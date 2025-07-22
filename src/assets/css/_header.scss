@@ -48,6 +48,27 @@
     padding: 24px;
     overflow-x: hidden;
     padding-bottom: 80px;
+    position: relative;
+    .style {
+      position: absolute;
+      left: calc(55% + 50px);
+      top: 0;
+      transform: translateX(-50%);
+      z-index: 0;
+      width: auto;
+      pointer-events: none;
+      display: block;
+    }
+    .bbg {
+      object-position: center;
+      object-fit: cover;
+      position: absolute;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
 
     h1 {
       font-size: 40px;
@@ -73,9 +94,9 @@
     }
   }
 
-  @each $link in $links {
-    .custom-#{index($links, $link)} {
-      background-image: url($link);
-    }
-  }
+  // @each $link in $links {
+  //   .custom-#{index($links, $link)} {
+  //     background-image: url($link);
+  //   }
+  // }
 }
