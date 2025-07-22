@@ -221,7 +221,12 @@ import { FaStar } from "react-icons/fa6";
 import { FaQuoteRight } from "react-icons/fa";
 import { useAuth } from "../utils/AuthContext";
 import AXIOS from "../utils/Axios_config";
-import { toast_error, toast_promise, toast_success, toast_warn } from "./Toasts";
+import {
+  toast_error,
+  toast_promise,
+  toast_success,
+  toast_warn,
+} from "./Toasts";
 
 import { useTranslation } from "react-i18next";
 
@@ -237,14 +242,26 @@ function Testimonials() {
           <FaQuoteRight />
         </div>
         <div className="row">
-                      <img 
-              src={img ? img : require("../assets/images/user.png")} 
-              alt="User testimonial"
-              width={60}
-              height={60}
-              loading="lazy"
-              decoding="async"
-            />
+          <img
+            src={img ? img : require("../assets/images/user.png")}
+            // srcSet={
+            //   img
+            //     ? `${img} 1x, ${img.replace(".png", "@2x.png")} 2x`
+            //     : require("../assets/images/user.png") +
+            //       " 1x, " +
+            //       require("../assets/images/user.png").replace(
+            //         ".png",
+            //         "@2x.png"
+            //       ) +
+            //       " 2x"
+            // }
+            // sizes="(max-width: 600px) 60px, 60px"
+            alt={img ? name : "User testimonial"}
+            width={60}
+            height={60}
+            loading="lazy"
+            decoding="async"
+          />
           <div className="info">
             <h1>{name}</h1>
             <h3>{profesie}</h3>

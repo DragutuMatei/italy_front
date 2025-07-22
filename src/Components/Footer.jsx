@@ -15,6 +15,13 @@ function Footer() {
       <div className="footer-left">
         <img
           src={require("../assets/images/v_class.png")}
+          srcSet={
+            require("../assets/images/v_class.png") +
+            " 1x, " +
+            require("../assets/images/v_class.png").replace(".png", "@2x.png") +
+            " 2x"
+          }
+          sizes="(max-width: 600px) 100vw, 150px"
           alt="Italy Transfers logo"
           width={150}
           height={80}

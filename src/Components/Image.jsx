@@ -12,7 +12,13 @@ const cld = new Cloudinary({
   },
 });
 
-const Image = ({ publicId, width = 600, height, className = "" }) => {
+const Image = ({
+  checkout = false,
+  publicId,
+  width = 600,
+  height,
+  className = "",
+}) => {
   if (!publicId) return null;
 
   const myImage = cld.image(publicId);
@@ -28,7 +34,11 @@ const Image = ({ publicId, width = 600, height, className = "" }) => {
     <AdvancedImage
       cldImg={myImage}
       className={className}
-      style={{ maxWidth: "100%", height: "auto", objectPosition: "left" }}
+      style={{
+        maxWidth: !checkout && "100%",
+        height: "auto",
+        objectPosition: "left",
+      }}
     />
   );
 };

@@ -10,7 +10,6 @@ import {
   FaSuitcase,
   FaEuroSign,
   FaPhoneAlt,
-  FaKey,
   FaStickyNote,
   FaCarSide,
   FaLongArrowAltRight,
@@ -18,6 +17,7 @@ import {
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+import Image from "../Components/Image";
 
 function isLessThan24Hours(dateStr, timeStr) {
   const targetDate = new Date(`${dateStr}T${timeStr}`);
@@ -64,7 +64,7 @@ const Profile = () => {
       setLoadingBooks(false);
     };
     fetchBooks();
-  }, [user, location]);
+  }, [, user, location]);
   const Detail = ({ icon, label, value, plusClass = "" }) => (
     <div className={`${plusClass} detail-item`}>
       {icon && <span className="icon">{icon}</span>}
@@ -193,14 +193,11 @@ const Profile = () => {
                     <div className="book-info-main">
                       <div className="route-section">
                         {masina.img && (
-                          <img
-                            src={masina.img}
-                            alt={`${masina.type} vehicle`}
+                          <Image
                             className="car-img"
                             width={150}
                             height={100}
-                            loading="lazy"
-                            decoding="async"
+                            publicId={masina.img}
                           />
                         )}
                         <div className="route-info">

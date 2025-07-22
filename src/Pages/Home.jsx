@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { CiMoneyBill } from "react-icons/ci";
 import "slick-carousel/slick/slick.css";
@@ -8,13 +8,15 @@ import { Link } from "react-router-dom";
 import { PiSteeringWheel } from "react-icons/pi";
 import { IoIosArrowDown } from "react-icons/io";
 import { SampleNextArrow, SamplePrevArrow } from "../utils/Arrows";
-import Testimonials from "../Components/Testimonials";
-import Contact from "../Components/Contact";
-import Form from "../Components/Form";
-import FloatingWhatsAppButton from "../Components/FloatingWhatsAppButton";
 import Image from "../Components/Image";
 import useWindowSize from "../utils/useWindowSize";
 import Svg from "../Components/Svg";
+const Testimonials = React.lazy(() => import("../Components/Testimonials"));
+const Contact = React.lazy(() => import("../Components/Contact"));
+const Form = React.lazy(() => import("../Components/Form"));
+const FloatingWhatsAppButton = React.lazy(() =>
+  import("../Components/FloatingWhatsAppButton")
+);
 
 function Home() {
   const { t } = useTranslation();
@@ -76,12 +78,7 @@ function Home() {
     const { index, img, ...otherProps } = props;
     return (
       <div className="services_slide" {...otherProps}>
-        <Image
-          publicId={img}
-          width={400}
-          height={300}
-          className="asdasda"
-        />
+        <Image publicId={img} width={400} height={300} className="asdasda" />
         <h1>{t("slide_title")}</h1>
         <p>{t("slide_text")}</p>
       </div>
@@ -128,7 +125,15 @@ function Home() {
         </div>
       </section>
 
-      <Form />
+      <Suspense
+        fallback={
+          <div aria-busy="true" aria-live="polite">
+            Loading form...
+          </div>
+        }
+      >
+        <Form />
+      </Suspense>
 
       <section className="about" id="about">
         <div className="left">
@@ -173,31 +178,38 @@ function Home() {
         </div>
       </section>
 
-      <Contact />
+      <Suspense
+        fallback={
+          <div aria-busy="true" aria-live="polite">
+            Loading contact...
+          </div>
+        }
+      >
+        <Contact />
+      </Suspense>
 
-      <section className="services" id="services">
+    <section className="services" id="services">
         <h2>{t("Our Services")}</h2>
         <h1>{t("The Best Service For You")}</h1>
         <p>{t("ServicesText")}</p>
         <div className="slider-container">
           <Slider {...settings2}>
-            <CustomSlide2
-              index={1}
-              img={"sedan_mg2kqg"}
-            />
-            <CustomSlide2
-              index={2}
-              img={"vito_yli6o7"}
-            />
-            <CustomSlide2
-              index={3}
-              img={"v_class_ak4dyq"}
-            />
+            <CustomSlide2 index={1} img={"sedan_mg2kqg"} />
+            <CustomSlide2 index={2} img={"vito_yli6o7"} />
+            <CustomSlide2 index={3} img={"v_class_ak4dyq"} />
           </Slider>
         </div>
       </section>
 
-      <Testimonials />
+      <Suspense
+        fallback={
+          <div aria-busy="true" aria-live="polite">
+            Loading testimonials...
+          </div>
+        }
+      >
+        <Testimonials />
+      </Suspense>
 
       <section className="faq" id="faq">
         <h2>{t("Some Important FAQ's")}</h2>
@@ -239,7 +251,9 @@ function Home() {
           </div>
         </div>
       </section>
-      <FloatingWhatsAppButton />
+      <Suspense fallback={null}>
+        <FloatingWhatsAppButton />
+      </Suspense>
     </>
   );
 }

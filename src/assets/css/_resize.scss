@@ -34,7 +34,7 @@
         h1 {
           font-size: 65px;
         }
-        h2{
+        h2 {
           font-size: 18px;
         }
       }
@@ -224,7 +224,7 @@
       }
     }
   }
-  .about{
+  .about {
     flex-direction: column;
   }
 }
@@ -463,6 +463,18 @@
   }
 }
 
+@media (max-width: 500px) {
+  .checkout .left .full .masina {
+    padding: 0;
+    .rr .ll h2 {
+      text-align: left !important;
+    }
+    img {
+      max-width: 130px;
+    }
+  }
+}
+
 @media (max-width: 430px) {
   nav {
     .top {
@@ -605,7 +617,11 @@
       margin-top: 50px;
     }
   }
-  h2:not(.masina .right h2, .profile-info h2) {
+  h2:not(
+      .masina .right h2,
+      .profile-info h2,
+      .checkout .right .full .masina .rr .ll h2
+    ) {
     width: 100%;
     text-align: center;
     margin: 20px 0;

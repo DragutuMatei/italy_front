@@ -11,6 +11,7 @@ import Contact from "./Pages/Contact";
 import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import useWindowSize from "./utils/useWindowSize";
+import ScrollToHashElement from "./Components/ScrollToHashElement";
 
 function App() {
   const { width } = useWindowSize();
@@ -50,6 +51,7 @@ function App() {
         aria-label="Notifications"
       />
       <Navbar />
+      <ScrollToHashElement />
       <main role="main" id="main-content">
         <Routes>
           <Route path="/" element={<Home />} />

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, Suspense } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { FaCircle } from "react-icons/fa";
@@ -16,17 +16,20 @@ import { useAuth } from "../utils/AuthContext";
 import PayPalCardFields from "../Components/Paypal";
 import { useJsApiLoader } from "@react-google-maps/api";
 import AXIOS from "../utils/Axios_config";
-import axios from "axios";
 import emailjs from "@emailjs/browser";
 import { toast_error, toast_success, toast_warn } from "../Components/Toasts";
-import { SEO, SEO_CONFIGS } from "../utils/SEO";
-import { FaWhatsapp } from "react-icons/fa";
-import FloatingWhatsAppButton from "../Components/FloatingWhatsAppButton";
+import Image from "../Components/Image";
+
+const FloatingWhatsAppButton = React.lazy(() =>
+  import("../Components/FloatingWhatsAppButton")
+);
+const Paypal = React.lazy(() => import("../Components/Paypal"));
+const Toasts = React.lazy(() => import("../Components/Toasts"));
 
 const pricingData = [
   {
     type: "Sedan",
-    img: require("../assets/images/sedan.png"),
+    img: "sedan_mg2kqg",
     baseFare: 70.0,
     baseKm: 10,
     pers: 3,
@@ -41,7 +44,7 @@ const pricingData = [
   },
   {
     type: "Private Van (V CLASS)",
-    img: require("../assets/images/v_class.png"),
+    img: "v_class_ak4dyq",
     baseFare: 70.0,
     pers: 6,
     bags: 6,
@@ -56,7 +59,7 @@ const pricingData = [
   },
   {
     type: "Private Van (VITO)",
-    img: require("../assets/images/vito.png"),
+    img: "vito_yli6o7",
     baseFare: 80.0,
     pers: 8,
     bags: 6,
@@ -71,7 +74,7 @@ const pricingData = [
   },
 ];
 function Book() {
-  const { user, loading, signInWithGoogle } = useAuth();
+  const { user, loading, signInWithGoogle, refreshUser } = useAuth();
 
   const [searchParams] = useSearchParams();
   const destination = JSON.parse(searchParams.get("optional"));
@@ -253,7 +256,6 @@ function Book() {
   });
 
   const next = (step, pas = false) => {
-    //   console.log(complete, tab);
     if (
       tab + step < 5 &&
       tab + step >= 0 &&
@@ -289,7 +291,8 @@ function Book() {
     }
   }, [, user]);
   useEffect(() => {
-    if (option !== "hour") t();
+    t(option);
+    // if (option !== "hour") t();
     // }
     window.scroll(0, 0);
   }, [, tab]);
@@ -390,8 +393,13 @@ function Book() {
   };
 
   const [img, setImg] = useState("");
-  const t = async () => {
-    const r = await getRouteImage();
+  const t = async (opt) => {
+    let r = "";
+    if (opt == "hour") {
+      r = await getCircleImage(origin, destination * 20);
+    } else {
+      r = await getRouteImage();
+    }
     if (!r.error) {
       setImg(r.imageUrl);
     } else {
@@ -441,6 +449,54 @@ function Book() {
     } catch (error) {
       return { error: "Failed to generate route image: " + error.message };
     }
+  };
+  const getCircleImage = async (center, radiusKm) => {
+    if (!center || !radiusKm) {
+      return { error: "Missing center or radius." };
+    }
+
+    const numPoints = 60; // mai multe puncte = cerc mai rotund
+    const R = 6371; // rază Pământului în km
+    const lat = center.lat * (Math.PI / 180);
+    const lng = center.lng * (Math.PI / 180);
+    const d = radiusKm / R;
+
+    const circleCoords = [];
+
+    for (let i = 0; i <= numPoints; i++) {
+      const angle = (2 * Math.PI * i) / numPoints;
+      const latPoint =
+        Math.asin(
+          Math.sin(lat) * Math.cos(d) +
+            Math.cos(lat) * Math.sin(d) * Math.cos(angle)
+        ) *
+        (180 / Math.PI);
+      const lngPoint =
+        (lng +
+          Math.atan2(
+            Math.sin(angle) * Math.sin(d) * Math.cos(lat),
+            Math.cos(d) - Math.sin(lat) * Math.sin(latPoint * (Math.PI / 180))
+          )) *
+        (180 / Math.PI);
+      circleCoords.push(`${latPoint},${lngPoint}`);
+    }
+
+    const pathParam = `&path=fillcolor:0x2200FF33|color:0x0000FF99|weight:2|${circleCoords.join(
+      "|"
+    )}`;
+
+    const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+
+    const staticMapUrl =
+      `https://maps.googleapis.com/maps/api/staticmap?` +
+      `size=600x400` +
+      `&maptype=roadmap` +
+      `&zoom=5` +
+      `&markers=color:red|label:A|${center.lat},${center.lng}` +
+      `${pathParam}` +
+      `&key=${apiKey}`;
+
+    return { imageUrl: staticMapUrl };
   };
 
   const [finalModif, setFinalModif] = useState({
@@ -579,6 +635,23 @@ function Book() {
       setHasPaid(true);
     }
   }, [payrasp, complete]);
+
+  // Efect separat pentru salvarea lui hasPaid imediat după schimbare
+  useEffect(() => {
+    const dataToSave = {
+      selectedCar,
+      checked,
+      checked2,
+      payFull,
+      some,
+      notes,
+      tab,
+      payrasp,
+      complete,
+      hasPaid,
+    };
+    saveUserData(dataToSave);
+  }, [hasPaid]);
   const navigate = useNavigate();
   const book_fct = async (under_24 = false) => {
     // if (!test) {
@@ -662,6 +735,7 @@ function Book() {
     if (success) {
       localStorage.removeItem("bookData");
       toast_success("Your booking has been saved successfully!");
+      await refreshUser();
       navigate("/profile");
     } else {
       toast_error("There was an error saving your booking. Please try again.");
@@ -752,12 +826,7 @@ function Book() {
                       }`}
                       onClick={() => select(masina, results, index)}
                     >
-                      <img
-                        src={masina.img}
-                        alt={`${masina.type} vehicle`}
-                        loading="lazy"
-                        decoding="async"
-                      />
+                      <Image publicId={masina.img} />
                       <div className="right">
                         <div className="left">
                           <h2>{masina.type}</h2>
@@ -1041,18 +1110,20 @@ function Book() {
                   {Math.floor((selectedCar.results.total * 30) / 100)}€
                 </h3>
               </div>
-              <PayPalCardFields
-                setComplete={setComplete}
-                setPayRasp={setPayRasp}
-                next={next}
-                pret={
-                  checked2 == ""
-                    ? 0
-                    : checked2 == "me"
-                    ? selectedCar.results.total
-                    : Math.floor((selectedCar.results.total * 30) / 100)
-                }
-              />
+              <Suspense fallback={<div>Loading...</div>}>
+                <PayPalCardFields
+                  setComplete={setComplete}
+                  setPayRasp={setPayRasp}
+                  next={next}
+                  pret={
+                    checked2 == ""
+                      ? 0
+                      : checked2 == "me"
+                      ? selectedCar.results.total
+                      : Math.floor((selectedCar.results.total * 30) / 100)
+                  }
+                />
+              </Suspense>
             </div>
           </>
         ) : (
@@ -1071,6 +1142,8 @@ function Book() {
                       alt="Route map"
                       loading="lazy"
                       decoding="async"
+                      width="100%"
+                      height="200"
                     />
                   )}
                   <ul className="tofrom">
@@ -1092,13 +1165,10 @@ function Book() {
                   </ul>
                   <div className="line"></div>
                   <div className="masina">
-                    <img
-                      src={selectedCar.img}
-                      alt={`Selected ${selectedCar.type} vehicle`}
+                    <Image
+                      checkout={true}
+                      publicId={selectedCar.img}
                       width={200}
-                      height={150}
-                      loading="lazy"
-                      decoding="async"
                     />
                     <div className="rr">
                       <div className="ll">
@@ -1273,7 +1343,9 @@ function Book() {
           </div>
         )}
       </section>
-      <FloatingWhatsAppButton />
+      <Suspense fallback={null}>
+        <FloatingWhatsAppButton />
+      </Suspense>
     </>
   );
 }

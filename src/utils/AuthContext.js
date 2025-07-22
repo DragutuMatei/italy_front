@@ -73,7 +73,15 @@ export const AuthProvider = ({ children }) => {
       throw error; // Re-throw for component to handle if needed
     }
   };
-
+  // În AuthContext.js, în interiorul AuthProvider:
+  const refreshUser = async () => {
+    if (!user) return;
+    const res = await AXIOS.get(`/api/getUserInfo/${user.uid}`);
+    setUser({
+      ...user,
+      ...res.data.user,
+    });
+  };
   useEffect(() => {
     let unsubscribeDb = null;
 
@@ -106,7 +114,7 @@ export const AuthProvider = ({ children }) => {
             setUser({
               ...firebaseUser,
             });
-            
+
             // console.error("Failed to fetch custom user data:", err);
           }
         } else {
@@ -131,7 +139,8 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     signInWithGoogle, // <-- Add this
-    signUserOut, // <-- Add this
+    signUserOut,
+    refreshUser,
   };
 
   // Render the children components, providing the auth context value

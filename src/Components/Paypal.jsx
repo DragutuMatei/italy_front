@@ -21,11 +21,9 @@ const PayPalPayment = ({ setComplete, next, setPayRasp, pret }) => {
         }
       );
       const dataRes = await res.json();
-      // console.log("dataRes.id: ", dataRes.id);
       setOrderId(dataRes.id);
       return dataRes.id;
     } catch (err) {
-      // console.log("eroare:", err);
       setError("Error creating order.");
       return null;
     }
@@ -43,7 +41,6 @@ const PayPalPayment = ({ setComplete, next, setPayRasp, pret }) => {
       );
       const dataRes = await res.json();
       setPayRasp(dataRes);
-      // console.log("status: ", dataRes.status);
       setComplete((old) => ({ ...old, [3]: true }));
       next(1, true);
       toast_success("Transaction complete: " + dataRes.status);

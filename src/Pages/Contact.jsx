@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import emailjs from "@emailjs/browser";
 import AXIOS from "../utils/Axios_config";
-import {
-  toast_error,
-  toast_promise,
-  toast_success,
-  toast_warn,
-} from "../Components/Toasts";
 import { SEO, SEO_CONFIGS } from "../utils/SEO";
 import { FaWhatsapp } from "react-icons/fa";
-import FloatingWhatsAppButton from "../Components/FloatingWhatsAppButton";
+
+const {toast_error, toast_success, toast_warn} = React.lazy(() => import("../Components/Toasts"));
+const FloatingWhatsAppButton = React.lazy(() =>
+  import("../Components/FloatingWhatsAppButton")
+);
 
 function Contact() {
   const [name, setName] = useState("");
@@ -101,7 +99,9 @@ function Contact() {
             </div>
           </div>
         </div>
-        <FloatingWhatsAppButton />
+        <Suspense fallback={null}>
+          <FloatingWhatsAppButton />
+        </Suspense>
       </div>
     </>
   );
