@@ -9,7 +9,7 @@ function Contact() {
   const { t } = useTranslation();
   const { width } = useWindowSize();
   const reff = useRef()
-  console.log(reff.current.offsetHeight)
+
   return (
     <section className="contact" ref={reff}>
       <Image publicId={"Group_40_acmlfe"} width={width} height={reff.current.offsetHeight||380} className="imgs" />
