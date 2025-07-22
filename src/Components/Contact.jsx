@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
@@ -8,11 +8,23 @@ import useWindowSize from "../utils/useWindowSize";
 function Contact() {
   const { t } = useTranslation();
   const { width } = useWindowSize();
-  const reff = useRef()
+  const reff = useRef();
+  const [height, setHeight] = useState(380);
 
+  useEffect(() => {
+    if (reff.current) {
+      const el = reff.current;
+      setHeight(el.offsetHeight);
+    }
+  }, []);
   return (
     <section className="contact" ref={reff}>
-      <Image publicId={"Group_40_acmlfe"} width={width} height={reff.current.offsetHeight||380} className="imgs" />
+      <Image
+        publicId={"Group_40_acmlfe"}
+        width={width}
+        height={height}
+        className="imgs"
+      />
       <h2 data-aos="fade-down">{t("contact_title")}</h2>
 
       <div className="row">
