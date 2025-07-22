@@ -12,7 +12,7 @@ function Contact() {
   console.log(reff.current.offsetHeight)
   return (
     <section className="contact" ref={reff}>
-      <Image publicId={"Group_40_acmlfe"} width={width} height={reff.current.offsetHeight} className="imgs" />
+      <Image publicId={"Group_40_acmlfe"} width={width} height={reff.current.offsetHeight||380} className="imgs" />
       <h2 data-aos="fade-down">{t("contact_title")}</h2>
 
       <div className="row">
