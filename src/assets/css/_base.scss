@@ -7,14 +7,14 @@
 // $black: #000;
 // $white: #f8f8f8;
 
-$galben: #ee6c4d;
-$blue_2: #293241;
+$galben: #ff4c00;
+$blue_2: #1e263d;
 $blue: #3d5a80;
 $gray: #a4b5c4;
-$black: #293241;
-$white: #efefef;
+$black: #0c0c1e;
+$white: #fdffff;
 
-$links: "../images/Frame 54.webp", "../images/Frame 55.webp",
+$links: "../images/Frame 54 (2).webp", "../images/Frame 55.webp",
   "../images/Frame 56.webp";
 
 * {
@@ -29,6 +29,7 @@ $links: "../images/Frame 54.webp", "../images/Frame 55.webp",
 a {
   text-decoration: none;
   text-transform: none;
+  outline: none;
 }
 
 html,

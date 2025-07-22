@@ -20,6 +20,8 @@ import axios from "axios";
 import emailjs from "@emailjs/browser";
 import { toast_error, toast_success, toast_warn } from "../Components/Toasts";
 import { SEO, SEO_CONFIGS } from "../utils/SEO";
+import { FaWhatsapp } from "react-icons/fa";
+import FloatingWhatsAppButton from "../Components/FloatingWhatsAppButton";
 
 const pricingData = [
   {
@@ -88,7 +90,6 @@ function Book() {
     phone: "",
   });
   const [notes, setNotes] = useState("");
-  const [code, setCod] = useState("");
 
   const [payFull, setPayFull] = useState(true);
   const { width } = useWindowSize();
@@ -132,15 +133,16 @@ function Book() {
     if (!vehicle) {
       return { error: "Invalid vehicle type" };
     }
-
-    // Validate distance
-    if (isNaN(distanceKm) || distanceKm < 0) {
-      return { error: "Invalid distance" };
-    }
-
-    // Case 1: Hourly pricing
+    // Debug pentru hour
     if (option === "hour") {
-      const hours = Number(destination);
+      // destination poate fi string sau număr, încercăm să-l convertim corect
+      let hours = destination;
+      if (typeof hours === "object" && hours !== null) {
+        // fallback dacă destination e obiect (nu ar trebui)
+        hours = hours.hours || hours.ore || 0;
+      }
+      hours = Number(hours);
+
       if (isNaN(hours) || hours <= 0) {
         return { error: "Invalid hours for hourly pricing" };
       }
@@ -237,6 +239,7 @@ function Book() {
     "Checkout",
   ];
   const [tab, setTab] = useState(0);
+  const [hasRestoredTab, setHasRestoredTab] = useState(false);
   const isEmpty = (val) => {
     return JSON.stringify(val) === "{}";
   };
@@ -369,7 +372,7 @@ function Book() {
     }
   };
   const save = () => {
-    if (checked !== "" && some !== "" && code !== "" && notes !== "") {
+    if (checked !== "" && some !== "" && notes !== "") {
       if (checked === "some" && Object.values(some).some((v) => v.length < 1)) {
         toast_warn("Completeaza toate campurile!");
       }
@@ -384,7 +387,6 @@ function Book() {
     } else {
       toast_warn("Completeaza toate campurile!");
     }
-    // console.log(checked, some, notes, code);
   };
 
   const [img, setImg] = useState("");
@@ -434,7 +436,7 @@ function Book() {
         `&markers=color:red|label:A|${origin.lat},${origin.lng}` +
         `&markers=color:blue|label:B|${destination.lat},${destination.lng}` +
         `&key=${apiKey}`;
-
+      console.log(mapUrl);
       return { imageUrl: mapUrl };
     } catch (error) {
       return { error: "Failed to generate route image: " + error.message };
@@ -445,7 +447,6 @@ function Book() {
     // name: user && user.displayName,
     // email: user && user.email,
     // notes: notes,
-    // code: code,
     // pay: payrasp && payrasp,
     // payFull: payFull,
     // book: checked,
@@ -462,7 +463,6 @@ function Book() {
       name: user ? (some["name"] !== "" ? some["name"] : user.displayName) : "",
       email: user ? (some["email"] !== "" ? some["email"] : user.email) : "",
       notes: notes,
-      code: code,
       pay: !isEmpty(payrasp) && {
         total: payrasp?.purchase_units[0]?.payments.captures[0].amount.value,
         details: { ...payrasp },
@@ -480,7 +480,7 @@ function Book() {
       option,
       destination: destination,
     });
-  }, [, tab, user, notes, code, payrasp, payFull, checked, some, selectedCar]);
+  }, [, tab, user, notes, payrasp, payFull, checked, some, selectedCar]);
   function getEmptyFields(obj) {
     const emptyFields = [];
 
@@ -522,59 +522,44 @@ function Book() {
 
   // === Restaurare date la mount ===
   useEffect(() => {
-    const restored = restoreUserData();
-    if (restored) {
-      // Populează stările relevante dacă există date salvate
-      if (restored.selectedCar) setSelectedCar(restored.selectedCar);
-      if (restored.checked) setChecked(restored.checked);
-      if (restored.checked2) setChecked2(restored.checked2);
-      if (restored.payFull !== undefined) setPayFull(restored.payFull);
-      if (restored.some) setSome(restored.some);
-      if (restored.notes) setNotes(restored.notes);
-      if (restored.code) setCod(restored.code);
-      if (restored.payrasp) setPayRasp(restored.payrasp);
-      if (restored.complete) setComplete(restored.complete);
-      if (restored.hasPaid !== undefined) setHasPaid(restored.hasPaid); // corectare pentru boolean
-      // Modificare: setează tab-ul pe primul incomplet, altfel pe cel salvat
-      if (restored.complete) {
-        const firstIncomplete = Object.keys(restored.complete)
-          .map(Number)
-          .sort((a, b) => a - b)
-          .find((idx) => !restored.complete[idx]);
-        if (firstIncomplete !== undefined) {
-          if (firstIncomplete === 3 && is24h) {
-            setTab(4); // Sari peste tabul de plată dacă e sub 24h
-          } else {
-            setTab(firstIncomplete);
-          }
-        } else if (restored.tab !== undefined) {
+    if (!hasRestoredTab) {
+      const restored = restoreUserData();
+      if (restored) {
+        // Populează stările relevante dacă există date salvate
+        if (restored.selectedCar) setSelectedCar(restored.selectedCar);
+        if (restored.checked) setChecked(restored.checked);
+        if (restored.checked2) setChecked2(restored.checked2);
+        if (restored.payFull !== undefined) setPayFull(restored.payFull);
+        if (restored.some) setSome(restored.some);
+        if (restored.notes) setNotes(restored.notes);
+        if (restored.payrasp) setPayRasp(restored.payrasp);
+        if (restored.complete) setComplete(restored.complete);
+        if (restored.hasPaid !== undefined) setHasPaid(restored.hasPaid); // corectare pentru boolean
+        // Modificare: folosește direct tab-ul salvat dacă există
+        if (restored.tab !== undefined) {
           setTab(restored.tab);
         }
-      } else if (restored.tab !== undefined) {
-        setTab(restored.tab);
       }
+      setHasRestoredTab(true);
     }
-  }, []);
+  }, [hasRestoredTab]);
 
   // === Salvare date la fiecare pas important ===
   useEffect(() => {
-    // Salvăm doar dacă nu suntem pe tab-ul final (4), ca să nu suprascriem după booking
-    if (tab !== 4) {
-      const dataToSave = {
-        selectedCar,
-        checked,
-        checked2,
-        payFull,
-        some,
-        notes,
-        code,
-        tab,
-        payrasp,
-        complete,
-        hasPaid,
-      };
-      saveUserData(dataToSave);
-    }
+    // Salvăm la orice modificare, indiferent de tab
+    const dataToSave = {
+      selectedCar,
+      checked,
+      checked2,
+      payFull,
+      some,
+      notes,
+      tab,
+      payrasp,
+      complete,
+      hasPaid,
+    };
+    saveUserData(dataToSave);
   }, [
     selectedCar,
     checked,
@@ -582,7 +567,6 @@ function Book() {
     payFull,
     some,
     notes,
-    code,
     tab,
     payrasp,
     complete,
@@ -615,7 +599,6 @@ function Book() {
       servincassato:
         selectedCar.results.total == Number(finalModif.pay.total) ? 2 : 1,
       operator_note: notes + ".",
-      service_note: code + ".",
       paxmail: finalModif.email,
       pickup: origin.name,
       dropoff: destination.name,
@@ -624,13 +607,12 @@ function Book() {
       pax: selectedCar.pers,
       paxname: finalModif.name,
       paxphone: finalModif.phone,
-      token: "g40oow84sck4s0kwgcco048s00kkwcgwo4swcgc0s04c8kwk0k8gck0gooogccsg",
     };
     let success = false;
     // console.log(send);
     let serviceid = Math.floor(Math.random() * 1000000);
     if (!under_24) {
-      const api_to_nccgest = await AXIOS.post("/platform/insertData", {
+      const api_to_nccgest = await AXIOS.post("/platform/insert", {
         sendData: send,
       });
       if (!api_to_nccgest.data.success) {
@@ -761,6 +743,7 @@ function Book() {
                     masina.type,
                     option == "hour" ? option : "km"
                   );
+
                   return (
                     <div
                       className={`masina ${
@@ -771,8 +754,6 @@ function Book() {
                       <img
                         src={masina.img}
                         alt={`${masina.type} vehicle`}
-                        width={200}
-                        height={150}
                         loading="lazy"
                         decoding="async"
                       />
@@ -970,23 +951,6 @@ function Book() {
                   Add special requests, e.g. number of bags, child seats, etc.
                   Please do not include confidential information.
                 </h3>
-                <textarea
-                  name=""
-                  rows={3}
-                  value={code}
-                  onChange={(e) => {
-                    if (e.target.value.length < 1) {
-                      setComplete((old) => ({ ...old, [1]: false }));
-                    }
-                    setCod(e.target.value);
-                  }}
-                  id=""
-                  placeholder="Reference code or cost center"
-                ></textarea>
-                <h3>
-                  Booking for business? What you enter above will appear on the
-                  invoice.
-                </h3>
               </div>
             </div>
             <div className="select">
@@ -1094,18 +1058,20 @@ function Book() {
           tab == 4 && (
             <div className="checkout">
               <div className="left">
-                <h2>Your ride {checked}</h2>
+                <h2>Your ride </h2>
                 <div className="full">
                   <h3>
                     {date} at {time}
                   </h3>
-                  <img
-                    className="maps"
-                    src={img}
-                    alt="Route map"
-                    loading="lazy"
-                    decoding="async"
-                  />
+                  {img && (
+                    <img
+                      className="maps"
+                      src={img}
+                      alt="Route map"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )}
                   <ul className="tofrom">
                     <li>
                       <h4>{origin.name}</h4>
@@ -1125,14 +1091,14 @@ function Book() {
                   </ul>
                   <div className="line"></div>
                   <div className="masina">
-                    <img 
-              src={selectedCar.img} 
-              alt={`Selected ${selectedCar.type} vehicle`}
-              width={200}
-              height={150}
-              loading="lazy"
-              decoding="async"
-            />
+                    <img
+                      src={selectedCar.img}
+                      alt={`Selected ${selectedCar.type} vehicle`}
+                      width={200}
+                      height={150}
+                      loading="lazy"
+                      decoding="async"
+                    />
                     <div className="rr">
                       <div className="ll">
                         <h2>{selectedCar.type}</h2>
@@ -1253,19 +1219,6 @@ function Book() {
                       }}
                     />
                   </li>
-                  <li className="inf">
-                    <h4>Reference code or cost center</h4>
-                    <textarea
-                      type="text"
-                      defaultValue={code}
-                      onChange={(e) => {
-                        setFinalModif((old) => ({
-                          ...old,
-                          ["code"]: e.target.value,
-                        }));
-                      }}
-                    />
-                  </li>
                 </ul>
                 <button
                   className="button main"
@@ -1319,6 +1272,7 @@ function Book() {
           </div>
         )}
       </section>
+      <FloatingWhatsAppButton />
     </>
   );
 }

@@ -16,7 +16,7 @@ import {
   FaLongArrowAltRight,
   FaEnvelope,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function isLessThan24Hours(dateStr, timeStr) {
@@ -38,6 +38,7 @@ const Profile = () => {
   const [books, setBooks] = useState([]);
   const [loadingBooks, setLoadingBooks] = useState(true);
   const [search, setSearch] = useState("");
+  const location = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -63,7 +64,7 @@ const Profile = () => {
       setLoadingBooks(false);
     };
     fetchBooks();
-  }, [, user]);
+  }, [user, location]);
   const Detail = ({ icon, label, value, plusClass = "" }) => (
     <div className={`${plusClass} detail-item`}>
       {icon && <span className="icon">{icon}</span>}
@@ -180,8 +181,8 @@ const Profile = () => {
                     className={`status-badge ${expired ? "expired" : "active"}`}
                     style={{
                       position: "absolute",
-                      top: 38,
-                      right: 48,
+                      top: 17,
+                      right: 25,
                       zIndex: 2,
                     }}
                   >
@@ -192,21 +193,32 @@ const Profile = () => {
                     <div className="book-info-main">
                       <div className="route-section">
                         {masina.img && (
-                          <img 
-              src={masina.img} 
-              alt={`${masina.type} vehicle`} 
-              className="car-img"
-              width={150}
-              height={100}
-              loading="lazy"
-              decoding="async"
-            />
+                          <img
+                            src={masina.img}
+                            alt={`${masina.type} vehicle`}
+                            className="car-img"
+                            width={150}
+                            height={100}
+                            loading="lazy"
+                            decoding="async"
+                          />
                         )}
                         <div className="route-info">
                           <h3 className="route-title">
-                            {book.origin?.name}{" "}
-                            <FaLongArrowAltRight className="arrow-icon" />{" "}
-                            {book.destination?.name}
+                            {book.option === "hour" ? (
+                              <>
+                                From {book.origin?.name}{" "}
+                                <span style={{ fontWeight: 400 }}>
+                                  (Hourly)
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                {book.origin?.name}{" "}
+                                <FaLongArrowAltRight className="arrow-icon" />{" "}
+                                {book.destination?.name}
+                              </>
+                            )}
                           </h3>
                           <div className="route-datetime">
                             <span>
@@ -270,11 +282,25 @@ const Profile = () => {
                         value={total !== null ? formatPrice(total) + " €" : "-"}
                       />
                       <Detail
+                        icon={<FaClock />}
+                        label={
+                          book.option === "hour" ? "Durată" : "Durată estimată"
+                        }
+                        value={
+                          book.option === "hour"
+                            ? `${book.destination} ore, max ${
+                                book.destination * 20
+                              } km`
+                            : masina.results?.km
+                            ? `${masina.results.km} km`
+                            : "-"
+                        }
+                      />
+                      <Detail
                         icon={<FaPhoneAlt />}
                         label="Telefon"
                         value={book.phone}
                       />
-                      <Detail icon={<FaKey />} label="Code" value={book.code} />
                       <Detail
                         icon={<FaStickyNote />}
                         label="Note pentru sofer"

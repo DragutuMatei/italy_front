@@ -12,6 +12,8 @@ import Testimonials from "../Components/Testimonials";
 import Contact from "../Components/Contact";
 import Form from "../Components/Form";
 import { SEO, SEO_CONFIGS } from "../utils/SEO";
+import { FaWhatsapp } from "react-icons/fa";
+import FloatingWhatsAppButton from "../Components/FloatingWhatsAppButton";
 
 function Home() {
   const { t } = useTranslation();
@@ -139,7 +141,7 @@ function Home() {
             alt="Professional transfer service vehicle"
             className="img img1"
             width={400}
-            height={300}
+            height={450}
             loading="eager"
             decoding="async"
             fetchPriority="high"
@@ -230,6 +232,7 @@ function Home() {
           </div>
         </div>
       </section>
+      <FloatingWhatsAppButton />
     </>
   );
 }

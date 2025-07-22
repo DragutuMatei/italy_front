@@ -15,16 +15,7 @@ pentru plata -> 2 optiuni
                     -> avans 30%
 
 qr coduri cu reduceri 
-
-
-AIzaSyAQJVCVQXehO5DsVOLEVFg80VClM1tS7mU
-ok4kcc0os0w0g0gw8ss4gskk84cocksss8wc4w88c8cksowkkk8g4g4cw4s4sssk
-
-<!-- osgog40soskks8k8844c0w8g080o8s0k0wk8wgkws8ck084s4g4kokg04ocoowk0 -->
-kokc8w8ggg08cgkko88o8w48s00sg8ks8cwckggoc4ckcks4084o840cwcwwo8wk
-https://api.nccgest.com/api/rest_api.php?dominio=nrcvlad&token=TOKEN&start_date=26/06/2025&end_date=26/06/2025&cmd=cmd_read
-
-
+ 
 implementare toast =============== 
 footer ====================
 pagina de contact + backend -> https://lovable.dev/projects/29422420-e4dd-4897-96c8-27700b6e96a0 =============
@@ -37,7 +28,7 @@ culori premim ceva albastru inchis/////////////////
 
 imbunatatiri insights
 logo
-total responsiveness
-
-
-
+total responsiveness ====
+limba in functie de zona ===========
+scot code ======================
+de pun buton cu whatsapp ========

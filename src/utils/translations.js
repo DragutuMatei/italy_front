@@ -1,3 +1,4 @@
+import axios from "axios";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
@@ -195,9 +196,30 @@ const resources = {
   },
 };
 
+const setLang = async () => {
+  const savedLang = localStorage.getItem("preferredLang");
+  if (savedLang) {
+    const chosen = localStorage.getItem("lang");
+    if (chosen) {
+      return chosen;
+    }
+    return savedLang;
+  } else
+    await axios
+      .get("https://ipapi.co/json/")
+      .then((response) => {
+        const lang = response.data.country_code === "IT" ? "it" : "en";
+        localStorage.setItem("preferredLang", lang);
+        return lang;
+      })
+      .catch((error) => {
+        return "en";
+      });
+};
+
 i18n.use(initReactI18next).init({
   resources,
-  lng: localStorage.getItem("lang") || "en",
+  lng: (await setLang()) || "en",
   fallbackLng: "en",
   interpolation: {
     escapeValue: false,

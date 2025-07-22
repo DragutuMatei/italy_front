@@ -43,6 +43,21 @@ function Form() {
     libraries: ["places"],
   });
 
+  useEffect(() => {
+    const local = localStorage.getItem("bookData");
+    if (local) {
+      try {
+        const parsed = JSON.parse(local);
+        if (parsed.option && parsed.option !== option) {
+          localStorage.removeItem("bookData");
+          return;
+        }
+      } catch (e) {
+        localStorage.removeItem("bookData");
+      }
+    }
+  }, [,option]);
+
   const handleOriginSelect = () => {
     const place = originRef.current.getPlace();
     if (place.geometry) {
@@ -66,7 +81,33 @@ function Form() {
   };
 
   const handleSection = (e) => {
+    // Dacă există bookData și opțiunea e diferită, șterge bookData și resetează starea
+    const local = localStorage.getItem("bookData");
+    if (local) {
+      try {
+        const parsed = JSON.parse(local);
+        if (parsed.option && parsed.option !== e) {
+          localStorage.removeItem("bookData");
+          setOrigin(null);
+          setDestination(null);
+          setDate(today);
+          setTime(
+            new Date()
+              .toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+              })
+              .slice(0, 5)
+          );
+          setHours(3);
+        }
+      } catch (err) {
+        localStorage.removeItem("bookData");
+      }
+    }
     setOption(e);
+
     document.querySelectorAll(".section").forEach((elem) => {
       elem.classList.toggle("active");
     });

@@ -8,6 +8,8 @@ import {
   toast_warn,
 } from "../Components/Toasts";
 import { SEO, SEO_CONFIGS } from "../utils/SEO";
+import { FaWhatsapp } from "react-icons/fa";
+import FloatingWhatsAppButton from "../Components/FloatingWhatsAppButton";
 
 function Contact() {
   const [name, setName] = useState("");
@@ -99,6 +101,7 @@ function Contact() {
             </div>
           </div>
         </div>
+        <FloatingWhatsAppButton />
       </div>
     </>
   );

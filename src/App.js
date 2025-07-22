@@ -1,22 +1,20 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./Pages/Home";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import "./assets/css/style.scss";
+import Footer from "./Components/Footer";
 import Navbar from "./Components/Navbar";
 import Book from "./Pages/Book";
-import { ToastContainer } from "react-toastify";
-import Footer from "./Components/Footer";
 import Contact from "./Pages/Contact";
-import AOS from "aos";
-import { useEffect } from "react";
-import "aos/dist/aos.css";
-import useWindowSize from "./utils/useWindowSize";
-
-// Re-enabling SEO imports gradually
-import { SEO, SEO_CONFIGS } from "./utils/SEO";
+import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
+import useWindowSize from "./utils/useWindowSize";
 
 function App() {
   const { width } = useWindowSize();
+
   useEffect(() => {
     AOS.init({
       offset: 80,
