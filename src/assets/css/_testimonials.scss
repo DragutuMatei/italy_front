@@ -108,7 +108,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          background: $galben;
+          background: linear-gradient(90deg, $galben 0%, $galben2 100%);
           z-index: 2;
           position: absolute;
 
@@ -162,6 +162,7 @@
               justify-content: center;
               align-items: center;
               background: $galben;
+              background: linear-gradient(90deg, $galben 0%, $galben2 100%);
               z-index: 1;
               svg {
                 width: 30px;

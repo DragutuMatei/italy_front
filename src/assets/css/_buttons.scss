@@ -21,11 +21,13 @@
   }
 
   &.main {
-    background: $galben;
-    border: 2px solid rgba($galben, 0.3);
+    background: linear-gradient(90deg, $galben 0%, $galben2 100%);
     &:hover {
-      background: rgba($galben, 0.7);
-      border: 2px solid rgba($galben, 1);
+      background: linear-gradient(
+        90deg,
+        rgba($galben, 0.9) 100%,
+        rgba($galben2, 0.9) 0%
+      );
     }
   }
   &.second {

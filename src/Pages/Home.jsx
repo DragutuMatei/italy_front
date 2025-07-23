@@ -151,7 +151,7 @@ function Home() {
           </div>
           <p>{t("AboutText")}</p>
           <div className="button main">
-            <Link to="/">{t("Home")}</Link>
+            <Link to="#mainform">{t("Search")}</Link>
           </div>
         </div>
         <div className="right">
@@ -188,7 +188,7 @@ function Home() {
         <Contact />
       </Suspense>
 
-    <section className="services" id="services">
+      <section className="services" id="services">
         <h2>{t("Our Services")}</h2>
         <h1>{t("The Best Service For You")}</h1>
         <p>{t("ServicesText")}</p>

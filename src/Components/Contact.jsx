@@ -34,7 +34,7 @@ function Contact() {
           {t("contact_description").split("<br />")[1] || ""}
         </h1>
         <div className="button main" data-aos="fade-left">
-          <Link to="/">
+          <Link to="/contact">
             {t("contact_button")} <FaLongArrowAltRight />
           </Link>
         </div>

@@ -289,7 +289,7 @@ function Form() {
   }
   return (
     <>
-      <section className="mainform">
+      <section className="mainform" id="mainform">
         <div className="sections">
           <div
             className={`section ${option === "way" ? "active" : ""}`}

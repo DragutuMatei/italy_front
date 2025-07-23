@@ -19,7 +19,7 @@ function App() {
   useEffect(() => {
     AOS.init({
       offset: 80,
-      once: true, // important pe mobil!
+      // once: true, // important pe mobil!
       disable: false,
       mirror: true,
     });
