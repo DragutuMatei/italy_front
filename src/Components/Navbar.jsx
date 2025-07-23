@@ -16,6 +16,7 @@ function Navbar() {
     i18n.changeLanguage(lng);
     localStorage.setItem("lang", lng);
   };
+  const { t } = useTranslation();
 
   const currentLanguage = i18n.language || "en";
 
@@ -28,14 +29,19 @@ function Navbar() {
     <>
       <nav>
         <div className="top">
-          <a href="mailto:mateidr7@gmail.com">
+          <a href="mailto:nrc.servizi@gmail.com">
             <IoIosMail />
-            mail@mail.com
+            nrc.servizi@gmail.com
           </a>
           <div className="line"></div>
-          <a href="tel:+406786782763">
+          <a href="tel:+393662629902">
             <FaPhone />
-            +40 678 678 2763
+            +393662629902
+          </a>
+          <div className="line"></div>
+          <a href="tel:+393899839992">
+            <FaPhone />
+            +393899839992
           </a>
           <div
             style={{
@@ -45,7 +51,6 @@ function Navbar() {
               alignItems: "center",
             }}
           >
-            {/* Language Toggle Switch */}
             <div className="language-switch">
               <div className="switch-container">
                 <input
@@ -68,7 +73,7 @@ function Navbar() {
       <div className="down">
         <div className="logo">
           <h1>
-            <Link to="/">Dv-Chauffeurs</Link>
+            <Link to="/">Trevi-Chauffeurs</Link>
           </h1>
         </div>
 
@@ -84,34 +89,37 @@ function Navbar() {
         <div className={`drop ${isOpen ? "active" : ""}`}>
           <div className="links">
             <div className="link">
-              <Link to="/#about">About</Link>
+              <Link to="/#about">{t("about")}</Link>
             </div>
             <div className="link">
-              <Link to="/#services">Services</Link>
+              <Link to="/#mainform">{t("book_a_ride")}</Link>
             </div>
             <div className="link">
-              <Link to="/#testimoniale">Testimonials</Link>
+              <Link to="/#services">{t("services")}</Link>
             </div>
             <div className="link">
-              <Link to="/#faq">FAQ's</Link>
+              <Link to="/#testimonials">{t("testimonials")}</Link>
             </div>
             <div className="link">
-              <Link to="/contact">Contact</Link>
+              <Link to="/#faq">{t("faq")}</Link>
+            </div>
+            <div className="link">
+              <Link to="/contact">{t("contact")}</Link>
             </div>
             {user && (
               <div className="link">
-                <Link to="/profile">Profilul meu</Link>
+                <Link to="/profile">{t("my_profile")}</Link>
               </div>
             )}
           </div>
           <div className="buts">
             {user ? (
               <div className="button second" onClick={signUserOut}>
-                <h4>Log out</h4>
+                <h4>{t("logout")}</h4>
               </div>
             ) : (
               <div className="button main" onClick={signInWithGoogle}>
-                <h4>Login</h4>
+                <h4>{t("login")}</h4>
               </div>
             )}
           </div>

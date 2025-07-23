@@ -627,6 +627,10 @@
           font-size: 0.95rem;
           align-items: center;
           flex-wrap: wrap;
+          span{
+            display: flex;
+            align-items: center;
+          }
         }
       }
 

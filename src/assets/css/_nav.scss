@@ -16,20 +16,23 @@ nav {
     padding: 8px;
     margin: 0 auto;
     position: relative;
+
     .line {
       width: 2px;
       height: 100%;
       background: $galben;
-      margin: 0 8px;
+      margin: 0 12px;
     }
 
     a {
       display: flex;
       align-items: center;
-      padding: 8px;
+      padding: 8px 0px;
+      // margin: 0 8px;
       color: $white;
       font-weight: 500;
       gap: 8px;
+      word-break: keep-all;
 
       svg {
         color: $galben;
@@ -37,8 +40,8 @@ nav {
       }
     }
 
-    // Language Switch Styles
     .language-switch {
+      margin-left: 20px;
       .switch-container {
         position: relative;
         display: flex;

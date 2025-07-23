@@ -2,7 +2,7 @@
 
 ## Prezentare Generală
 
-Acest ghid documentează îmbunătățirile de performanță și accesibilitate implementate în site-ul Italy Transfers pentru a îmbunătăți scorurile din Lighthouse și a asigura o experiență optimă pentru toți utilizatorii.
+Acest ghid documentează îmbunătățirile de performanță și accesibilitate implementate în site-ul Trevi-Chauffeurs pentru a îmbunătăți scorurile din Lighthouse și a asigura o experiență optimă pentru toți utilizatorii.
 
 ## Îmbunătățiri de Performanță
 
@@ -134,7 +134,7 @@ const LazyComponent = loadComponentLazy(() => import("./HeavyComponent"));
 ```jsx
 <OptimizedImage
   src={logo}
-  alt="Italy Transfers company logo"
+  alt="Trevi-Chauffeurs company logo"
   width={150}
   height={80}
 />

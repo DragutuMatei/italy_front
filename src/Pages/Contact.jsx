@@ -3,7 +3,7 @@ import emailjs from "@emailjs/browser";
 import AXIOS from "../utils/Axios_config";
 import { SEO, SEO_CONFIGS } from "../utils/SEO";
 import { FaWhatsapp } from "react-icons/fa";
-
+import { useTranslation } from "react-i18next";
 const {toast_error, toast_success, toast_warn} = React.lazy(() => import("../Components/Toasts"));
 const FloatingWhatsAppButton = React.lazy(() =>
   import("../Components/FloatingWhatsAppButton")
@@ -15,8 +15,10 @@ function Contact() {
   const [email, setEmail] = useState("");
   const [mesaj, setMesaj] = useState("");
 
-  useEffect(() => {}, []);
-  const { t } = require("react-i18next").useTranslation();
+  useEffect(() => {
+    window.scrollTo(0,0)
+  }, []);
+  const { t } = useTranslation();
 
   const send = async () => {
     if (name === "" || numar === "" || email === "" || mesaj === "") {
@@ -53,25 +55,22 @@ function Contact() {
       <SEO {...SEO_CONFIGS.contact} />
       <div className="contact_page">
         <div className="left_contact">
-          <h1>Vrei să ne transmiți un mesaj?</h1>
-          <p>
-            Dacă ai o întrebare sau dorești să ne contactăm pentru a discuta
-            despre un proiect, nu ezita să ne scrii.
-          </p>
+          <h1>{t("page_contact_title")}</h1>
+          <p>{t("contact_paragraph")}</p>
         </div>
         <div className="right_contact">
           <div className="row">
             <div className="input_group">
               <input
                 type="text"
-                placeholder="Nume"
+                placeholder={t("contact_name")}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="input_group">
               <input
                 type="tel"
-                placeholder="Număr de telefon"
+                placeholder={t("contact_phone")}
                 onChange={(e) => setNumar(e.target.value)}
               />
             </div>
@@ -80,7 +79,7 @@ function Contact() {
             <div className="input_group">
               <input
                 type="email"
-                placeholder="Adresă de email"
+                placeholder={t("contact_email")}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
@@ -88,14 +87,14 @@ function Contact() {
           <div className="row">
             <div className="input_group">
               <textarea
-                placeholder="Mesaj"
+                placeholder={t("contact_message")}
                 onChange={(e) => setMesaj(e.target.value)}
               />
             </div>
           </div>
           <div className="button_container">
             <div className="button main" onClick={send}>
-              <h3>Trimite mesajul</h3>
+              <h3>{t("contact_send")}</h3>
             </div>
           </div>
         </div>
@@ -106,5 +105,6 @@ function Contact() {
     </>
   );
 }
+
 
 export default Contact;

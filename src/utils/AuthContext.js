@@ -11,6 +11,7 @@ import {
   signOut, // <-- Import signOut
 } from "firebase/auth";
 import AXIOS from "./Axios_config.js";
+import { toast_error } from "../Components/Toasts.js";
 
 // Create the Context
 const AuthContext = createContext(null);
@@ -56,8 +57,8 @@ export const AuthProvider = ({ children }) => {
 
       return u.data.user;
     } catch (error) {
-      // console.error("Google Sign-In Error:", error);
-      throw error;
+      toast_error(`Google Sign-In Error: ${error}`);
+      // throw error;
     }
   };
 

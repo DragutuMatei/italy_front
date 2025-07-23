@@ -124,15 +124,15 @@ export const SEO = ({
 export const SEO_CONFIGS = {
   home: {
     title:
-      "Italy Transfers - Professional Private Transportation Services | DVC Chauffeurs",
+      "Trevi-Chauffeurs - Professional Private Transportation Services | DVC Chauffeurs",
     description:
       "Professional private transfer services across Italy. Luxury vans, sedans, and business class vehicles. Airport transfers, city tours, and corporate transportation. Book your ride today!",
     keywords:
-      "Italy transfers, private transportation, airport transfers, luxury car service, chauffeur service, Italy travel",
+      "Trevi-Chauffeurs, private transportation, airport transfers, luxury car service, chauffeur service, Italy travel",
     structuredData: {
       "@context": "https://schema.org",
       "@type": "LocalBusiness",
-      name: "Italy Transfers - DVC Chauffeurs",
+      name: "Trevi-Chauffeurs - DVC Chauffeurs",
       description: "Professional private transfer services across Italy",
       url: "https://italytransfers.com",
       telephone: "+39-XXX-XXX-XXXX",
@@ -151,7 +151,7 @@ export const SEO_CONFIGS = {
   },
   book: {
     title:
-      "Book Your Transfer - Italy Transfers | Professional Transportation Services",
+      "Book Your Transfer - Trevi-Chauffeurs | Professional Transportation Services",
     description:
       "Book your professional transfer service in Italy. Easy online booking for airport transfers, city tours, and corporate transportation. Instant confirmation and competitive prices.",
     keywords:
@@ -163,29 +163,29 @@ export const SEO_CONFIGS = {
       description: "Online booking for professional transfer services in Italy",
       provider: {
         "@type": "Organization",
-        name: "Italy Transfers",
+        name: "Trevi-Chauffeurs",
       },
       areaServed: "Italy",
     },
   },
   contact: {
     title:
-      "Contact Us - Italy Transfers | Get in Touch for Professional Transportation",
+      "Contact Us - Trevi-Chauffeurs | Get in Touch for Professional Transportation",
     description:
-      "Contact Italy Transfers for professional transportation services. 24/7 customer support, instant quotes, and personalized service. Call, email, or use our contact form.",
+      "Contact Trevi-Chauffeurs for professional transportation services. 24/7 customer support, instant quotes, and personalized service. Call, email, or use our contact form.",
     keywords:
-      "contact Italy transfers, customer service, transportation support, transfer quotes, Italy travel help",
+      "contact Trevi-Chauffeurs, customer service, transportation support, transfer quotes, Italy travel help",
     structuredData: {
       "@context": "https://schema.org",
       "@type": "ContactPage",
-      name: "Contact Italy Transfers",
+      name: "Contact Trevi-Chauffeurs",
       description:
-        "Contact information for Italy Transfers transportation services",
+        "Contact information for Trevi-Chauffeurs transportation services",
     },
   },
   services: {
     title:
-      "Our Services - Italy Transfers | Airport Transfers, City Tours & Corporate Transportation",
+      "Our Services - Trevi-Chauffeurs | Airport Transfers, City Tours & Corporate Transportation",
     description:
       "Comprehensive transportation services across Italy. Airport transfers, city tours, corporate transportation, luxury transfers, and special events. Professional drivers and modern fleet.",
     keywords:
@@ -197,31 +197,31 @@ export const SEO_CONFIGS = {
       description: "Comprehensive transportation services across Italy",
       provider: {
         "@type": "Organization",
-        name: "Italy Transfers",
+        name: "Trevi-Chauffeurs",
       },
       areaServed: "Italy",
     },
   },
   testimonials: {
-    title: "Customer Testimonials - Italy Transfers | What Our Clients Say",
+    title: "Customer Testimonials - Trevi-Chauffeurs | What Our Clients Say",
     description:
-      "Read authentic customer reviews and testimonials about Italy Transfers. Real experiences from satisfied clients who used our professional transportation services across Italy.",
+      "Read authentic customer reviews and testimonials about Trevi-Chauffeurs. Real experiences from satisfied clients who used our professional transportation services across Italy.",
     keywords:
-      "Italy transfers reviews, customer testimonials, transportation reviews, transfer service feedback",
+      "Trevi-Chauffeurs reviews, customer testimonials, transportation reviews, transfer service feedback",
     structuredData: {
       "@context": "https://schema.org",
       "@type": "WebPage",
       name: "Customer Testimonials",
-      description: "Customer reviews and testimonials for Italy Transfers",
+      description: "Customer reviews and testimonials for Trevi-Chauffeurs",
     },
   },
   faq: {
     title:
-      "FAQ - Italy Transfers | Frequently Asked Questions About Our Services",
+      "FAQ - Trevi-Chauffeurs | Frequently Asked Questions About Our Services",
     description:
-      "Find answers to frequently asked questions about Italy Transfers services. Information about booking, pricing, vehicles, cancellation policies, and more.",
+      "Find answers to frequently asked questions about Trevi-Chauffeurs services. Information about booking, pricing, vehicles, cancellation policies, and more.",
     keywords:
-      "Italy transfers FAQ, frequently asked questions, transfer service information, booking questions",
+      "Trevi-Chauffeurs FAQ, frequently asked questions, transfer service information, booking questions",
     structuredData: {
       "@context": "https://schema.org",
       "@type": "FAQPage",
@@ -249,13 +249,13 @@ export const SEO_CONFIGS = {
 
 // City-specific SEO configurations
 export const getCitySEO = (cityName) => ({
-  title: `${cityName} Transfers - Professional Transportation Services | Italy Transfers`,
-  description: `Professional transfer services in ${cityName}, Italy. Airport transfers, city tours, and local transportation. Book your ${cityName} transfer with Italy Transfers.`,
+  title: `${cityName} Transfers - Professional Transportation Services | Trevi-Chauffeurs`,
+  description: `Professional transfer services in ${cityName}, Italy. Airport transfers, city tours, and local transportation. Book your ${cityName} transfer with Trevi-Chauffeurs.`,
   keywords: `${cityName} transfers, ${cityName} transportation, ${cityName} airport transfers, ${cityName} car service, ${cityName} chauffeur`,
   structuredData: {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    name: `Italy Transfers - ${cityName}`,
+    name: `Trevi-Chauffeurs - ${cityName}`,
     description: `Professional transfer services in ${cityName}, Italy`,
     areaServed: {
       "@type": "City",
@@ -266,7 +266,7 @@ export const getCitySEO = (cityName) => ({
 
 // Airport-specific SEO configurations
 export const getAirportSEO = (airportName, cityName) => ({
-  title: `${airportName} Airport Transfers - ${cityName} | Italy Transfers`,
+  title: `${airportName} Airport Transfers - ${cityName} | Trevi-Chauffeurs`,
   description: `Professional airport transfer services to and from ${airportName} Airport in ${cityName}. Reliable, comfortable, and punctual transportation. Book your transfer today.`,
   keywords: `${airportName} airport transfers, ${cityName} airport transportation, ${airportName} car service, ${airportName} shuttle`,
   structuredData: {
@@ -276,7 +276,7 @@ export const getAirportSEO = (airportName, cityName) => ({
     description: `Professional airport transfer services to and from ${airportName} Airport`,
     provider: {
       "@type": "Organization",
-      name: "Italy Transfers",
+      name: "Trevi-Chauffeurs",
     },
     areaServed: {
       "@type": "Airport",

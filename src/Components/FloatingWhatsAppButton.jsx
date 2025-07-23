@@ -4,7 +4,7 @@ import { FaWhatsapp } from "react-icons/fa";
 export default function FloatingWhatsAppButton() {
   return (
     <a
-      href="https://wa.me/40712345678" // Înlocuiește cu numărul tău
+      href="https://wa.me/393662629902" // Înlocuiește cu numărul tău
       target="_blank"
       rel="noopener noreferrer"
       aria-label="WhatsApp Chat"

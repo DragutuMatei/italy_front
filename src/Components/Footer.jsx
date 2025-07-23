@@ -15,14 +15,7 @@ function Footer() {
       <div className="footer-left">
         <img
           src={require("../assets/images/v_class.png")}
-          srcSet={
-            require("../assets/images/v_class.png") +
-            " 1x, " +
-            require("../assets/images/v_class.png").replace(".png", "@2x.png") +
-            " 2x"
-          }
-          sizes="(max-width: 600px) 100vw, 150px"
-          alt="Italy Transfers logo"
+          alt="Trevi Chauffeurs logo"
           width={150}
           height={80}
           loading="lazy"
@@ -41,18 +34,21 @@ function Footer() {
           >
             {t("home")}
           </Link>
-
-          <Link to="/about" aria-label={`${t("about_us")} - About us page`}>
+          <Link to="/#about" aria-label={`${t("about_us")} - About us page`}>
             {t("about_us")}
           </Link>
           <Link
-            to="/about_facultate"
-            aria-label={`${t("about_faculty")} - About faculty page`}
+            to="/#mainform"
+            aria-label={`${t("book_a_ride")} - About us page`}
           >
-            {t("about_faculty")}
+            {t("book_a_ride")}
+          </Link>
+
+          <Link to="/#services" aria-label={`${t("services")} `}>
+            {t("services")}
           </Link>
           <Link
-            to="/faq"
+            to="/#faq"
             aria-label={`${t("faq")} - Frequently asked questions`}
           >
             {t("faq")}
@@ -61,27 +57,33 @@ function Footer() {
             {t("contact")}
           </Link>
         </nav>
-
-        <p className="footer-company-name">{t("company_name")}</p>
+        <p className="footer-company-about">
+          <span style={{ marginBottom: 5 }}>Copyright</span>
+          <p className="footer-company-name">© 2025 Trevi-Chauffeurs</p>
+        </p>
       </div>
 
       <div className="footer-center">
         <address>
           <div>
-            <i className="fa fa-map-marker" aria-hidden="true"></i>
+            <i className="fa fa-phone" aria-hidden="true"></i>
             <p>
-              <span>{t("address")}</span>
+              <a
+                href="tel:+393662629902"
+                aria-label={`${t("phone")} - Call us`}
+              >
+                +393662629902
+              </a>
             </p>
           </div>
-
           <div>
             <i className="fa fa-phone" aria-hidden="true"></i>
             <p>
               <a
-                href="tel:+406786782763"
+                href="tel:+393899839992"
                 aria-label={`${t("phone")} - Call us`}
               >
-                {t("phone")}
+                +393899839992
               </a>
             </p>
           </div>
@@ -90,10 +92,10 @@ function Footer() {
             <i className="fa fa-envelope" aria-hidden="true"></i>
             <p>
               <a
-                href="mailto:osfiir@gmail.com"
+                href="mailto:nrc.servizi@gmail.com"
                 aria-label={`${t("email")} - Send us an email`}
               >
-                {t("email")}
+                nrc.servizi@gmail.com
               </a>
             </p>
           </div>
@@ -102,33 +104,33 @@ function Footer() {
 
       <div className="footer-right">
         <p className="footer-company-about">
-          <span>{t("about_osfiir")}</span>
-          {t("osfiir_description")}
+          <span>{t("about_us")}</span>
+          {t("company_description")}
         </p>
 
-        <div className="footer-icons">
+        {/* <div className="footer-icons">
           <a
-            href="https://www.facebook.com/OSFIIR"
+            href="https://www.facebook.com/trevichauffeurs"
             target="_blank"
             rel="noreferrer"
           >
             <i className="fa fa-facebook"></i>
           </a>
           <a
-            href="https://www.instagram.com/osfiir/"
+            href="https://www.instagram.com/trevichauffeurs"
             target="_blank"
             rel="noreferrer"
           >
             <i className="fa fa-instagram"></i>
           </a>
           <a
-            href="https://www.linkedin.com/company/osfiir"
+            href="https://www.linkedin.com/company/trevichauffeurs"
             target="_blank"
             rel="noreferrer"
           >
             <i className="fa fa-linkedin"></i>
           </a>
-        </div>
+        </div> */}
       </div>
     </footer>
   );
