@@ -723,10 +723,10 @@ function Book() {
     }
 
     if (!under_24) {
-      emailjs.send("service_cnqi9ni", "template_221xvxm", {
+      emailjs.send(process.env.REACT_APP_EMAILJS_SERVICE_ID, process.env.REACT_APP_EMAILJS_AUTO_REPLY_TEMPLATE_ID, {
         ...send,
       });
-      emailjs.send("service_cnqi9ni", "template_772oxbr", {
+      emailjs.send(process.env.REACT_APP_EMAILJS_SERVICE_ID, process.env.REACT_APP_EMAILJS_NEW_ORDER_UNDER_24, {
         ...send,
       });
     } else {
