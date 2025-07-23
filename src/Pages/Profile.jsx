@@ -38,7 +38,25 @@ const Profile = () => {
   const [books, setBooks] = useState([]);
   const [loadingBooks, setLoadingBooks] = useState(true);
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
   const location = useLocation();
+
+  // Debounce search
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 400);
+    return () => clearTimeout(handler);
+  }, [search]);
+
+  useEffect(() => {
+    if (search !== debouncedSearch) {
+      setIsSearching(true);
+    } else {
+      setIsSearching(false);
+    }
+  }, [search, debouncedSearch]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -101,6 +119,17 @@ const Profile = () => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+        <span
+          style={{
+            marginLeft: 12,
+            color: isSearching ? "#888" : "transparent",
+            minWidth: 70,
+            display: "inline-block",
+            transition: "color 0.2s",
+          }}
+        >
+          Căutare...
+        </span>
       </div>
       {loadingBooks ? (
         <div>Loading bookings...</div>
@@ -122,11 +151,11 @@ const Profile = () => {
             [...books]
               .filter(
                 (book) =>
-                  !search.trim() ||
+                  !debouncedSearch.trim() ||
                   (book.serviceid
                     ? book.serviceid.toString().toLowerCase()
                     : ""
-                  ).includes(search.trim().toLowerCase())
+                  ).includes(debouncedSearch.trim().toLowerCase())
               )
               .forEach((book) => {
                 const dt = parse(book.date, book.time);
