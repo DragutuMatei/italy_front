@@ -280,6 +280,11 @@ const FloatingWhatsAppButton = React.lazy(() =>
 );
 
 function Home() {
+  useEffect(() => {
+    if (localStorage.getItem("bookData")) {
+      localStorage.removeItem("bookData");
+    }
+  }, []);
   const { t } = useTranslation();
   const toggle = (index) => {
     const ans = document.querySelectorAll(".ans");
@@ -395,8 +400,12 @@ function Home() {
 
       <Suspense
         fallback={
-          <div aria-busy="true" aria-live="polite">
-            Loading form...
+          <div
+            aria-busy="true"
+            className="loading-container"
+            aria-live="polite"
+          >
+            <span className="loader"></span>
           </div>
         }
       >
@@ -448,8 +457,12 @@ function Home() {
 
       <Suspense
         fallback={
-          <div aria-busy="true" aria-live="polite">
-            Loading contact...
+          <div
+            aria-busy="true"
+            className="loading-container"
+            aria-live="polite"
+          >
+            <span className="loader"></span>
           </div>
         }
       >
@@ -483,8 +496,12 @@ function Home() {
 
       <Suspense
         fallback={
-          <div aria-busy="true" aria-live="polite">
-            Loading testimonials...
+          <div
+            aria-busy="true"
+            className="loading-container"
+            aria-live="polite"
+          >
+            <span className="loader"></span>
           </div>
         }
       >

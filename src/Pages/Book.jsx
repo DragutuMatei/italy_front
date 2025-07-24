@@ -4,14 +4,13 @@ import React, {
   useState,
   Suspense,
   useContext,
-  useCallback,
 } from "react";
 import {
   Link,
   useNavigate,
   useSearchParams,
-  UNSAFE_NavigationContext as NavigationContext,
-  useLocation,
+  useBlocker,
+  useBeforeUnload,
 } from "react-router-dom";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { FaCircle } from "react-icons/fa";
@@ -33,6 +32,7 @@ import AXIOS from "../utils/Axios_config";
 import emailjs from "@emailjs/browser";
 import { toast_error, toast_success, toast_warn } from "../Components/Toasts";
 import Image from "../Components/Image";
+import { useNavigationBlocker } from "../utils/NavigationBlocker";
 
 const FloatingWhatsAppButton = React.lazy(() =>
   import("../Components/FloatingWhatsAppButton")
@@ -88,48 +88,6 @@ const pricingData = [
   },
 ];
 
-// Custom hook compatibil React Router v6 pentru blocare navigare internă
-function useBlocker(blocker, when = true) {
-  const { navigator } = useContext(NavigationContext);
-  useEffect(() => {
-    if (!when) return;
-    const push = navigator.push;
-    const replace = navigator.replace;
-    navigator.push = (...args) => {
-      if (blocker()) {
-        return;
-      }
-      push.apply(navigator, args);
-    };
-    navigator.replace = (...args) => {
-      if (blocker()) {
-        return;
-      }
-      replace.apply(navigator, args);
-    };
-    return () => {
-      navigator.push = push;
-      navigator.replace = replace;
-    };
-  }, [blocker, navigator, when]);
-}
-
-// Custom hook pentru confirmare navigare internă cu flag
-function usePromptWithFlag(message, when) {
-  const { navigator } = useContext(NavigationContext);
-  useEffect(() => {
-    if (!when) return;
-    const handler = (tx) => {
-      if (window.confirm(message)) {
-        localStorage.setItem("shouldClearBookData", "1");
-        tx.retry();
-      }
-    };
-    const unblock = navigator.block(handler);
-    return unblock;
-  }, [message, when, navigator]);
-}
-
 function Book() {
   const { t } = useTranslation();
   const { user, loading, signInWithGoogle, refreshUser } = useAuth();
@@ -158,6 +116,8 @@ function Book() {
       searchParams.get("time").replaceAll('"', "")
     )
   );
+
+  const { bypassNavigation } = useNavigationBlocker();
 
   function calculateArrivalTime(departureDate, departureTime, travelDuration) {
     const [year, month, day] = departureDate.split("-").map(Number);
@@ -604,25 +564,8 @@ function Book() {
     saveUserData(dataToSave);
   }, [hasPaid]);
 
-  const blocker = useCallback(() => {
-    if (window.confirm(t("leave_book_warning"))) {
-      localStorage.removeItem("bookData");
-      return false; // permite navigarea
-    }
-    return true; // blochează navigarea
-  }, [t]);
-  useBlocker(blocker, true);
-
-  // La mount, dacă flagul e setat, șterge bookData și flagul
-  useEffect(() => {
-    if (localStorage.getItem("shouldClearBookData") === "1") {
-      localStorage.removeItem("bookData");
-      localStorage.removeItem("shouldClearBookData");
-    }
-  }, []);
-  usePromptWithFlag(t("leave_book_warning"), true);
-
   const navigate = useNavigate();
+
   const book_fct = async (under_24 = false) => {
     let fields = getEmptyFields(finalModif);
     if (fields.has) {
@@ -700,7 +643,8 @@ function Book() {
       localStorage.removeItem("bookData");
       toast_success(t("booking_success"));
       await refreshUser();
-      navigate("/profile");
+      bypassNavigation("/profile");
+      window.location.href = "/profile";
     } else {
       toast_error(t("booking_error"));
     }
@@ -1054,7 +998,17 @@ function Book() {
                   {Math.floor((selectedCar.results.total * 30) / 100)}€
                 </h3>
               </div>
-              <Suspense fallback={<div>{t("loading")}</div>}>
+              <Suspense
+                fallback={
+                  <div
+                    aria-busy="true"
+                    className="loading-container"
+                    aria-live="polite"
+                  >
+                    <span className="loader"></span>
+                  </div>
+                }
+              >
                 <PayPalCardFields
                   setComplete={setComplete}
                   setPayRasp={setPayRasp}
@@ -1247,6 +1201,20 @@ function Book() {
             </div>
           )
         )}
+        {tab < 3 && (
+          <div
+            className="button second"
+            style={{ marginTop: 40, width: "100%", maxWidth: 600 }}
+            onClick={() => {
+              if (localStorage.getItem("bookData")) {
+                localStorage.removeItem("bookData");
+              }
+              navigate("/");
+            }}
+          >
+            <h2 style={{ color: "#0c0c1e" }}>{t("cancel")}</h2>
+          </div>
+        )}
         {tab !== 4 && (
           <div className="row">
             {tab >= 1 ? (
@@ -1275,6 +1243,7 @@ function Book() {
               <button
                 className="button main"
                 onClick={() => next(1)}
+                style={{ cursor: !complete[tab] ? "not-allowed" : "pointer" }}
                 disabled={!complete[tab]}
               >
                 <h3>{t("continue")}</h3>

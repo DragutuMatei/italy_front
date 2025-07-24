@@ -12,6 +12,7 @@ import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import useWindowSize from "./utils/useWindowSize";
 import ScrollToHashElement from "./Components/ScrollToHashElement";
+import NavigationBlocker from "./utils/NavigationBlocker";
 
 function App() {
   const { width } = useWindowSize();
@@ -37,6 +38,8 @@ function App() {
 
   return (
     <BrowserRouter>
+      <NavigationBlocker  blockPath="/book" />
+
       <ToastContainer
         position="top-right"
         autoClose={5000}

@@ -1,11 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 function Footer() {
   const { t } = useTranslation();
+  const location = useLocation();
 
-  return (
+  return !location.pathname.includes("/book") ? (
     <footer className="footer-distributed">
       <link
         rel="stylesheet"
@@ -57,10 +58,10 @@ function Footer() {
             {t("contact")}
           </Link>
         </nav>
-        <p className="footer-company-about">
+        <div className="footer-company-about">
           <span style={{ marginBottom: 5 }}>Copyright</span>
           <p className="footer-company-name">© 2025 Trevi-Chauffeurs</p>
-        </p>
+        </div>
       </div>
 
       <div className="footer-center">
@@ -133,6 +134,8 @@ function Footer() {
         </div> */}
       </div>
     </footer>
+  ) : (
+    <></>
   );
 }
 

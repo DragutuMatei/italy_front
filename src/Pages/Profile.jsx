@@ -516,9 +516,18 @@ const Profile = () => {
     </div>
   );
 
-  if (loading) return <div className="profile loading">{t("profile_loading")}</div>;
+  if (loading)
+    return (
+      <div aria-busy="true" className="loading-container" aria-live="polite">
+        <span className="loader"></span>
+      </div>
+    );
   if (!user)
-    return <div className="profile not-logged">{t("profile_not_logged_in")}</div>;
+    return (
+      <div aria-busy="true" className="loading-container" aria-live="polite">
+        <h1>{t("profile_not_logged_in")}</h1>
+      </div>
+    );
 
   return (
     <section className="profile">
@@ -620,7 +629,9 @@ const Profile = () => {
                 const hours = Math.floor(
                   (ms % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
                 );
-                timeLeft = `${days > 0 ? days + " " + t("days") + " " : ""}${hours} ${t("hours")}`;
+                timeLeft = `${
+                  days > 0 ? days + " " + t("days") + " " : ""
+                }${hours} ${t("hours")}`;
               }
               return (
                 <div
@@ -734,7 +745,9 @@ const Profile = () => {
                       <Detail
                         icon={<FaClock />}
                         label={
-                          book.option === "hour" ? t("profile_duration") : t("profile_estimated_duration")
+                          book.option === "hour"
+                            ? t("profile_duration")
+                            : t("profile_estimated_duration")
                         }
                         value={
                           book.option === "hour"
@@ -760,7 +773,8 @@ const Profile = () => {
                       {!aPlatitTot && platit !== null && total !== null && (
                         <div className="full-row platit-partial">
                           <span>
-                            {t("profile_paid")}: <b>{formatPrice(platit)} €</b> | {t("profile_due_at_destination")}:{" "}
+                            {t("profile_paid")}: <b>{formatPrice(platit)} €</b>{" "}
+                            | {t("profile_due_at_destination")}:{" "}
                             <b>{formatPrice(Math.max(0, total - platit))} €</b>
                           </span>
                         </div>
@@ -769,9 +783,13 @@ const Profile = () => {
                         label={t("profile_booking_within_24h")}
                         value={
                           sub24h ? (
-                            <span className="badge accept">{t("profile_yes")}</span>
+                            <span className="badge accept">
+                              {t("profile_yes")}
+                            </span>
                           ) : (
-                            <span className="badge pending">{t("profile_no")}</span>
+                            <span className="badge pending">
+                              {t("profile_no")}
+                            </span>
                           )
                         }
                       />
