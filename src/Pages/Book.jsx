@@ -646,16 +646,24 @@ function Book() {
     if (local) {
       try {
         const parsed = JSON.parse(local);
-        if (
-          (urlOrigin && JSON.stringify(parsed.origin) !== urlOrigin) ||
+        // Parsează parametrii JSON din URL
+        const urlOriginObj = urlOrigin ? JSON.parse(urlOrigin) : null;
+        const urlDestinationObj = urlDestination
+          ? JSON.parse(urlDestination)
+          : null;
+        // Compară obiecte cu obiecte
+        const isDifferent =
+          (urlOrigin &&
+            JSON.stringify(parsed.origin) !== JSON.stringify(urlOriginObj)) ||
           (urlDestination &&
             JSON.stringify(parsed.destination || parsed.optional) !==
-              urlDestination) ||
-          (urlOption && String(parsed.option) !== urlOption) ||
+              JSON.stringify(urlDestinationObj)) ||
+          (urlOption &&
+            String(parsed.option) !== urlOption.replaceAll('"', "")) ||
           (urlHours && String(parsed.hours) !== urlHours) ||
-          (urlDate && String(parsed.date) !== urlDate) ||
-          (urlTime && String(parsed.time) !== urlTime)
-        ) {
+          (urlDate && String(parsed.date) !== urlDate.replaceAll('"', "")) ||
+          (urlTime && String(parsed.time) !== urlTime.replaceAll('"', ""));
+        if (isDifferent) {
           localStorage.removeItem("bookData");
         }
       } catch (e) {
