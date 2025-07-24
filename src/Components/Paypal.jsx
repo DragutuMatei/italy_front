@@ -63,7 +63,7 @@ const PayPalPayment = ({ setComplete, next, setPayRasp, pret }) => {
     <div>
       <PayPalScriptProvider
         options={{
-          "client-id": "sb",
+          "client-id": process.env.REACT_APP_PAYPAL,
           currency: "EUR",
           dataClientToken: clientToken,
           components: "buttons,hosted-fields",
