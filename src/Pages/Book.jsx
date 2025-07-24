@@ -114,6 +114,22 @@ function useBlocker(blocker, when = true) {
   }, [blocker, navigator, when]);
 }
 
+// Custom hook pentru confirmare navigare internă cu flag
+function usePromptWithFlag(message, when) {
+  const { navigator } = useContext(NavigationContext);
+  useEffect(() => {
+    if (!when) return;
+    const handler = (tx) => {
+      if (window.confirm(message)) {
+        localStorage.setItem("shouldClearBookData", "1");
+        tx.retry();
+      }
+    };
+    const unblock = navigator.block(handler);
+    return unblock;
+  }, [message, when, navigator]);
+}
+
 function Book() {
   const { t } = useTranslation();
   const { user, loading, signInWithGoogle, refreshUser } = useAuth();
@@ -596,6 +612,15 @@ function Book() {
     return true; // blochează navigarea
   }, [t]);
   useBlocker(blocker, true);
+
+  // La mount, dacă flagul e setat, șterge bookData și flagul
+  useEffect(() => {
+    if (localStorage.getItem("shouldClearBookData") === "1") {
+      localStorage.removeItem("bookData");
+      localStorage.removeItem("shouldClearBookData");
+    }
+  }, []);
+  usePromptWithFlag(t("leave_book_warning"), true);
 
   const navigate = useNavigate();
   const book_fct = async (under_24 = false) => {
