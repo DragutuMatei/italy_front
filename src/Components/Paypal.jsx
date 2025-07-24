@@ -61,28 +61,30 @@ const PayPalPayment = ({ setComplete, next, setPayRasp, pret }) => {
   }, []);
   return (
     <div>
-      <PayPalScriptProvider
-        options={{
-          "client-id": process.env.REACT_APP_PAYPAL,
-          currency: "EUR",
-          dataClientToken: clientToken,
-          components: "buttons,hosted-fields",
-          "enable-funding": "card",
-        }}
-      >
-        <div>
-          <div id="dropin-container" />
-          <PayPalButtons
-            createOrder={createOrder}
-            onApprove={captureOrder}
-            onError={() =>
-              setError(
-                "An error occurred during payment processing. Please try again."
-              )
-            }
-          />
-        </div>
-      </PayPalScriptProvider>
+      {clientToken && (
+        <PayPalScriptProvider
+          options={{
+            "client-id": process.env.REACT_APP_PAYPAL,
+            currency: "EUR",
+            dataClientToken: clientToken,
+            components: "buttons,hosted-fields",
+            "enable-funding": "card",
+          }}
+        >
+          <div>
+            <div id="dropin-container" />
+            <PayPalButtons
+              createOrder={createOrder}
+              onApprove={captureOrder}
+              onError={() =>
+                setError(
+                  "An error occurred during payment processing. Please try again."
+                )
+              }
+            />
+          </div>
+        </PayPalScriptProvider>
+      )}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       <style>{`
