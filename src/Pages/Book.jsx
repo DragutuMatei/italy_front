@@ -2311,7 +2311,7 @@ function Book() {
                     }}
                   />
                   {t("pay_full")}
-                  {selectedCar.results.total}
+                  {selectedCar.results.total}€
                 </h3>
                 <h3
                   onClick={() => autofocus3("some", 2, false)}
@@ -2331,7 +2331,7 @@ function Book() {
                     }}
                   />
                   {t("pay_deposit")}
-                  {Math.floor((selectedCar.results.total * 30) / 100)}
+                  {Math.floor((selectedCar.results.total * 30) / 100)}€
                 </h3>
               </div>
               <Suspense fallback={<div>{t("loading")}</div>}>
