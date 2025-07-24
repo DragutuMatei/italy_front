@@ -1,5 +1,17 @@
-import React, { useEffect, useRef, useState, Suspense } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  Suspense,
+  useContext,
+} from "react";
+import {
+  Link,
+  useNavigate,
+  useSearchParams,
+  UNSAFE_NavigationContext as NavigationContext,
+  useLocation,
+} from "react-router-dom";
 import { FaLongArrowAltRight } from "react-icons/fa";
 import { FaCircle } from "react-icons/fa";
 import { IoPeopleSharp } from "react-icons/io5";
@@ -74,6 +86,33 @@ const pricingData = [
     ],
   },
 ];
+
+function useConfirmNavigation(shouldBlock, onConfirm, confirmText) {
+  const navigator = useContext(NavigationContext).navigator;
+  const location = useLocation();
+
+  useEffect(() => {
+    if (!shouldBlock) return;
+
+    const unblock = navigator.block((tx) => {
+      // Nu bloca dacă e refresh (location.pathname === tx.location.pathname)
+      if (location.pathname === tx.location.pathname) {
+        tx.retry();
+        return;
+      }
+      if (window.confirm(confirmText)) {
+        onConfirm && onConfirm();
+        unblock();
+        tx.retry();
+      }
+      // altfel, nu face nimic (rămâne pe pagină)
+    });
+
+    return () => {
+      unblock();
+    };
+  }, [shouldBlock, onConfirm, navigator, location.pathname, confirmText]);
+}
 
 function Book() {
   const { t } = useTranslation();
@@ -549,6 +588,14 @@ function Book() {
     saveUserData(dataToSave);
   }, [hasPaid]);
 
+  useConfirmNavigation(
+    true,
+    () => {
+      localStorage.removeItem("bookData");
+    },
+    t("leave_book_warning")
+  );
+
   const navigate = useNavigate();
   const book_fct = async (under_24 = false) => {
     let fields = getEmptyFields(finalModif);
@@ -632,45 +679,6 @@ function Book() {
       toast_error(t("booking_error"));
     }
   };
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlOrigin = urlParams.get("origin");
-    const urlDestination = urlParams.get("optional");
-    const urlOption = urlParams.get("option");
-    const urlHours = urlParams.get("hours");
-    const urlDate = urlParams.get("date");
-    const urlTime = urlParams.get("time");
-
-    const local = localStorage.getItem("bookData");
-    if (local) {
-      try {
-        const parsed = JSON.parse(local);
-        // Parsează parametrii JSON din URL
-        const urlOriginObj = urlOrigin ? JSON.parse(urlOrigin) : null;
-        const urlDestinationObj = urlDestination
-          ? JSON.parse(urlDestination)
-          : null;
-        // Compară obiecte cu obiecte
-        const isDifferent =
-          (urlOrigin &&
-            JSON.stringify(parsed.origin) !== JSON.stringify(urlOriginObj)) ||
-          (urlDestination &&
-            JSON.stringify(parsed.destination || parsed.optional) !==
-              JSON.stringify(urlDestinationObj)) ||
-          (urlOption &&
-            String(parsed.option) !== urlOption.replaceAll('"', "")) ||
-          (urlHours && String(parsed.hours) !== urlHours) ||
-          (urlDate && String(parsed.date) !== urlDate.replaceAll('"', "")) ||
-          (urlTime && String(parsed.time) !== urlTime.replaceAll('"', ""));
-        if (isDifferent) {
-          localStorage.removeItem("bookData");
-        }
-      } catch (e) {
-        localStorage.removeItem("bookData");
-      }
-    }
-  }, []);
 
   return (
     <>

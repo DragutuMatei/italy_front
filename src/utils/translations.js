@@ -39,6 +39,7 @@ const resources = {
       profile_pending: "Pending",
       profile_booked_for_someone_else: "Booked for Someone Else",
       // Book Component
+      leave_book_warning:"Are you sure you want to leave the page? You will lose your progress!",
       step_service_class: "Service Class",
       step_pickup_info: "Pickup Info",
       step_log_in: "Log In",
@@ -275,6 +276,7 @@ const resources = {
       profile_pending: "In Attesa",
       profile_booked_for_someone_else: "Prenotato per Qualcun Altro",
       // Book Component
+      leave_book_warning:"Vuoi davvero uscire dalla pagina? Perderai i tuoi progressi!",
       step_service_class: "Classe di Servizio",
       step_pickup_info: "Informazioni di Ritiro",
       step_log_in: "Accesso",
