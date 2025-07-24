@@ -37,10 +37,6 @@ function Form() {
   const inputRefssss = useRef({});
   const navigate = useNavigate();
 
-  // Șterge bookData dacă se schimbă oricare dintre datele principale
-  useEffect(() => {
-    localStorage.removeItem("bookData");
-  }, [origin, destination, option, hours, date, time]);
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
