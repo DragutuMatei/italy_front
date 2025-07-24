@@ -4,6 +4,7 @@ import React, {
   useState,
   Suspense,
   useContext,
+  useCallback,
 } from "react";
 import {
   Link,
@@ -87,31 +88,30 @@ const pricingData = [
   },
 ];
 
-function useConfirmNavigation(shouldBlock, onConfirm, confirmText) {
-  const navigator = useContext(NavigationContext).navigator;
-  const location = useLocation();
-
+// Custom hook compatibil React Router v6 pentru blocare navigare internă
+function useBlocker(blocker, when = true) {
+  const { navigator } = useContext(NavigationContext);
   useEffect(() => {
-    if (!shouldBlock) return;
-
-    const unblock = navigator.block((tx) => {
-      // Nu bloca dacă e refresh (location.pathname === tx.location.pathname)
-      if (location.pathname === tx.location.pathname) {
-        tx.retry();
+    if (!when) return;
+    const push = navigator.push;
+    const replace = navigator.replace;
+    navigator.push = (...args) => {
+      if (blocker()) {
         return;
       }
-      if (window.confirm(confirmText)) {
-        onConfirm && onConfirm();
-        unblock();
-        tx.retry();
-      }
-      // altfel, nu face nimic (rămâne pe pagină)
-    });
-
-    return () => {
-      unblock();
+      push.apply(navigator, args);
     };
-  }, [shouldBlock, onConfirm, navigator, location.pathname, confirmText]);
+    navigator.replace = (...args) => {
+      if (blocker()) {
+        return;
+      }
+      replace.apply(navigator, args);
+    };
+    return () => {
+      navigator.push = push;
+      navigator.replace = replace;
+    };
+  }, [blocker, navigator, when]);
 }
 
 function Book() {
@@ -588,13 +588,14 @@ function Book() {
     saveUserData(dataToSave);
   }, [hasPaid]);
 
-  useConfirmNavigation(
-    true,
-    () => {
+  const blocker = useCallback(() => {
+    if (window.confirm(t("leave_book_warning"))) {
       localStorage.removeItem("bookData");
-    },
-    t("leave_book_warning")
-  );
+      return false; // permite navigarea
+    }
+    return true; // blochează navigarea
+  }, [t]);
+  useBlocker(blocker, true);
 
   const navigate = useNavigate();
   const book_fct = async (under_24 = false) => {
