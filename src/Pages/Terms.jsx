@@ -24,16 +24,7 @@ function Terms() {
         site results in the need for servicing, repair or correction of
         equipment or data, you assume any costs thereof.
       </p>
-      <p>
-        Trevi Chauffeurs will not be responsible for any outcome that may occur
-        during the course of usage of our resources. We reserve the rights to
-        change prices and revise the resources usage policy in any moment. This
-        Terms & Conditions was created with{" "}
-        <a href="https://termify.io" target="_blank">
-          Termify
-        </a>
-        .
-      </p>
+      
 
       <h1>License</h1>
       <p>
