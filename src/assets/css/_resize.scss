@@ -620,11 +620,15 @@
   h2:not(
       .masina .right h2,
       .profile-info h2,
-      .checkout .right .full .masina .rr .ll h2
+      .checkout .right .full .masina .rr .ll h2,
+      .contact h2
     ) {
     width: 100%;
     text-align: center;
     margin: 20px 0;
+  }
+  .contact h2 {
+    margin-bottom: 15px;
   }
   .mainform {
     padding: 0;

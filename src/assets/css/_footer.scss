@@ -10,7 +10,7 @@
 .footer-distributed .footer-center,
 .footer-distributed .footer-right {
   display: inline-block;
-  vertical-align: top;
+  vertical-align: bottom;
 }
 
 /* Footer left */
@@ -184,7 +184,11 @@
   width: 100%;
   text-align: left;
   font: bold 16px sans-serif;
-  padding: 55px 50px;
+  padding: 25px 50px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .footer-distributed .footer-left,
@@ -197,11 +201,11 @@
 /* Footer left */
 
 .footer-distributed .footer-left {
-  width: 40%;
+  width: 30%;
 
   img {
     justify-self: center;
-    width: 200px;
+    width: auto;
   }
 }
 
@@ -241,6 +245,11 @@
 
 .footer-distributed .footer-center {
   width: 35%;
+  address .add {
+    justify-content: flex-start;
+    display: flex;
+    align-items: center;
+  }
 }
 
 .footer-distributed .footer-center i {
@@ -352,6 +361,10 @@
     width: 100%;
     margin-bottom: 40px;
     text-align: center;
+    max-width: 400px;
+    justify-content: flex-start;
+    display: flex;
+    flex-direction: column;
   }
 
   .footer-distributed .footer-center i {

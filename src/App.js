@@ -13,6 +13,7 @@ import Profile from "./Pages/Profile";
 import useWindowSize from "./utils/useWindowSize";
 import ScrollToHashElement from "./Components/ScrollToHashElement";
 import NavigationBlocker from "./utils/NavigationBlocker";
+import Terms from "./Pages/Terms";
 
 function App() {
   const { width } = useWindowSize();
@@ -61,7 +62,7 @@ function App() {
           <Route path="/book" element={<Book />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/terms" element={<Profile />} />
+          <Route path="/terms" element={<Terms />} />
         </Routes>
       </main>
       <Footer />

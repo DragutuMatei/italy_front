@@ -1,10 +1,32 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import AXIOS from "../utils/Axios_config";
 
 function Footer() {
   const { t } = useTranslation();
   const location = useLocation();
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterStatus, setNewsletterStatus] = useState("");
+
+  const handleNewsletter = async (e) => {
+    e.preventDefault();
+    setNewsletterStatus("");
+    try {
+      const resp = await AXIOS.post("/api/newsletter", {
+        email: newsletterEmail,
+      });
+      if (resp.data.success) {
+        setNewsletterStatus(t("newsletter_success"));
+        setNewsletterEmail("");
+      } else {
+        setNewsletterStatus(t("error_testimonials"));
+      }
+    } catch {
+      setNewsletterStatus(t("error_testimonials"));
+    }
+  };
 
   return !location.pathname.includes("/book") ? (
     <footer className="footer-distributed">
@@ -14,14 +36,13 @@ function Footer() {
       />
 
       <div className="footer-left">
-        <img
-          src={require("../assets/images/v_class.png")}
-          alt="Trevi Chauffeurs logo"
-          width={150}
-          height={80}
-          loading="lazy"
-          decoding="async"
-        />
+        <Link to="/">
+          <img
+            src={require("../assets/images/logo.svg").default}
+            style={{ height: "120px" }}
+            alt=""
+          />
+        </Link>
 
         <nav
           className="footer-links"
@@ -66,7 +87,7 @@ function Footer() {
 
       <div className="footer-center">
         <address>
-          <div>
+          <div className="add">
             <i className="fa fa-phone" aria-hidden="true"></i>
             <p>
               <a
@@ -77,7 +98,7 @@ function Footer() {
               </a>
             </p>
           </div>
-          <div>
+          <div className="add">
             <i className="fa fa-phone" aria-hidden="true"></i>
             <p>
               <a
@@ -89,7 +110,7 @@ function Footer() {
             </p>
           </div>
 
-          <div>
+          <div className="add">
             <i className="fa fa-envelope" aria-hidden="true"></i>
             <p>
               <a
@@ -104,34 +125,60 @@ function Footer() {
       </div>
 
       <div className="footer-right">
-        <p className="footer-company-about">
+        <div className="footer-company-about">
           <span>{t("about_us")}</span>
-          {t("company_description")}
-        </p>
-
-        {/* <div className="footer-icons">
-          <a
-            href="https://www.facebook.com/trevichauffeurs"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <i className="fa fa-facebook"></i>
-          </a>
-          <a
-            href="https://www.instagram.com/trevichauffeurs"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <i className="fa fa-instagram"></i>
-          </a>
-          <a
-            href="https://www.linkedin.com/company/trevichauffeurs"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <i className="fa fa-linkedin"></i>
-          </a>
-        </div> */}
+          <p>{t("AboutText")}</p>
+        </div>
+        <form
+          onSubmit={handleNewsletter}
+          className="newsletter-form"
+          style={{
+            marginTop: 24,
+            display: "flex",
+            flexDirection: "column",
+            gap: 8,
+          }}
+        >
+          <label htmlFor="newsletter-input" style={{ fontWeight: 600, marginBottom:10, color:"white" }}>
+            Email
+          </label>
+          <div style={{ display: "flex", gap: 8 }}>
+            <input
+              id="newsletter-input"
+              type="email"
+              value={newsletterEmail}
+              onChange={(e) => setNewsletterEmail(e.target.value)}
+              placeholder={"Email..."}
+              required
+              style={{
+                padding: "8px",
+                outline:"none",
+                borderRadius: 6,
+                border: "1px solid #ccc",
+                flex: 1,
+              }}
+            />
+            <button
+              type="submit"
+              style={{
+                padding: "8px 16px",
+                borderRadius: 6,
+                background: "#ff4c00",
+                outline:"none",
+                color: "#fff",
+                border: "none",
+                fontWeight: 600,
+              }}
+            >
+              {t("newsletter_button")}
+            </button>
+          </div>
+          {newsletterStatus && (
+            <span style={{ fontSize: 13, color: "#ff4c00" }}>
+              {newsletterStatus}
+            </span>
+          )}
+        </form>
       </div>
     </footer>
   ) : (

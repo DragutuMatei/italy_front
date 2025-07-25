@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Sitemap
-Sitemap: https://italytransfers.com/sitemap.xml
+Sitemap: https://trevi-chauffeurs.com/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1

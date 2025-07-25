@@ -329,7 +329,7 @@ function Book() {
     }
   };
   const save = () => {
-    if (checked !== "" && some !== "" && notes !== "") {
+    if (checked !== "" && some !== "") {
       if (checked === "some" && Object.values(some).some((v) => v.length < 1)) {
         toast_warn(t("complete_all_fields"));
       } else {
@@ -443,7 +443,7 @@ function Book() {
     setFinalModif({
       name: user ? (some["name"] !== "" ? some["name"] : user.displayName) : "",
       email: user ? (some["email"] !== "" ? some["email"] : user.email) : "",
-      notes: notes,
+      notes: notes ? notes : "",
       pay: !isEmpty(payrasp) && {
         total: payrasp?.purchase_units[0]?.payments.captures[0].amount.value,
         details: { ...payrasp },
@@ -579,7 +579,7 @@ function Book() {
       bags: selectedCar.bags,
       servincassato:
         selectedCar.results.total == Number(finalModif.pay.total) ? 2 : 1,
-      operator_note: notes + ".",
+      operator_note: notes ? notes : "-",
       paxmail: finalModif.email,
       pickup: origin.name,
       dropoff: destination.name,
@@ -902,9 +902,9 @@ function Book() {
                   value={notes}
                   id=""
                   onChange={(e) => {
-                    if (e.target.value.length < 1) {
-                      setComplete((old) => ({ ...old, [1]: false }));
-                    }
+                    // if (e.target.value.length < 1) {
+                    //   setComplete((old) => ({ ...old, [1]: false }));
+                    // }
                     setNotes(e.target.value);
                   }}
                   rows={5}

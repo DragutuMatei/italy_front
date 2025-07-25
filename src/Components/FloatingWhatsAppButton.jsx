@@ -10,7 +10,7 @@ export default function FloatingWhatsAppButton() {
       aria-label="WhatsApp Chat"
       style={{
         position: "fixed",
-        top: 200,
+        top: 300,
         right: 24,
         zIndex: 99999999999,
         background: "#25D366",

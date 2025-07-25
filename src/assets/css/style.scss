@@ -15,3 +15,27 @@
 @import "./footer";
 
 @import "./resize";
+
+.terms {
+  width: 100%;
+  background: $blue_2;
+  color: $white;
+  padding: 30px;
+  h1 {
+    margin: 10px;
+    margin-top: 30px;
+  }
+  p {
+    margin-bottom: 20px;
+  }
+  ul{
+    margin-left: 15px;
+    li{
+        margin-bottom: 10px;
+    }
+  }
+
+  a {
+    color: $galben;
+  }
+}

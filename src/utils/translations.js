@@ -5,6 +5,9 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   en: {
     translation: {
+      newsletter_success: "You are subscribed!",
+      newsletter_button: "Subscribe",
+      newsletter_txt: "Subscribe to our newsletter!",
       cancel: "Cancel the ride",
       //PROFILE PAGE
       profile_loading: "Loading...",
@@ -244,6 +247,9 @@ const resources = {
   },
   it: {
     translation: {
+      newsletter_success: "Sei iscritto!",
+      newsletter_button: "Iscriviti",
+      newsletter_txt: "Iscriviti alla nostra newsletter!",
       cancel: "Annullare la corsa",
       // Profile component (with unique keys)
       profile_loading: "Caricamento...",
