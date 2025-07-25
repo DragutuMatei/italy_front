@@ -131,7 +131,7 @@ const Profile = () => {
       <div className="profile-header">
         <img
           src={user.photoURL}
-          alt={t("profile_user_avatar_alt")}
+          alt={"Luxury Italy Trevi-Chauffeurs"}
           className="profile-avatar"
           width={100}
           height={100}

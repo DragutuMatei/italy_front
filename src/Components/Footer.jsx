@@ -40,7 +40,7 @@ function Footer() {
           <img
             src={require("../assets/images/logo.svg").default}
             style={{ height: "120px" }}
-            alt=""
+            alt="Luxury Italy Trevi-Chauffeurs"
           />
         </Link>
 
@@ -139,8 +139,11 @@ function Footer() {
             gap: 8,
           }}
         >
-          <label htmlFor="newsletter-input" style={{ fontWeight: 600, marginBottom:10, color:"white" }}>
-            Email
+          <label
+            htmlFor="newsletter-input"
+            style={{ fontWeight: 600, marginBottom: 10, color: "white" }}
+          >
+            {t("newsletter_txt")}
           </label>
           <div style={{ display: "flex", gap: 8 }}>
             <input
@@ -152,7 +155,7 @@ function Footer() {
               required
               style={{
                 padding: "8px",
-                outline:"none",
+                outline: "none",
                 borderRadius: 6,
                 border: "1px solid #ccc",
                 flex: 1,
@@ -164,7 +167,7 @@ function Footer() {
                 padding: "8px 16px",
                 borderRadius: 6,
                 background: "#ff4c00",
-                outline:"none",
+                outline: "none",
                 color: "#fff",
                 border: "none",
                 fontWeight: 600,

@@ -1037,7 +1037,7 @@ function Book() {
                     <img
                       className="maps"
                       src={img}
-                      alt={t("route_map_alt")}
+                      alt="Luxury Italy Trevi-Chauffeurs"
                       loading="lazy"
                       decoding="async"
                       width="100%"

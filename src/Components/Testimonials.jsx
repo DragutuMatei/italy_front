@@ -450,7 +450,7 @@ function Testimonials() {
         <div className="row">
           <img
             src={img || require("../assets/images/user.png")}
-            alt={name ? name : "User testimonial"}
+            alt={"Luxury Italy Trevi-Chauffeurs users"}
             width={60}
             height={60}
             loading="lazy"

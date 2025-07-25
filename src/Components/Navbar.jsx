@@ -251,7 +251,7 @@ function Navbar() {
               <img
                 src={require("../assets/images/logo.svg").default}
                 style={{ height: "70px" }}
-                alt=""
+                alt="Luxury Italy Trevi-Chauffeurs"
               />
             </Link>
         </div>
