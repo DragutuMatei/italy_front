@@ -733,3 +733,17 @@
     }
   }
 }
+
+@media (max-width: 700px) {
+  .checkout .right .full .inf div {
+    border: 1px solid $blue_2;
+    padding: 5px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+  }
+  .mainform .content .input{
+    border: 1px solid $blue_2;
+    border-radius: 10px;
+    
+  }
+}

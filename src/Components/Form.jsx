@@ -36,7 +36,17 @@ function Form() {
   const destinationRef = useRef(null);
   const inputRefssss = useRef({});
   const navigate = useNavigate();
-
+  const generateTimeOptions = () => {
+    const options = [];
+    for (let h = 0; h < 24; h++) {
+      for (let m = 0; m < 60; m += 5) {
+        const hh = h.toString().padStart(2, "0");
+        const mm = m.toString().padStart(2, "0");
+        options.push(`${hh}:${mm}`);
+      }
+    }
+    return options;
+  };
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -57,15 +67,30 @@ function Form() {
       }
     }
   }, [option]);
+  const [isSpecialPickUp, setIsSpecialPickup] = useState(false);
 
   const handleOriginSelect = () => {
     const place = originRef.current.getPlace();
     if (place.geometry) {
+      console.log(place);
       setOrigin({
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng(),
         name: place.formatted_address,
       });
+      const types = place.types || [];
+      const isSpecial = types.some((type) =>
+        [
+          "airport", // aeroporturi
+          "train_station", // gări
+          "transit_station", // stații intermodale
+          "bus_station", // autogări
+          "port", // uneori folosit
+          "harbor", // porturi maritime
+        ].includes(type)
+      );
+
+      setIsSpecialPickup(isSpecial);
     }
   };
 
@@ -242,6 +267,8 @@ function Form() {
           JSON.stringify(Object.values(param)[0])
         );
       });
+      // Add special pickup information
+      params.set("isSpecialPickup", JSON.stringify(isSpecialPickUp));
       navigate(`/book?${params.toString()}`);
     } else {
       toast_warn(t("please_fill_all_fields"));
@@ -347,6 +374,9 @@ function Form() {
                   ))}
                 </select>
               </label>
+              {/* </labelarray.forEach(element => { */}
+
+              {/* }); */}
             </div>
           )}
           <div
@@ -377,16 +407,25 @@ function Form() {
               <h4>Time</h4>
               <input
                 required
+                step={300}
                 type="time"
                 value={time}
+                list="times"
                 ref={setRef("time")}
                 onChange={(e) => setTime(e.target.value)}
               />
+              {/* <datalist id="times">
+                {generateTimeOptions().map((time) => (
+                  <option key={time} value={time} />
+                ))}
+              </datalist> */}
             </div>
           </div>
 
-          {option === "way" && (
-            <h3 data-aos="fade-right">Chauffeur waits free for 15 minutes.</h3>
+          {option === "way" && isSpecialPickUp ? (
+            <h3 data-aos="fade-right">Chauffeur waits free one hour.</h3>
+          ) : (
+            <h3 data-aos="fade-right">Chauffeur waits free for 15 minutes.</h3>
           )}
           <div
             className="button main"

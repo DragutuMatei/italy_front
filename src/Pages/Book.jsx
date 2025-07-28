@@ -33,10 +33,8 @@ import emailjs from "@emailjs/browser";
 import { toast_error, toast_success, toast_warn } from "../Components/Toasts";
 import Image from "../Components/Image";
 import { useNavigationBlocker } from "../utils/NavigationBlocker";
+import SpecialPickupPopup from "../Components/SpecialPickupPopup";
 
-const FloatingWhatsAppButton = React.lazy(() =>
-  import("../Components/FloatingWhatsAppButton")
-);
 const Paypal = React.lazy(() => import("../Components/Paypal"));
 const Toasts = React.lazy(() => import("../Components/Toasts"));
 
@@ -98,6 +96,9 @@ function Book() {
   const option = searchParams.get("option").replaceAll('"', "");
   const date = searchParams.get("date").replaceAll('"', "");
   const time = searchParams.get("time").replaceAll('"', "");
+  const isSpecialPickup = JSON.parse(
+    searchParams.get("isSpecialPickup") || "false"
+  );
   const [selectedCar, setSelectedCar] = useState({});
   const [checked2, setChecked2] = useState("me");
   const [checked, setChecked] = useState("");
@@ -116,6 +117,21 @@ function Book() {
       searchParams.get("time").replaceAll('"', "")
     )
   );
+  const [hasPaid, setHasPaid] = useState(false);
+  const [showSpecialPickupPopup, setShowSpecialPickupPopup] = useState(false);
+  const [specialPickupNumber, setSpecialPickupNumber] = useState("");
+  const [hasRestoredTab, setHasRestoredTab] = useState(false);
+  const [tab, setTab] = useState(0);
+  const [complete, setComplete] = useState({
+    0: false,
+    1: false,
+    2: user ? true : false,
+    3: false,
+    4: false,
+  });
+  const [payrasp, setPayRasp] = useState({});
+  const [finalModif, setFinalModif] = useState({});
+  const [img, setImg] = useState("");
 
   const { bypassNavigation } = useNavigationBlocker();
 
@@ -214,19 +230,9 @@ function Book() {
     t("step_payment"),
     t("step_checkout"),
   ];
-  const [tab, setTab] = useState(0);
-  const [hasRestoredTab, setHasRestoredTab] = useState(false);
   const isEmpty = (val) => {
     return JSON.stringify(val) === "{}";
   };
-
-  const [complete, setComplete] = useState({
-    0: false,
-    1: false,
-    2: user ? true : false,
-    3: false,
-    4: false,
-  });
 
   const next = (step, pas = false) => {
     if (
@@ -234,6 +240,17 @@ function Book() {
       tab + step >= 0 &&
       (complete[tab] || step < 0 || pas)
     ) {
+      // Check if we're moving from tab 0 to tab 1 and it's a special pickup
+      if (
+        tab === 0 &&
+        step === 1 &&
+        isSpecialPickup &&
+        !specialPickupNumber.trim()
+      ) {
+        setShowSpecialPickupPopup(true);
+        return;
+      }
+
       if (tab + step == 3 && is24h) {
         setTab((old) => old + step + 1);
         return;
@@ -245,10 +262,9 @@ function Book() {
     }
   };
 
-  const [payrasp, setPayRasp] = useState({});
   useEffect(() => {
     emailjs.init({
-      publicKey: process.env.REACT_APP_EMAILJS,
+      publicKey: process.env.REACT_APP_EMAILJS_PUBLIC_KEY,
       blockHeadless: true,
       blockList: {},
       limitRate: {
@@ -340,8 +356,6 @@ function Book() {
       toast_warn(t("complete_all_fields"));
     }
   };
-
-  const [img, setImg] = useState("");
 
   const tr = async (opt) => {
     let r = "";
@@ -438,12 +452,11 @@ function Book() {
     return { imageUrl: staticMapUrl };
   };
 
-  const [finalModif, setFinalModif] = useState({});
   useEffect(() => {
     setFinalModif({
       name: user ? (some["name"] !== "" ? some["name"] : user.displayName) : "",
       email: user ? (some["email"] !== "" ? some["email"] : user.email) : "",
-      notes: notes ? notes : "",
+      notes: notes ? notes : "--",
       pay: !isEmpty(payrasp) && {
         total: payrasp?.purchase_units[0]?.payments.captures[0].amount.value,
         details: { ...payrasp },
@@ -459,8 +472,21 @@ function Book() {
       is24h,
       option,
       destination: destination,
+      isSpecialPickup: isSpecialPickup,
+      specialPickupNumber: specialPickupNumber,
     });
-  }, [, tab, user, notes, payrasp, payFull, checked, some, selectedCar]);
+  }, [
+    ,
+    tab,
+    user,
+    notes,
+    payrasp,
+    payFull,
+    checked,
+    some,
+    selectedCar,
+    specialPickupNumber,
+  ]);
 
   function getEmptyFields(obj) {
     const emptyFields = [];
@@ -474,7 +500,7 @@ function Book() {
         (typeof value === "object" &&
           value !== null &&
           Object.keys(value).length === 0);
-      if (isEmptyValue && key !== "title") {
+      if (isEmptyValue && key !== "title" && key !== "specialPickupNumber") {
         emptyFields.push(key);
       }
     }
@@ -493,7 +519,6 @@ function Book() {
     return null;
   };
 
-  const [hasPaid, setHasPaid] = useState(false);
   useEffect(() => {
     if (!hasRestoredTab) {
       const restored = restoreUserData();
@@ -507,6 +532,8 @@ function Book() {
         if (restored.payrasp) setPayRasp(restored.payrasp);
         if (restored.complete) setComplete(restored.complete);
         if (restored.hasPaid !== undefined) setHasPaid(restored.hasPaid);
+        if (restored.specialPickupNumber)
+          setSpecialPickupNumber(restored.specialPickupNumber);
         if (restored.tab !== undefined) {
           setTab(restored.tab);
         }
@@ -527,6 +554,7 @@ function Book() {
       payrasp,
       complete,
       hasPaid,
+      specialPickupNumber,
     };
     saveUserData(dataToSave);
   }, [
@@ -540,6 +568,7 @@ function Book() {
     payrasp,
     complete,
     hasPaid,
+    specialPickupNumber,
   ]);
 
   useEffect(() => {
@@ -566,8 +595,17 @@ function Book() {
 
   const navigate = useNavigate();
 
+  const handleSpecialPickupContinue = () => {
+    setShowSpecialPickupPopup(false);
+    next(1, true);
+  };
+
+  const handleSpecialPickupClose = () => {
+    setShowSpecialPickupPopup(false);
+  };
+
   const book_fct = async (under_24 = false) => {
-    let fields = getEmptyFields(finalModif);
+    let fields = getEmptyFields({ ...finalModif, ["notes"]: "..." });
     if (fields.has) {
       toast_error(t("complete_all_fields"));
       return;
@@ -623,15 +661,20 @@ function Book() {
     } else {
       success = false;
     }
-    if (!under_24) {
-      emailjs.send(
+    if (under_24) {
+      console.log(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_AUTO_REPLY_TEMPLATE_ID
+      );
+
+      await emailjs.send(
         process.env.REACT_APP_EMAILJS_SERVICE_ID,
         process.env.REACT_APP_EMAILJS_AUTO_REPLY_TEMPLATE_ID,
         {
           ...send,
         }
       );
-      emailjs.send(
+      await emailjs.send(
         process.env.REACT_APP_EMAILJS_SERVICE_ID,
         process.env.REACT_APP_EMAILJS_NEW_ORDER_UNDER_24,
         {
@@ -652,6 +695,13 @@ function Book() {
 
   return (
     <>
+      <SpecialPickupPopup
+        isOpen={showSpecialPickupPopup}
+        onClose={handleSpecialPickupClose}
+        onContinue={handleSpecialPickupContinue}
+        specialPickupNumber={specialPickupNumber}
+        setSpecialPickupNumber={setSpecialPickupNumber}
+      />
       <section className="book">
         <div className="steps" role="tablist">
           {Array.from({ length: 5 }, (_, i) => i + 1).map((_, index) => {
@@ -1129,64 +1179,90 @@ function Book() {
                 <ul className="full">
                   <li className="inf">
                     <h4>{t("contact_details")}</h4>
-                    <p>{t("name_label")}</p>
-                    <input
-                      type="text"
-                      defaultValue={
-                        user
-                          ? some["name"] !== ""
-                            ? some["name"]
-                            : user.displayName
-                          : ""
-                      }
-                      onChange={(e) => {
-                        setFinalModif((old) => ({
-                          ...old,
-                          ["name"]: e.target.value,
-                        }));
-                      }}
-                    />
-                    <p>{t("email_label")}</p>
-                    <input
-                      type="email"
-                      defaultValue={
-                        user
-                          ? some["email"] !== ""
-                            ? some["email"]
-                            : user.email
-                          : ""
-                      }
-                      onChange={(e) => {
-                        setFinalModif((old) => ({
-                          ...old,
-                          ["email"]: e.target.value,
-                        }));
-                      }}
-                    />
-                    <p>{t("phone_label")}</p>
-                    <input
-                      type="tel"
-                      defaultValue={some["phone"] !== "" ? some["phone"] : ""}
-                      onChange={(e) => {
-                        setFinalModif((old) => ({
-                          ...old,
-                          ["phone"]: e.target.value,
-                        }));
-                      }}
-                    />
+                    <div>
+                      <p>{t("name_label")}</p>
+                      <input
+                        type="text"
+                        defaultValue={
+                          user
+                            ? some["name"] !== ""
+                              ? some["name"]
+                              : user.displayName
+                            : ""
+                        }
+                        onChange={(e) => {
+                          setFinalModif((old) => ({
+                            ...old,
+                            ["name"]: e.target.value,
+                          }));
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <p>{t("email_label")}</p>
+                      <input
+                        type="email"
+                        defaultValue={
+                          user
+                            ? some["email"] !== ""
+                              ? some["email"]
+                              : user.email
+                            : ""
+                        }
+                        onChange={(e) => {
+                          setFinalModif((old) => ({
+                            ...old,
+                            ["email"]: e.target.value,
+                          }));
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <p>{t("phone_label")}</p>
+                      <input
+                        type="tel"
+                        placeholder="...."
+                        defaultValue={some["phone"] !== "" ? some["phone"] : ""}
+                        onChange={(e) => {
+                          setFinalModif((old) => ({
+                            ...old,
+                            ["phone"]: e.target.value,
+                          }));
+                        }}
+                      />
+                    </div>
+                    {isSpecialPickup && (
+                      <div>
+                        <p>{t("special_pickup_number_label")}</p>
+                        <input
+                          type="text"
+                          placeholder={t("special_pickup_placeholder")}
+                          defaultValue={specialPickupNumber}
+                          onChange={(e) => {
+                            setSpecialPickupNumber(e.target.value);
+                            setFinalModif((old) => ({
+                              ...old,
+                              ["specialPickupNumber"]: e.target.value,
+                            }));
+                          }}
+                        />
+                      </div>
+                    )}
                   </li>
                   <li className="inf">
-                    <h4>{t("notes_for_chauffeur")}</h4>
-                    <textarea
-                      type="text"
-                      defaultValue={notes}
-                      onChange={(e) => {
-                        setFinalModif((old) => ({
-                          ...old,
-                          ["notes"]: e.target.value,
-                        }));
-                      }}
-                    />
+                    <div>
+                      <h4>{t("notes_for_chauffeur")}</h4>
+                      <textarea
+                        type="text"
+                        defaultValue={notes}
+                        onChange={(e) => {
+                          setFinalModif((old) => ({
+                            ...old,
+                            ["notes"]: e.target.value,
+                          }));
+                        }}
+                      />
+                    </div>
                   </li>
                 </ul>
                 <button
@@ -1252,9 +1328,6 @@ function Book() {
           </div>
         )}
       </section>
-      <Suspense fallback={null}>
-        <FloatingWhatsAppButton />
-      </Suspense>
     </>
   );
 }

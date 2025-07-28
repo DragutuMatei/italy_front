@@ -14,6 +14,7 @@ import {
   FaCarSide,
   FaLongArrowAltRight,
   FaEnvelope,
+  FaPlane,
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -374,7 +375,7 @@ const Profile = () => {
                           book.option === "hour"
                             ? `${book.destination} ${t("hours")}, ${t("max")} ${
                                 book.destination * 20
-                              } km`
+                              } `
                             : masina.results?.km
                             ? `${masina.results.km} km`
                             : "-"
@@ -391,6 +392,13 @@ const Profile = () => {
                         value={book.notes}
                         plusClass="full-row-custom"
                       />
+                      {book.isSpecialPickup && book.specialPickupNumber && (
+                        <Detail
+                          icon={<FaPlane />}
+                          label={t("special_pickup_number_label")}
+                          value={book.specialPickupNumber}
+                        />
+                      )}
                       {!aPlatitTot && platit !== null && total !== null && (
                         <div className="full-row platit-partial">
                           <span>

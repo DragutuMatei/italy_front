@@ -115,6 +115,20 @@ const resources = {
       error_calculating_distance: "Error calculating distance.",
       missing_center_or_radius: "Missing center or radius.",
 
+      // Special Pickup Popup
+      special_pickup_title: "Special Pickup Information Required",
+      special_pickup_message:
+        "Since you selected a special pickup location (airport, train station, port), please provide the following information:",
+      flight_number_label: "Flight Number",
+      train_number_label: "Train Number",
+      ship_number_label: "Ship Number",
+      special_pickup_placeholder: "Enter flight, train, or ship number",
+      special_pickup_required:
+        "This information is required for special pickups.",
+      special_pickup_continue: "Continue",
+      special_pickup_cancel: "Cancel",
+      special_pickup_number_label: "Flight/Train/Ship Number",
+
       // Header slides
       "italy_transfers_title-1": "Trevi Chauffeurs",
       "italy_transfers_text-1":
@@ -188,7 +202,7 @@ const resources = {
       Q3: "Can I bring pets or extra luggage?",
       A3: "Pets are allowed upon request, and extra luggage is accommodated based on vehicle type. Please specify during booking.",
       Q4: "Are child seats available?",
-      A4: "Yes — child and booster seats are available free of charge. Just let us know when booking.",
+      A4: "Please specify when checking in. A booster seat or child seat costs an additional €10.",
       Q5: "What is your cancellation policy?",
       A5: "Free cancellation up to 24 hours before pick‑up. After that, a fee may apply.",
       Q6: "Do you offer airport transfers?",
@@ -358,6 +372,21 @@ const resources = {
       booking_error:
         "Si è verificato un errore nel salvare la tua prenotazione. Riprova.",
       missing_center_or_radius: "Manca il centro o il raggio.",
+
+      // Special Pickup Popup
+      special_pickup_title: "Informazioni di Ritiro Speciale Richieste",
+      special_pickup_message:
+        "Poiché hai selezionato un punto di ritiro Speciale (aeroporto, stazione ferroviaria, porto), fornisci le seguenti informazioni:",
+      flight_number_label: "Numero di Volo",
+      train_number_label: "Numero di Treno",
+      ship_number_label: "Numero di Nave",
+      special_pickup_placeholder: "Inserisci numero di volo, treno o nave",
+      special_pickup_required:
+        "Queste informazioni sono richieste per i ritiri speciali.",
+      special_pickup_continue: "Continua",
+      special_pickup_cancel: "Annulla",
+      special_pickup_number_label: "Numero di Volo/Treno/Nave",
+
       // replică cu traduceri profesionale
       "italy_transfers_title-1": "Trevi Chauffeurs",
       "italy_transfers_text-1":
@@ -402,7 +431,7 @@ const resources = {
       service_section_heading: "I nostri servizi",
       service_section_title: "Eccellenza ad ogni viaggio",
       service_section_description:
-        "Scegli dalla nostra flotta premium in tutta Italia: Mercedes E‑Class, van privati Vito e V‑Class — ideali per trasferimenti aziendali, aeroportuali o con effetto orario. Aspettativa gratuita, prezzi fissi trasparenti e autisti attenti che fanno la differenza.",
+        "Scegli dalla nostra flotta premium in tutta Italia: Mercedes E‑Class, van privati Vito e V‑Class — ideali per trasferimenti aziendali, aeroportuali o con effetto orario. Prezzi fissi trasparenti e autisti attenti che fanno la differenza.",
       service1_title: "Sedan E‑Class",
       service1_text:
         "Elegante berlina di lusso, perfetta per viaggi di lavoro o piacere — spaziosa e raffinata.",
@@ -423,11 +452,11 @@ const resources = {
       Q1: "Come posso prenotare?",
       A1: "Seleziona tipo di transfer, inserisci luoghi, data e ora, e prenota. Prezzo fisso e conferma immediata.",
       Q2: "I prezzi sono fissi?",
-      A2: "Sì — includono pedaggi, IVA e mancia. Nessuna spesa nascosta.",
+      A2: "Sì — includono pedaggi, IVA. Nessuna spesa nascosta.",
       Q3: "Posso portare animali o bagagli extra?",
       A3: "Animali su richiesta e bagagli aggiuntivi in base al veicolo. Specifica al momento della prenotazione.",
       Q4: "Fornite seggiolini per bambini?",
-      A4: "Sì — seggiolini e rialzi sono disponibili gratuitamente su richiesta.",
+      A4: "Si specificare nel momento della presentazione. Il seggiolino o rialzino ha un costo extra di 10€",
       Q5: "Qual è la vostra politica di cancellazione?",
       A5: "Cancellazione gratuita fino a 24 ore prima del pick‑up. Successivamente potrebbero applicarsi penali.",
       Q6: "Fate trasferimenti da/per aeroporti?",

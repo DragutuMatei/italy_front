@@ -69,6 +69,7 @@ function Footer() {
           <Link to="/#services" aria-label={`${t("services")} `}>
             {t("services")}
           </Link>
+          <Link to="/#testimoniale">{t("testimonials")}</Link>
           <Link
             to="/#faq"
             aria-label={`${t("faq")} - Frequently asked questions`}

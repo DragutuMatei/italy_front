@@ -275,9 +275,6 @@ import Svg from "../Components/Svg";
 const Testimonials = React.lazy(() => import("../Components/Testimonials"));
 const Contact = React.lazy(() => import("../Components/Contact"));
 const Form = React.lazy(() => import("../Components/Form"));
-const FloatingWhatsAppButton = React.lazy(() =>
-  import("../Components/FloatingWhatsAppButton")
-);
 
 function Home() {
   useEffect(() => {
@@ -549,9 +546,6 @@ function Home() {
         </div>
       </section>
 
-      <Suspense fallback={null}>
-        <FloatingWhatsAppButton />
-      </Suspense>
     </>
   );
 }
