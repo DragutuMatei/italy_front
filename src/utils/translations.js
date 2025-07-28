@@ -59,6 +59,7 @@ const resources = {
       all_cars_include: "All cars include:",
       free_cancellation: "Free cancellation up to 12 hours before pickup",
       free_wait_time: "Free 15 minutes of wait time",
+      free_wait_time_one_hour: "Free one hour of wait time",
       meet_and_greet: "Meet & Greet",
       complimentary_water: "Complimentary bottle of water",
       please_note: "Please note:",
@@ -112,6 +113,7 @@ const resources = {
       booking_success: "Your booking has been saved successfully!",
       booking_error:
         "There was an error saving your booking. Please try again.",
+      booking_processing: "Processing...",
       error_calculating_distance: "Error calculating distance.",
       missing_center_or_radius: "Missing center or radius.",
 
@@ -317,6 +319,7 @@ const resources = {
       free_cancellation:
         "Cancellazione gratuita fino a 12 ore prima del ritiro",
       free_wait_time: "15 minuti di attesa gratuiti",
+      free_wait_time_one_hour: "Un'ora di attesa gratuita",
       meet_and_greet: "Incontro e Saluto",
       complimentary_water: "Bottiglia d'acqua gratuita",
       please_note: "Nota bene:",
@@ -371,6 +374,7 @@ const resources = {
       booking_success: "La tua prenotazione è stata salvata con successo!",
       booking_error:
         "Si è verificato un errore nel salvare la tua prenotazione. Riprova.",
+      booking_processing: "Elaborazione...",
       missing_center_or_radius: "Manca il centro o il raggio.",
 
       // Special Pickup Popup

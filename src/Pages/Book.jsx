@@ -132,6 +132,7 @@ function Book() {
   const [payrasp, setPayRasp] = useState({});
   const [finalModif, setFinalModif] = useState({});
   const [img, setImg] = useState("");
+  const [isBookingLoading, setIsBookingLoading] = useState(false);
 
   const { bypassNavigation } = useNavigationBlocker();
 
@@ -605,91 +606,100 @@ function Book() {
   };
 
   const book_fct = async (under_24 = false) => {
-    let fields = getEmptyFields({ ...finalModif, ["notes"]: "..." });
-    if (fields.has) {
-      toast_error(t("complete_all_fields"));
-      return;
-    }
-    const send = {
-      cartype: selectedCar.type,
-      price: selectedCar.results.total,
-      impincassato: Number(finalModif.pay.total),
-      bags: selectedCar.bags,
-      servincassato:
-        selectedCar.results.total == Number(finalModif.pay.total) ? 2 : 1,
-      operator_note: notes ? notes : "-",
-      paxmail: finalModif.email,
-      pickup: origin.name,
-      dropoff: destination.name,
-      date: `${date.split("-")[2]}/${date.split("-")[1]}/${date.split("-")[0]}`,
-      pickup_time: time,
-      pax: selectedCar.pers,
-      paxname: finalModif.name,
-      paxphone: finalModif.phone,
-    };
-    let success = false;
-    let serviceid = Math.floor(Math.random() * 1000000);
-    if (!under_24) {
-      const api_to_nccgest = await AXIOS.post("/platform/insert", {
-        sendData: send,
-      });
-      if (!api_to_nccgest.data.success) {
-        toast_error(t("booking_platform_error"));
+    setIsBookingLoading(true);
+    try {
+      let fields = getEmptyFields({ ...finalModif, ["notes"]: "..." });
+      if (fields.has) {
+        toast_error(t("complete_all_fields"));
         return;
       }
-      serviceid = api_to_nccgest.data.data.serviceid;
-    }
-    const salv_book = await AXIOS.post("/books/insert", {
-      data: {
+      const send = {
+        cartype: selectedCar.type,
+        price: selectedCar.results.total,
+        impincassato: Number(finalModif.pay.total),
+        bags: selectedCar.bags,
+        servincassato:
+          selectedCar.results.total == Number(finalModif.pay.total) ? 2 : 1,
+        operator_note: notes ? notes : "-",
+        paxmail: finalModif.email,
+        pickup: origin.name,
+        dropoff: destination.name,
+        date: `${date.split("-")[2]}/${date.split("-")[1]}/${
+          date.split("-")[0]
+        }`,
+        pickup_time: time,
+        pax: selectedCar.pers,
+        paxname: finalModif.name,
+        paxphone: finalModif.phone,
+      };
+      let success = false;
+      let serviceid = Math.floor(Math.random() * 1000000);
+      if (!under_24) {
+        const api_to_nccgest = await AXIOS.post("/platform/insert", {
+          sendData: send,
+        });
+        if (!api_to_nccgest.data.success) {
+          toast_error(t("booking_platform_error"));
+          return;
+        }
+        serviceid = api_to_nccgest.data.data.serviceid;
+      }
+      const salv_book = await AXIOS.post("/books/insert", {
+        data: {
+          uid: user && user.uid,
+          ...finalModif,
+          accept_book: !under_24,
+          serviceid,
+        },
+      });
+      if (salv_book.data.success) {
+        success = true;
+      } else {
+        success = false;
+      }
+      const salve_user = await AXIOS.post("/api/updatebooks", {
         uid: user && user.uid,
-        ...finalModif,
-        accept_book: !under_24,
-        serviceid,
-      },
-    });
-    if (salv_book.data.success) {
-      success = true;
-    } else {
-      success = false;
-    }
-    const salve_user = await AXIOS.post("/api/updatebooks", {
-      uid: user && user.uid,
-      data: salv_book.data.uid,
-    });
-    if (salve_user.data.success) {
-      success = true;
-    } else {
-      success = false;
-    }
-    if (under_24) {
-      console.log(
-        process.env.REACT_APP_EMAILJS_SERVICE_ID,
-        process.env.REACT_APP_EMAILJS_AUTO_REPLY_TEMPLATE_ID
-      );
+        data: salv_book.data.uid,
+      });
+      if (salve_user.data.success) {
+        success = true;
+      } else {
+        success = false;
+      }
+      if (under_24) {
+        console.log(
+          process.env.REACT_APP_EMAILJS_SERVICE_ID,
+          process.env.REACT_APP_EMAILJS_AUTO_REPLY_TEMPLATE_ID
+        );
 
-      await emailjs.send(
-        process.env.REACT_APP_EMAILJS_SERVICE_ID,
-        process.env.REACT_APP_EMAILJS_AUTO_REPLY_TEMPLATE_ID,
-        {
-          ...send,
-        }
-      );
-      await emailjs.send(
-        process.env.REACT_APP_EMAILJS_SERVICE_ID,
-        process.env.REACT_APP_EMAILJS_NEW_ORDER_UNDER_24,
-        {
-          ...send,
-        }
-      );
-    }
-    if (success) {
-      localStorage.removeItem("bookData");
-      toast_success(t("booking_success"));
-      await refreshUser();
-      bypassNavigation("/profile");
-      window.location.href = "/profile";
-    } else {
+        await emailjs.send(
+          process.env.REACT_APP_EMAILJS_SERVICE_ID,
+          process.env.REACT_APP_EMAILJS_AUTO_REPLY_TEMPLATE_ID,
+          {
+            ...send,
+          }
+        );
+        await emailjs.send(
+          process.env.REACT_APP_EMAILJS_SERVICE_ID,
+          process.env.REACT_APP_EMAILJS_NEW_ORDER_UNDER_24,
+          {
+            ...send,
+          }
+        );
+      }
+      if (success) {
+        localStorage.removeItem("bookData");
+        toast_success(t("booking_success"));
+        await refreshUser();
+        bypassNavigation("/profile");
+        window.location.href = "/profile";
+      } else {
+        toast_error(t("booking_error"));
+      }
+    } catch (error) {
       toast_error(t("booking_error"));
+    } finally {
+      setIsBookingLoading(false);
     }
   };
 
@@ -733,6 +743,7 @@ function Book() {
               <br />
             </>
           )}
+
           <h2>
             {date} at {time}
           </h2>
@@ -809,7 +820,10 @@ function Book() {
                   <FaCheckCircle /> {t("free_cancellation")}
                 </h3>
                 <h3>
-                  <FaCheckCircle /> {t("free_wait_time")}
+                  <FaCheckCircle />{" "}
+                  {isSpecialPickup
+                    ? t("free_wait_time_one_hour")
+                    : t("free_wait_time")}
                 </h3>
                 <h3>
                   <FaCheckCircle /> {t("meet_and_greet")}
@@ -1270,8 +1284,25 @@ function Book() {
                   onClick={() => {
                     book_fct(is24h);
                   }}
+                  disabled={isBookingLoading}
+                  style={{
+                    cursor: isBookingLoading ? "not-allowed" : "pointer",
+                    opacity: isBookingLoading ? 0.7 : 1,
+                  }}
                 >
-                  <h3>{t("book_now")}</h3>
+                  <h3
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: "8px",
+                    }}
+                  >
+                    {isBookingLoading && (
+                      <div className="booking-loading-spinner"></div>
+                    )}
+                    {isBookingLoading ? t("booking_processing") : t("book_now")}
+                  </h3>
                 </button>
               </div>
             </div>
